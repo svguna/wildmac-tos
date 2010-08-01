@@ -1,4 +1,4 @@
-/// $Id$
+/// $Id: ConstantSensorC.nc,v 1.6 2010-06-29 22:07:56 scipio Exp $
 
 /*                                                                      
  * Copyright (c) 2005 Stanford University. All rights reserved.

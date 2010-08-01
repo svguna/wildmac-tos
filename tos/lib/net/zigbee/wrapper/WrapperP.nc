@@ -27,7 +27,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * - Revision -------------------------------------------------------------
- * $Date$
+ * $Date: 2009-09-18 16:41:20 $
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
  * @author: Ricardo Severino <rars@isep.ipp.pt>
  * ========================================================================

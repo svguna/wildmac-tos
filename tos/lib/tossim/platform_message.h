@@ -1,4 +1,4 @@
-// $Id$
+// $Id: platform_message.h,v 1.5 2010-06-29 22:07:51 scipio Exp $
 /*
  * Copyright (c) 2005 Stanford University. All rights reserved.
  *
@@ -37,7 +37,7 @@
  *
  * @author Philip Levis
  * @date   Dec 2 2005
- * Revision:  $Revision$
+ * Revision:  $Revision: 1.5 $
  */
 
 

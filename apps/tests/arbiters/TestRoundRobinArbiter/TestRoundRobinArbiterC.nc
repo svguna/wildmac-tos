@@ -57,8 +57,8 @@
  * <br>
  *
  * @author Kevin Klues <klueska@cs.berkeley.edu>
- * @version  $Revision$
- * @date $Date$
+ * @version  $Revision: 1.2 $
+ * @date $Date: 2009-12-22 08:34:10 $
  */
 
 module TestRoundRobinArbiterC {

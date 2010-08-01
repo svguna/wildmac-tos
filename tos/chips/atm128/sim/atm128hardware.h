@@ -39,7 +39,7 @@
  *  @author Jason Hill, Philip Levis, Nelson Lee, David Gay
  *  @author Martin Turon <mturon@xbow.com>
  *
- *  $Id$
+ *  $Id: atm128hardware.h,v 1.8 2010-06-29 22:07:43 scipio Exp $
  */
 
 #ifndef _H_atmega128hardware_H

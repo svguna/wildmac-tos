@@ -32,8 +32,8 @@
 
 /**
  * @author Kevin Klues (klueska@cs.wustl.edu)
- * @version $Revision$
- * @date $Date$
+ * @version $Revision: 1.3 $
+ * @date $Date: 2010-06-29 22:07:42 $
  */
 
 package net.tinyos.tools;

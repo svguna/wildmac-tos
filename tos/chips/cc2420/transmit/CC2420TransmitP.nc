@@ -35,7 +35,7 @@
  * @author Jung Il Choi Initial SACK implementation
  * @author JeongGil Ko
  * @author Razvan Musaloiu-E
- * @version $Revision$ $Date$
+ * @version $Revision: 1.18 $ $Date: 2010-04-13 20:27:05 $
  */
 
 #include "CC2420.h"

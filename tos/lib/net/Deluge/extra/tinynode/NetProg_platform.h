@@ -1,4 +1,4 @@
-// $Id$
+// $Id: NetProg_platform.h,v 1.2 2010-06-29 22:07:48 scipio Exp $
 
 /*
  *

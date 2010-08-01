@@ -1,5 +1,5 @@
 #-*-Makefile-*- vim:syntax=make
-#$Id$
+#$Id: telosb.target,v 1.5 2008-03-11 09:34:13 klueska Exp $
 
 PLATFORM ?= telosb
 

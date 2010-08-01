@@ -1,4 +1,4 @@
-// $Id$
+// $Id: BlinkM.nc,v 1.4 2006-12-12 18:22:52 vlahan Exp $
 
 module BlinkM
 {

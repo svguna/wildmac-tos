@@ -38,7 +38,7 @@
  * @date   Jan 2 2006
  */
 
-// $Id$
+// $Id: sim_packet.c,v 1.6 2010-06-29 22:07:51 scipio Exp $
 
 #include <sim_packet.h>
 #include <message.h>

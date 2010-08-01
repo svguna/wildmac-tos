@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Storage.h,v 1.6 2010-06-29 22:07:56 scipio Exp $
 
 /*
  * Copyright (c) 2000-2005 The Regents of the University  of California.  
@@ -43,7 +43,7 @@
 /*
  * @author: Jonathan Hui <jwhui@cs.berkeley.edu>
  * @author: David Gay <david.e.gay@intel.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.6 $ $Date: 2010-06-29 22:07:56 $
  */
 
 #ifndef STORAGE_H

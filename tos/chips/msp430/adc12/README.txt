@@ -177,6 +177,6 @@ tinyos-2.x/apps/tests/msp430/Adc12.
 
 -----
 
-$Date$
+$Date: 2008-04-07 09:41:55 $
 @author: Jan Hauer <hauer@tkn.tu-berlin.de>
 

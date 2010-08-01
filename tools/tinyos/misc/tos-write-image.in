@@ -4,7 +4,7 @@
 # from an srec binary image. These are used by the Deluge binary
 # image dissemination service.
 #
-#$Id$
+#$Id: tos-write-image.in,v 1.5 2007-04-27 05:01:25 prabal Exp $
 #@author Jonathan Hui <jwhui@cs.berkeley.edu>
 #
 use strict;

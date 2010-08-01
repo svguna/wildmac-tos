@@ -35,7 +35,7 @@
  * @author Roman Lim
  * @author Razvan Musaloie-E.
  * @author Jeonggil Ko
- * @version $Revision$ $Date$
+ * @version $Revision: 1.4 $ $Date: 2008-06-23 20:25:15 $
  */
 
 module CC2420SpiP @safe() {

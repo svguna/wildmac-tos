@@ -1,4 +1,4 @@
-// $Id$
+// $Id: HplUsart0C.nc,v 1.2 2010-06-29 22:07:50 scipio Exp $
 
 /*
  *

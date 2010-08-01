@@ -38,7 +38,7 @@
  * before calling sync().
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2009-08-25 18:14:42 $
  */
 
 interface CC2420Config {

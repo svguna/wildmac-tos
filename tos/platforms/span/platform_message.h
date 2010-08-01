@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: platform_message.h,v 1.2 2010-06-29 22:07:55 scipio Exp $
  * Copyright (c) 2005 The Regents of the University  of California.  
  * All rights reserved.
  *
@@ -43,7 +43,7 @@
  * chip-specific CC1000 packet structures.
  *
  * @author Philip Levis
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:55 $
  */
 
 

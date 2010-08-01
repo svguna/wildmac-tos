@@ -16,5 +16,5 @@ upper case". To match the syntax used in the IEEE 802.15.4 standard the
 interfaces provided by the MAC to the next higher layer deviate from this
 convention (they are all caps, e.g. MLME_START).
 
-$Id$o
+$Id: README.txt,v 1.4 2010-01-05 17:12:57 janhauer Exp $o
 

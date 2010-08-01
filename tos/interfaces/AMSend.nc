@@ -1,4 +1,4 @@
-// $Id$
+// $Id: AMSend.nc,v 1.8 2010-06-29 22:07:46 scipio Exp $
 /*
  * Copyright (c) 2005 The Regents of the University  of California.  
  * All rights reserved.

@@ -20,4 +20,4 @@ Known bugs/limitations:
 
 None.
  
-$Id$
+$Id: README.txt,v 1.2 2008-07-26 02:32:43 klueska Exp $

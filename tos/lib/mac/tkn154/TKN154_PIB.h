@@ -27,7 +27,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * - Revision -------------------------------------------------------------
- * $Date$
+ * $Date: 2009-03-04 18:31:37 $
  * @author Torsten Halbhuebner <hhuebner@tkn.tu-berlin.de>
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
  * ========================================================================

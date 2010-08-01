@@ -10,8 +10,8 @@ Testbeds - Setup and Interfaces
 :Author: Jan Beutel
 
 :Draft-Created: 14-Jun-2007
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.2 $
+:Draft-Modified: $Date: 2007-06-28 16:41:55 $
 :Draft-Discuss: TinyOS Testbed WG <tinyos-testbed-wg@eecs.harvard.edu>>
 
 .. Note::

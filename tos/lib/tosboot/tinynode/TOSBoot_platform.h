@@ -1,4 +1,4 @@
-// $Id$
+// $Id: TOSBoot_platform.h,v 1.2 2010-06-29 22:07:51 scipio Exp $
 
 /*
  * Copyright (c) 2000-2005 The Regents of the University  of California.  

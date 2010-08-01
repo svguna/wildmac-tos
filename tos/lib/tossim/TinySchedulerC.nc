@@ -37,7 +37,7 @@
  * @date   Nov 22 2005
  */
 
-// $Id$
+// $Id: TinySchedulerC.nc,v 1.5 2010-06-29 22:07:51 scipio Exp $
 
 configuration TinySchedulerC {
   provides interface Scheduler;

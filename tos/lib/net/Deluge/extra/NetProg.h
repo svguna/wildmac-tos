@@ -1,4 +1,4 @@
-// $Id$
+// $Id: NetProg.h,v 1.4 2010-06-29 22:07:47 scipio Exp $
 
 /*
  *

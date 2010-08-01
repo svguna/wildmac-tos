@@ -34,7 +34,7 @@
  * CC2420 radio connected to a TI MSP430 processor.
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.3 $ $Date: 2010-01-20 18:17:32 $
  */
 /**
  * Ported to the SHIMMER platform. 

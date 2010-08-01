@@ -1,7 +1,7 @@
 #include <Timer.h>
 #include <TreeRouting.h>
 #include <CollectionDebugMsg.h>
-/* $Id$ */
+/* $Id: CtpRoutingEngineP.nc,v 1.25 2010-06-29 22:07:49 scipio Exp $ */
 /*
  * Copyright (c) 2005 The Regents of the University  of California.  
  * All rights reserved.
@@ -100,7 +100,7 @@
  *  @author Philip Levis (added trickle-like updates)
  *  Acknowledgment: based on MintRoute, MultiHopLQI, BVR tree construction, Berkeley's MTree
  *                           
- *  @date   $Date$
+ *  @date   $Date: 2010-06-29 22:07:49 $
  *  @see Net2-WG
  */
 

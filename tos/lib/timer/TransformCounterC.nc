@@ -1,4 +1,4 @@
-//$Id$
+//$Id: TransformCounterC.nc,v 1.6 2010-06-29 22:07:50 scipio Exp $
 
 /* Copyright (c) 2000-2003 The Regents of the University of California.  
  * All rights reserved.

@@ -40,7 +40,7 @@
  * @date   Nov 22 2005
  */
 
-// $Id$
+// $Id: sim_log.h,v 1.5 2010-06-29 22:07:51 scipio Exp $
 
 
 #ifndef SIM_LOG_H_INCLUDED

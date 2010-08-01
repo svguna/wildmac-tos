@@ -27,8 +27,8 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * - Revision -------------------------------------------------------------
- * $Revision$
- * $Date$
+ * $Revision: 1.2 $
+ * $Date: 2010-01-05 17:12:56 $
  * @author: Jasper Buesch <buesch@tkn.tu-berlin.de>
  * ========================================================================
  */

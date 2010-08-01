@@ -10,8 +10,8 @@ The Link Estimation Exchange Protocol (LEEP)
 :Author: Omprakash Gnawali
 
 :Draft-Created: 05-Feb-2006
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.12 $
+:Draft-Modified: $Date: 2009-02-08 19:54:16 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

@@ -1,4 +1,4 @@
-/// $Id$
+/// $Id: M16c62pAdcSingle.nc,v 1.2 2010-06-29 22:07:45 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 Crossbow Technology, Inc.  All rights reserved.

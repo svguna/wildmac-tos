@@ -1,4 +1,4 @@
-// $Id$
+// $Id: HplCC1000InitP.nc,v 1.6 2010-06-29 22:07:52 scipio Exp $
 /*
  * Copyright (c) 2006 ETH Zurich.  
  * Copyright (c) 2004-2005 The Regents of the University  of California.  

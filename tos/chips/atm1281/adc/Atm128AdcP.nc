@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: Atm128AdcP.nc,v 1.3 2010-06-29 22:07:43 scipio Exp $
  *
  * Copyright (c) 2000-2003 The Regents of the University of California.
  * Copyright (c) 2002-2005 Intel Corporation.

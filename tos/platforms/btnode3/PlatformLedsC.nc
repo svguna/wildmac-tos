@@ -1,4 +1,4 @@
-// $Id$
+// $Id: PlatformLedsC.nc,v 1.6 2010-06-29 22:07:52 scipio Exp $
 
 /**
  * Copyright (c) 2006-2007 ETH Zurich.  

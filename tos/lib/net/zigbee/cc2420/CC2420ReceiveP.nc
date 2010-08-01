@@ -33,7 +33,7 @@
  * @author Jonathan Hui <jhui@archrock.com>
  * @author David Moss
  * @author Jung Il Choi
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2009-09-18 16:35:40 $
  */
  
 #include "printfUART.h"

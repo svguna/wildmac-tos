@@ -39,7 +39,7 @@
  * @date   July 15 2007
  */
 
-// $Id$
+// $Id: sim_serial_packet.c,v 1.2 2010-06-29 22:07:51 scipio Exp $
 
 #include <sim_serial_packet.h>
 #include <message.h>

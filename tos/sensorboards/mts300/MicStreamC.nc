@@ -32,7 +32,7 @@
  /*
  *  @author Hu Siquan <husq@xbow.com>
  *
- *  $Id$
+ *  $Id: MicStreamC.nc,v 1.3 2010-06-29 22:07:56 scipio Exp $
  */
 
 #include "mts300.h"

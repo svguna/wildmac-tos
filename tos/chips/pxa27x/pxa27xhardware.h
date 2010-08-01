@@ -1,4 +1,4 @@
-// $Id$
+// $Id: pxa27xhardware.h,v 1.8 2010-06-29 22:07:45 scipio Exp $
 
 /*
  *  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.  By

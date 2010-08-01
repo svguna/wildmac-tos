@@ -40,7 +40,7 @@
  * See TEP118 - Dissemination for details.
  * 
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  */
 
 configuration DisseminationC {

@@ -65,7 +65,7 @@
  * @author Ben Greenstein <ben@cs.ucla.edu>
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Joe Polastre <info@moteiv.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.5 $ $Date: 2010-06-29 22:07:45 $
  */
 
 #include "Msp430Dma.h"

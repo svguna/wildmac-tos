@@ -1,4 +1,4 @@
-// $Id$
+// $Id: hardware.h,v 1.5 2010-06-29 22:07:50 scipio Exp $
 
 /*
  * Copyright (c) 2000-2003 The Regents of the University  of California.  
@@ -78,7 +78,7 @@
  */
 /*
  *
- * $Id$
+ * $Id: hardware.h,v 1.5 2010-06-29 22:07:50 scipio Exp $
  *
  */
 

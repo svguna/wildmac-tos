@@ -1,4 +1,4 @@
-//$Id$
+//$Id: ReceiveBytePacket.nc,v 1.5 2010-06-29 22:07:50 scipio Exp $
 
 /* Copyright (c) 2000-2005 The Regents of the University of California.  
  * All rights reserved.

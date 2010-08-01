@@ -1,4 +1,4 @@
-// $Id$
+// $Id: DisseminationValue.nc,v 1.6 2010-06-29 22:07:47 scipio Exp $
 /*
  * Copyright (c) 2006 Stanford University. All rights reserved.
  *

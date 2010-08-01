@@ -32,7 +32,7 @@
 /**
  * @author Alec Woo <awoo@archrock.com>
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2010-06-16 21:45:58 $
  */
 
 configuration Atm128Uart1C {

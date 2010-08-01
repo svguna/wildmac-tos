@@ -37,7 +37,7 @@
  * of the data payload.
  *
  * @author Philip Levis
- * @version $Revision$ $Date$
+ * @version $Revision: 1.22 $ $Date: 2010-06-29 22:07:44 $
  */
  
 #include "CC2420.h"

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Atm1281AlarmAsyncP.nc,v 1.3 2010-06-29 22:07:43 scipio Exp $
 /*
  * Copyright (c) 2007 Intel Corporation
  * All rights reserved.

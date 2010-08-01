@@ -37,7 +37,7 @@
  * acquire the Resource before using it.
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-15 21:19:52 $
  */
 
 configuration HalSensirionSht11C {

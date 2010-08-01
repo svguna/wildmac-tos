@@ -35,7 +35,7 @@
  *
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2009-03-04 18:31:06 $
  */
 
 interface CC2420Receive {

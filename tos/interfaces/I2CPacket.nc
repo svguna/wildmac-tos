@@ -1,4 +1,4 @@
-// $Id$
+// $Id: I2CPacket.nc,v 1.7 2010-06-29 22:07:46 scipio Exp $
 /*
  * Copyright (c) 2000-2005 The Regents of the University  of California.
  * All rights reserved.
@@ -51,7 +51,7 @@
  * @author Phil Buonadonna <pbuonadonna@archrock.com>
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Phil Levis <pal@cs.stanford.edu>
- * Revision:  $Revision$
+ * Revision:  $Revision: 1.7 $
  */
 
 #include <I2C.h>

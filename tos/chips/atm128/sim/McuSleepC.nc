@@ -35,7 +35,7 @@
  * for the Atmega128. It currently does nothing.
  *
  * <pre>
- *  $Id$
+ *  $Id: McuSleepC.nc,v 1.6 2010-06-29 22:07:43 scipio Exp $
  * </pre>
  *
  * @author Philip Levis

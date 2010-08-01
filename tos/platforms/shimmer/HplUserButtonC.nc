@@ -33,7 +33,7 @@
  * Implementation of the user button for the telos platform
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  * (not much to) port to shimmer
  * @author Steve Ayer
  * @date February, 2010

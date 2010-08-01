@@ -1,4 +1,4 @@
-// $Id$
+// $Id: TinySchedulerC.nc,v 1.5 2010-06-29 22:07:56 scipio Exp $
 /*
  * Copyright (c) 2005 The Regents of the University  of California.
  * All rights reserved.

@@ -1,5 +1,5 @@
 /*
- *   $Id$
+ *   $Id: gram.y,v 1.2 2009-08-09 23:36:05 sdhsdh Exp $
  *
  *   Authors:
  *    Pedro Roque		<roque@di.fc.ul.pt>

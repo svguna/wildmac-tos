@@ -37,7 +37,7 @@
  * @date   Dec 10 2005
  */
 
-// $Id$
+// $Id: sim_csma.h,v 1.6 2010-06-29 22:07:51 scipio Exp $
 
 #ifndef SIM_CSMA_H_INCLUDED
 #define SIM_CSMA_H_INCLUDED

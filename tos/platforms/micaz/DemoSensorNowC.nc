@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: DemoSensorNowC.nc,v 1.5 2007-05-22 20:59:01 idgay Exp $
  * Copyright (c) 2006 Intel Corporation
  * All rights reserved.
  *

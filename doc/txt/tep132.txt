@@ -10,8 +10,8 @@ Packet timestamping
 :Author: Miklos Maroti, Janos Sallai
 
 :Draft-Created: 15-May-2008
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.1 $
+:Draft-Modified: $Date: 2008-06-17 15:06:33 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

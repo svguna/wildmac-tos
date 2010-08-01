@@ -33,7 +33,7 @@
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Vlado Handziski <handzisk@tkn.tu-berlin.de>
  * @author Eric B. Decker <cire831@gmail.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.7 $ $Date: 2008-06-04 05:31:15 $
  */
 
 #include<Timer.h>

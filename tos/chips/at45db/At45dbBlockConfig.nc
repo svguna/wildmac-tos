@@ -1,4 +1,4 @@
-// $Id$
+// $Id: At45dbBlockConfig.nc,v 1.5 2008-06-11 00:46:23 razvanm Exp $
 
 /*
  * Copyright (c) 2002-2006 Intel Corporation

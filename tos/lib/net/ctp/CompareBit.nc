@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: CompareBit.nc,v 1.4 2010-06-29 22:07:49 scipio Exp $ */
 /*
  * Copyright (c) 2006 University of Southern California.
  * All rights reserved.
@@ -41,7 +41,7 @@
  * will be better than a path through at least one current neighbor.
  @ author Omprakash Gnawali
  @ Created: September 16, 2006
- @date   $Date$
+ @date   $Date: 2010-06-29 22:07:49 $
  */
 
 interface CompareBit {

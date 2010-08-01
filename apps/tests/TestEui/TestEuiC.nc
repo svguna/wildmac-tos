@@ -1,4 +1,4 @@
-// $Id$
+// $Id: TestEuiC.nc,v 1.2 2010-06-29 22:07:23 scipio Exp $
 /*
  * Copyright (c) 2007, Vanderbilt University
  * All rights reserved.

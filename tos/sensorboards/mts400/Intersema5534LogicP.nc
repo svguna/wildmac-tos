@@ -41,7 +41,7 @@
  *
  * Authors:		Joe Polastre
  *
- * $Id$
+ * $Id: Intersema5534LogicP.nc,v 1.2 2010-06-29 22:07:56 scipio Exp $
  */
 
 

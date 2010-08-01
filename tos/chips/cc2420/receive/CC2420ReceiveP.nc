@@ -35,7 +35,7 @@
  * @author Jung Il Choi
  * @author JeongGil Ko
  * @author Razvan Musaloiu-E
- * @version $Revision$ $Date$
+ * @version $Revision: 1.22 $ $Date: 2009-10-28 21:09:52 $
  */
 
 #include "IEEE802154.h"

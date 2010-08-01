@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: LinkEstimator.h,v 1.5 2010-06-29 22:07:49 scipio Exp $ */
 /*
  * Copyright (c) 2006 University of Southern California.
  * All rights reserved.

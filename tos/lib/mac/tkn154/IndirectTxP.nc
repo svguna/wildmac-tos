@@ -27,8 +27,8 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * - Revision -------------------------------------------------------------
- * $Revision$
- * $Date$
+ * $Revision: 1.10 $
+ * $Date: 2010-02-04 16:31:15 $
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
  * @author: Jasper Buesch <buesch@tkn.tu-berlin.de>
  * ========================================================================

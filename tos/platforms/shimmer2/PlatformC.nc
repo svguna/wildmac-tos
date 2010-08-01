@@ -31,7 +31,7 @@
 
 /**
  * @author Joe Polastre and Cory Sharp
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:54 $
  */
 #include "hardware.h"
 

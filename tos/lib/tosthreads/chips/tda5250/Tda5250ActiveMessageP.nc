@@ -1,4 +1,4 @@
-// -*- mode:c++; indent-tabs-mode: nil -*- $Id$
+// -*- mode:c++; indent-tabs-mode: nil -*- $Id: Tda5250ActiveMessageP.nc,v 1.2 2010-06-29 22:07:51 scipio Exp $
 /* 
  * Copyright (c) 2004-2005 The Regents of the University  of California.
  * All rights reserved.
@@ -41,7 +41,7 @@
 /*
  *
  * Authors:             Philip Levis
- * Date last modified:  $Id$
+ * Date last modified:  $Id: Tda5250ActiveMessageP.nc,v 1.2 2010-06-29 22:07:51 scipio Exp $
  *
  */
 

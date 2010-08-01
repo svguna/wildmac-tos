@@ -34,7 +34,7 @@
  * temperature/humidity sensor. 
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.4 $ $Date: 2006-12-12 18:23:12 $
  */
 
 interface SensirionSht11 {

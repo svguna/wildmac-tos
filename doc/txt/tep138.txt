@@ -10,8 +10,8 @@ Source Routing
 :Author: Chieh-Jan (Mike) Liang, Doug Carlson, Maria A. Kazandjieva, and Omprakash Gnawali
 
 :Draft-Created: 28-May-2010
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.2 $
+:Draft-Modified: $Date: 2010-06-09 19:20:28 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

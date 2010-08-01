@@ -41,7 +41,7 @@
  *
  * Authors:		Joe Polastre
  *
- * $Id$
+ * $Id: Calibration.nc,v 1.3 2010-06-29 22:07:56 scipio Exp $
  */
 
 interface Calibration {

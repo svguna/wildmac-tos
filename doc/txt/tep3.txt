@@ -10,8 +10,8 @@ Coding Standard
 :Author: Ion Yannopoulos, David Gay
 
 :Draft-Created: 31-Dec-2004
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.6 $
+:Draft-Modified: $Date: 2009-12-16 23:28:49 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: MotePlatformP.nc,v 1.5 2007-07-04 22:02:45 beutel Exp $
  * Copyright (c) 2006 ETH Zurich.
  * Copyright (c) 2005 Intel Corporation
  * All rights reserved.

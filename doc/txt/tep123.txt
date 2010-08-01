@@ -10,8 +10,8 @@ The Collection Tree Protocol (CTP)
 :Author: Rodrigo Fonseca, Omprakash Gnawali, Kyle Jamieson, Sukun Kim, Philip Levis, and Alec Woo
 
 :Draft-Created: 3-Aug-2006
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.15 $
+:Draft-Modified: $Date: 2009-01-16 19:50:47 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

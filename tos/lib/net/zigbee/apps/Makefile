@@ -7,7 +7,7 @@
 # Date:		August 18, 2005
 #
 ######################################################################
-# $Id$
+# $Id: Makefile,v 1.1 2008-02-11 17:49:59 a_cunha Exp $
 
 # MAKECMDGOALS is the way to get the arguments passed into a Makefile ...
 TARGET=$(MAKECMDGOALS)

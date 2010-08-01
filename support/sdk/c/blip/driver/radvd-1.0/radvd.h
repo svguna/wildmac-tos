@@ -1,5 +1,5 @@
 /*
- *   $Id$
+ *   $Id: radvd.h,v 1.3 2009-08-20 17:03:05 sdhsdh Exp $
  *
  *   Authors:
  *    Pedro Roque		<roque@di.fc.ul.pt>

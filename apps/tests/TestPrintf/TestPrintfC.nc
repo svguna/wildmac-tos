@@ -38,8 +38,8 @@
  * data actually get sent out over the serial line.
  *
  * @author Kevin Klues (klueska@cs.wustl.edu)
- * @version $Revision$
- * @date $Date$
+ * @version $Revision: 1.11 $
+ * @date $Date: 2010-06-29 22:07:25 $
  */
 
 #include "printf.h"

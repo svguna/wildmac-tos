@@ -1,5 +1,5 @@
 /*
- *   $Id$
+ *   $Id: send.c,v 1.4 2009-08-20 17:03:05 sdhsdh Exp $
  *
  *   Authors:
  *    Pedro Roque		<roque@di.fc.ul.pt>

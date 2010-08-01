@@ -65,7 +65,7 @@
  * @author Ben Greenstein <ben@cs.ucla.edu>
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Mark Hays
- * $Revision$ $Date$
+ * $Revision: 1.6 $ $Date: 2010-06-29 22:07:45 $
  */
 
 #ifndef MSP430DMA_H

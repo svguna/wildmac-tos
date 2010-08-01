@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Atm128Adc.h,v 1.6 2010-06-29 22:07:43 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 Crossbow Technology, Inc.  All rights reserved.

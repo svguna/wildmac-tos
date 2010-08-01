@@ -30,7 +30,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-//$Id$
+//$Id: SerialDevConfC.nc,v 1.3 2010-06-29 22:07:49 scipio Exp $
 
 /* Copyright (c) 2000-2005 The Regents of the University of California.  
  * All rights reserved.

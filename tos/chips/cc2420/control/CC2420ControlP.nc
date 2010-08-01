@@ -33,7 +33,7 @@
  * @author Jonathan Hui <jhui@archrock.com>
  * @author David Moss
  * @author Urs Hunkeler (ReadRssi implementation)
- * @version $Revision$ $Date$
+ * @version $Revision: 1.8 $ $Date: 2009-10-28 16:18:44 $
  */
 
 #include "Timer.h"

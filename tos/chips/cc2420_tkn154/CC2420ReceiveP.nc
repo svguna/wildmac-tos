@@ -34,7 +34,7 @@
  * @author David Moss
  * @author Jung Il Choi
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.4 $ $Date: 2009-05-05 16:56:49 $
  */
 module CC2420ReceiveP {
 

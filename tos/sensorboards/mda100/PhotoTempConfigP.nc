@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: PhotoTempConfigP.nc,v 1.1 2007-08-21 04:44:09 klueska Exp $
  * Copyright (c) 2007 Intel Corporation
  * All rights reserved.
  *

@@ -34,7 +34,7 @@
  * access device represented by a SID. See TEP109 and TEP114 for details.
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  */
 
 interface DeviceMetadata {

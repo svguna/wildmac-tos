@@ -1,4 +1,4 @@
-// $Id$
+// $Id: PlatformLedsC.nc,v 1.2 2010-06-29 22:07:54 scipio Exp $
 
 /* Copyright (c) 2000-2005 The Regents of the University of California.  
  * All rights reserved.
@@ -33,7 +33,7 @@
 
 /**
  * @author Joe Polastre
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:54 $
  */
 
 #include "hardware.h"

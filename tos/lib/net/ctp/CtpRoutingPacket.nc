@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: CtpRoutingPacket.nc,v 1.6 2009-09-21 02:19:42 gnawali Exp $ */
 /*
  * Copyright (c) 2006 Stanford University.
  * All rights reserved.
@@ -35,7 +35,7 @@
  *
  *  @author Philip Levis
  *  @author Kyle Jamieson
- *  @date   $Date$
+ *  @date   $Date: 2009-09-21 02:19:42 $
  */
 
 #include <AM.h>

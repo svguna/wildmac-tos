@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# $Id$ 
+# $Id: tos-mviz,v 1.4 2006-12-12 18:23:02 vlahan Exp $ 
 #
 
 printenv CLASSPATH

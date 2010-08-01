@@ -4,7 +4,7 @@
 # primarily used by other tools such as checkers, tests and continuous 
 # integration.
 #
-#$Id$
+#$Id: tos-write-buildinfo.in,v 1.6 2007-09-03 14:02:48 beutel Exp $
 #@author Jan Beutel <j.beutel@ieee.org>
 #
 use strict;

@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: RandRWC.nc,v 1.8 2010-02-10 19:13:06 scipio Exp $
  * Copyright (c) 2005 Intel Corporation
  * All rights reserved.
  *

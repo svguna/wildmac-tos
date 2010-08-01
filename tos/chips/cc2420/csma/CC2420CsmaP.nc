@@ -31,7 +31,7 @@
 
 /**
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.12 $ $Date: 2009-09-17 23:36:36 $
  */
 
 module CC2420CsmaP @safe() {

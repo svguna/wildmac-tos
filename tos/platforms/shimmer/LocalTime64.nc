@@ -1,4 +1,4 @@
-//$Id$
+//$Id: LocalTime64.nc,v 1.2 2010-06-29 22:07:54 scipio Exp $
 
 /* Copyright (c) 2000-2003 The Regents of the University of California.  
  * All rights reserved.

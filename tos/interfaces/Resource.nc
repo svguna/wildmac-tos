@@ -70,8 +70,8 @@
  * predefined arbitration policy.
  *
  * @author Kevin Klues (klueska@cs.wustl.edu)
- * @version $Revision$
- * @date $Date$
+ * @version $Revision: 1.6 $
+ * @date $Date: 2010-06-29 22:07:46 $
  */
 
 interface Resource {

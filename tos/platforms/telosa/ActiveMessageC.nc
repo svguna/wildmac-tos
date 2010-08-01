@@ -1,4 +1,4 @@
-// $Id$
+// $Id: ActiveMessageC.nc,v 1.9 2010-06-29 22:07:55 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 The Regents of the University  of California.  
@@ -42,7 +42,7 @@
 /*
  *
  * Authors:		Philip Levis
- * Date last modified:  $Id$
+ * Date last modified:  $Id: ActiveMessageC.nc,v 1.9 2010-06-29 22:07:55 scipio Exp $
  *
  */
 
@@ -52,7 +52,7 @@
  * around the CC2420 Active Message layer.
  *
  * @author Philip Levis
- * @version $Revision$ $Date$
+ * @version $Revision: 1.9 $ $Date: 2010-06-29 22:07:55 $
  */
 #include "Timer.h"
 

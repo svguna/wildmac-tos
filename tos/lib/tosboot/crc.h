@@ -1,4 +1,4 @@
-// $Id$
+// $Id: crc.h,v 1.3 2010-06-29 22:07:50 scipio Exp $
 
 /*
  * Copyright (c) 2000-2003 The Regents of the University  of California.  

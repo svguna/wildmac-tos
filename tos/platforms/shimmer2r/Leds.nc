@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Leds.nc,v 1.2 2010-06-29 22:07:55 scipio Exp $
 
 /*
  * Copyright (c) 2005-2005 The Regents of the University  of California.  

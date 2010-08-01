@@ -48,7 +48,7 @@ except ImportError, e:
     print "Please install PySerial first."
     sys.exit(1)
 
-__version__ = "$Id$"
+__version__ = "$Id: tos.py,v 1.12 2010-06-29 22:07:42 scipio Exp $"
 
 __all__ = ['Serial', 'AM',
            'Packet', 'RawPacket',

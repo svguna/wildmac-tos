@@ -27,8 +27,8 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * - Revision -------------------------------------------------------------
- * $Revision$
- * $Date$
+ * $Revision: 1.4 $
+ * $Date: 2009-03-04 18:31:04 $
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
  * ========================================================================
  */
@@ -39,7 +39,7 @@
  *
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Jan-Hinrich Hauer
- * @version $Revision$ $Date$
+ * @version $Revision: 1.4 $ $Date: 2009-03-04 18:31:04 $
  */
 
 #include "CC2420.h"

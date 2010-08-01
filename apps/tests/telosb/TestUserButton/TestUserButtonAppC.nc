@@ -35,7 +35,7 @@
  * and turns green when the button is pressed.
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  */
 
 configuration TestUserButtonAppC {}

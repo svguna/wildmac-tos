@@ -36,7 +36,7 @@
  * @date   November 22 2005
  */
 
-// $Id$
+// $Id: PlatformC.nc,v 1.6 2010-06-29 22:07:51 scipio Exp $
 
 module PlatformC {
   provides interface Init;

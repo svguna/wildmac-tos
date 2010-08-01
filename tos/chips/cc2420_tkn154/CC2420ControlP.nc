@@ -34,7 +34,7 @@
  * @author David Moss
  * @author Urs Hunkeler (ReadRssi implementation)
  * @author Jan Hauer <hauer@tkn.tu-berlin.de>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.5 $ $Date: 2009-05-05 16:56:49 $
  */
 
 #include "Timer.h"

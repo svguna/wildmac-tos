@@ -1,4 +1,4 @@
-// $Id$
+// $Id: DipTrickleMilliP.nc,v 1.2 2010-06-29 22:07:49 scipio Exp $
 /*
  * Copyright (c) 2006 Stanford University. All rights reserved.
  *

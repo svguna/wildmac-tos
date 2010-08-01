@@ -33,7 +33,7 @@
  * Generic layer to translate a GIO into a toggle switch
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  */
 
 #include <UserButton.h>

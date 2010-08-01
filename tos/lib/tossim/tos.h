@@ -37,7 +37,7 @@
  * @date   Nov 22 2005
  */
 
-// $Id$
+// $Id: tos.h,v 1.6 2010-06-29 22:07:51 scipio Exp $
 
 #ifndef TOS_H_INCLUDED
 #define TOS_H_INCLUDED

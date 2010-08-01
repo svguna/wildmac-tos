@@ -40,7 +40,7 @@
  * @author Philip Levis <pal@cs.stanford.edu>
  */
 
-// $Id$/// $Id: HplAtm128Timer2C.nc,
+// $Id: HplAtm128TimerNotify.nc,v 1.5 2010-06-29 22:07:43 scipio Exp $/// $Id: HplAtm128Timer2C.nc,
 
 
 interface HplAtm128TimerNotify {

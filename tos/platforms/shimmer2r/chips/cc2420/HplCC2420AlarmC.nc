@@ -34,7 +34,7 @@
  * connected to a TI MSP430 processor.
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2010-06-10 18:22:02 $
  */
 
 generic configuration HplCC2420AlarmC() {

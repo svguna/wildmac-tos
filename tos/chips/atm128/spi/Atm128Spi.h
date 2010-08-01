@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Atm128Spi.h,v 1.5 2010-06-29 22:07:43 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 Crossbow Technology, Inc.  All rights reserved.

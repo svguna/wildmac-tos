@@ -10,8 +10,8 @@ CC2420 Radio Stack
 :Author: David Moss, Jonathan Hui, Philip Levis, and Jung Il Choi
 
 :Draft-Created: 5-Mar-2007
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.5 $
+:Draft-Modified: $Date: 2007-06-14 18:51:58 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

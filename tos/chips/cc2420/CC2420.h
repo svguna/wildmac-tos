@@ -30,7 +30,7 @@
  *
  * @author Jonathan Hui <jhui@archrock.com>
  * @author David Moss
- * @version $Revision$ $Date$
+ * @version $Revision: 1.19 $ $Date: 2009-09-17 23:36:36 $
  */
 
 #ifndef __CC2420_H__

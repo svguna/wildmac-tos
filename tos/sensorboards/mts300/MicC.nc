@@ -32,7 +32,7 @@
  /*
  *  @author Hu Siquan <husq@xbow.com>
  *
- *  $Id$
+ *  $Id: MicC.nc,v 1.4 2010-06-29 22:07:56 scipio Exp $
  */
 
 #include "mts300.h"

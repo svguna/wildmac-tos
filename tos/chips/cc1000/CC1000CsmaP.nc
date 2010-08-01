@@ -1,4 +1,4 @@
-// $Id$
+// $Id: CC1000CsmaP.nc,v 1.11 2010-06-29 22:07:44 scipio Exp $
 
 /*
  * Copyright (c) 2000-2005 The Regents of the University  of California.  

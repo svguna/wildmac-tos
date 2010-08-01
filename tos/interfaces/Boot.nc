@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Boot.nc,v 1.6 2010-06-29 22:07:46 scipio Exp $
 /*
  * Copyright (c) 2004-5 The Regents of the University  of California.  
  * All rights reserved.

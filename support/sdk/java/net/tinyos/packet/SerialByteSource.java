@@ -1,4 +1,4 @@
-// $Id$
+// $Id: SerialByteSource.java,v 1.7 2010-06-29 22:07:41 scipio Exp $
 
 package net.tinyos.packet;
 

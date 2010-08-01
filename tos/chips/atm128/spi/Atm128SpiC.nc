@@ -1,4 +1,4 @@
-/// $Id$
+/// $Id: Atm128SpiC.nc,v 1.7 2010-06-29 22:07:43 scipio Exp $
 
 /*
  * Copyright (c) 2005 Stanford University. All rights reserved.
@@ -67,7 +67,7 @@
  * The HAL of the SPI bus on the atm128.
  *
  * <pre>
- *  $Id$
+ *  $Id: Atm128SpiC.nc,v 1.7 2010-06-29 22:07:43 scipio Exp $
  * </pre>
  *
  *

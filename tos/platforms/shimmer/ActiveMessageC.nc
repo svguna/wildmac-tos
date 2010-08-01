@@ -1,4 +1,4 @@
-// $Id$
+// $Id: ActiveMessageC.nc,v 1.7 2010-06-29 22:07:54 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 The Regents of the University  of California.  
@@ -42,7 +42,7 @@
 /*
  *
  * Authors:		Philip Levis
- * Date last modified:  $Id$
+ * Date last modified:  $Id: ActiveMessageC.nc,v 1.7 2010-06-29 22:07:54 scipio Exp $
  *
  */
 /**

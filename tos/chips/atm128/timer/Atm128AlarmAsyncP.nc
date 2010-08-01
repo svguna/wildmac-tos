@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Atm128AlarmAsyncP.nc,v 1.8 2008-06-26 03:38:27 regehr Exp $
 /*
  * Copyright (c) 2007 Intel Corporation
  * All rights reserved.

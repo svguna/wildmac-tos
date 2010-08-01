@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: Atm128AdcP.nc,v 1.8 2010-06-29 22:07:43 scipio Exp $
  * Copyright (c) 2000-2003 The Regents of the University  of California.  
  * All rights reserved.
  *

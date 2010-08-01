@@ -1,4 +1,4 @@
-// $Id$
+// $Id: MagReadStreamP.nc,v 1.4 2010-06-29 22:07:56 scipio Exp $
 
 /*
  * Copyright (c) 2000-2003 The Regents of the University  of California.

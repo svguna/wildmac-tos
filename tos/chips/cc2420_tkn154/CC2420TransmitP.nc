@@ -42,7 +42,7 @@
  * Note: on TelosB there seems to be a problem if BackoffAlarm
  * is virtualized - i.e. BackoffAlarm should be a dedicated Alarm.
  *
- * @version $Revision$ $Date$
+ * @version $Revision: 1.4 $ $Date: 2009-03-04 18:31:11 $
  */
 
 #include "CC2420.h"

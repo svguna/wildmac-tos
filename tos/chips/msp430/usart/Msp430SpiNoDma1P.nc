@@ -65,7 +65,7 @@
 
 /**
  * @author Jonathan Hui <jhui@archedrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.6 $ $Date: 2010-06-29 22:07:45 $
  */
 
 configuration Msp430SpiNoDma1P {

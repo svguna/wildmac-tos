@@ -1,4 +1,4 @@
-// $Id$
+// $Id: MicaBusC.nc,v 1.7 2010-06-15 21:24:16 mmaroti Exp $
 /*
  * Copyright (c) 2005-2006 Intel Corporation
  * All rights reserved.

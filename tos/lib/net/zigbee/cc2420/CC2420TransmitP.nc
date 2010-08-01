@@ -33,7 +33,7 @@
  * @author Jonathan Hui <jhui@archrock.com>
  * @author David Moss
  * @author Jung Il Choi Initial SACK implementation
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2008-02-11 17:41:25 $
  */
 
 module CC2420TransmitP {

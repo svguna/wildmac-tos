@@ -1,4 +1,4 @@
-//  $Id$
+//  $Id: atm128hardware.h,v 1.12 2010-06-29 22:07:43 scipio Exp $
 
 /*                                                                     
  *  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.  By

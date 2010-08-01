@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: CtpInfo.nc,v 1.8 2010-06-29 22:07:49 scipio Exp $ */
 /*
  * Copyright (c) 2005 The Regents of the University  of California.  
  * All rights reserved.
@@ -35,7 +35,7 @@
 /*
  *  @author Rodrigo Fonseca
  *  @author Philip Levis
- *  @date   $Date$
+ *  @date   $Date: 2010-06-29 22:07:49 $
  *  @see Net2-WG
  */
 

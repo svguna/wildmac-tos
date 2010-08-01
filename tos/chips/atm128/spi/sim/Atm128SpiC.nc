@@ -34,7 +34,7 @@
  * the platform-specific implementation of the device end point.
  *
  * <pre>
- *  $Id$
+ *  $Id: Atm128SpiC.nc,v 1.5 2010-06-29 22:07:43 scipio Exp $
  * </pre>
  *
  *

@@ -29,7 +29,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  $Id$
+ *  $Id: Atm128GpioCaptureC.nc,v 1.6 2010-06-29 22:07:43 scipio Exp $
  */
 
 /**

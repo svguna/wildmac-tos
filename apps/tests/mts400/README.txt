@@ -23,5 +23,5 @@ The Mts400Tester.java is the example java code.
 Known bugs/limitations:
 None.
 
-$Id$
+$Id: README.txt,v 1.1 2010-06-21 22:56:11 mmaroti Exp $
 

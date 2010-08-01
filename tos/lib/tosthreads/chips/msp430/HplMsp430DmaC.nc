@@ -64,7 +64,7 @@
 /**
  * @author Ben Greenstein <ben@cs.ucla.edu>
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:51 $
  */
 
 configuration HplMsp430DmaC {

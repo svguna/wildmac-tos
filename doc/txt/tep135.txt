@@ -10,8 +10,8 @@ Active Message ID Allocation in TinyOS 2.1
 :Author: Omprakash Gnawali
 
 :Draft-Created: 19-June-2008
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.5 $
+:Draft-Modified: $Date: 2009-12-08 20:43:46 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

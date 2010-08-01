@@ -1,4 +1,4 @@
-// $Id$
+// $Id: SpiPacket.nc,v 1.8 2010-06-29 22:07:46 scipio Exp $
 
 /*                                                                      
  * Copyright (c) 2000-2005 The Regents of the University  of California.
@@ -49,7 +49,7 @@
  * @author Philip Levis
  * @author Jonathan Hui
  * @author Joe Polastre
- * Revision:  $Revision$
+ * Revision:  $Revision: 1.8 $
  */
 interface SpiPacket {
 

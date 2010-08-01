@@ -38,7 +38,7 @@
 /*
  *
  * Authors: Phil Buonadonna,David Gay
- * Date last modified:  $Revision$
+ * Date last modified:  $Revision: 1.6 $
  *
  */
 			

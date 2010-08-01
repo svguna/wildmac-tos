@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: mts300.h,v 1.6 2010-06-29 22:07:56 scipio Exp $ */
 /*
  * Copyright (c) 2005-2006 Crossbow Technology, Inc.  All rights reserved.
  *
@@ -32,7 +32,7 @@
 /**
  * 
  * @author Hu Siquan <husq@xbow.com>
- * Revision: $Revision$
+ * Revision: $Revision: 1.6 $
  *
  */
 

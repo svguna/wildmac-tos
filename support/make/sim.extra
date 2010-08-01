@@ -1,5 +1,5 @@
 #-*-Makefile-*- vim:syntax=make
-#$Id$
+#$Id: sim.extra,v 1.14 2009-11-14 02:14:18 razvanm Exp $
 
 export GCC=gcc
 GPP=g++

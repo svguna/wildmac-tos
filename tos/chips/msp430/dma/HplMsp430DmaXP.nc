@@ -66,7 +66,7 @@
  * @author Jonathan Hui <jhui@archrock.com>
  * @author Joe Polastre <info@moteiv.com>
  * @author Mark Hays
- * @version $Revision$ $Date$
+ * @version $Revision: 1.7 $ $Date: 2010-06-29 22:07:45 $
  */
 
 generic module HplMsp430DmaXP( uint16_t DMAxCTL_addr,

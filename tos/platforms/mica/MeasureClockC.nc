@@ -1,4 +1,4 @@
-// $Id$
+// $Id: MeasureClockC.nc,v 1.6 2010-03-27 21:29:20 mmaroti Exp $
 /*
  * Copyright (c) 2006 Intel Corporation
  * All rights reserved.

@@ -39,7 +39,7 @@
  *
  * @author Philip Levis
  * @author David Moss
- * @version $Revision$ $Date$
+ * @version $Revision: 1.16 $ $Date: 2010-06-29 22:07:44 $
  */
 
 #include "CC2420.h"

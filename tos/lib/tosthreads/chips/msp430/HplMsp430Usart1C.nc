@@ -66,7 +66,7 @@
  *
  * @author Jonathan Hui <jhui@archedrock.com>
  * @author Joe Polastre
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:51 $
  */
 
 #include "msp430usart.h"

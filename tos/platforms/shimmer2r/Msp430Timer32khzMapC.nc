@@ -1,4 +1,4 @@
-//$Id$
+//$Id: Msp430Timer32khzMapC.nc,v 1.2 2010-06-29 22:07:55 scipio Exp $
 
 /* Copyright (c) 2000-2003 The Regents of the University of California.  
  * All rights reserved.
@@ -42,7 +42,7 @@
  * available for allocation on that platform.
  *
  * @author Cory Sharp <cssharp@eecs.berkeley.edu>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.2 $ $Date: 2010-06-29 22:07:55 $
  */
 
 configuration Msp430Timer32khzMapC

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Atm128AlarmAsyncC.nc,v 1.2 2010-06-29 22:07:43 scipio Exp $
 /*
  * Copyright (c) 2007 Intel Corporation
  * All rights reserved.

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: HplAt45db_chip.h,v 1.1 2008/08/25 16:48:47 razvanm Exp $
 
 /*
  * Copyright (c) 2000-2003 The Regents of the University  of California.  

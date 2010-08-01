@@ -37,7 +37,7 @@
  * Intel Research Berkeley, 2150 Shattuck Avenue, Suite 1300, Berkeley, CA, 
  * 94704.  Attention:  Intel License Inquiry.
  *
- * Date last modified:  $Id$
+ * Date last modified:  $Id: MainC.nc,v 1.4 2010-06-29 22:07:52 scipio Exp $
  */
 
 /**

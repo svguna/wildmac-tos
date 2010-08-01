@@ -1,4 +1,4 @@
-// $Id$
+// $Id: ActiveMessageAddressC.nc,v 1.10 2010-06-29 22:07:56 scipio Exp $
 /*
  * Copyright (c) 2004-2005 The Regents of the University  of California.  
  * All rights reserved.
@@ -38,7 +38,7 @@
  * Intel Research Berkeley, 2150 Shattuck Avenue, Suite 1300, Berkeley, CA, 
  * 94704.  Attention:  Intel License Inquiry.
  *
- * Date last modified:  $Id$
+ * Date last modified:  $Id: ActiveMessageAddressC.nc,v 1.10 2010-06-29 22:07:56 scipio Exp $
  *
  */
 

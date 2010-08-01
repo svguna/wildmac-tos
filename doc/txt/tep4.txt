@@ -10,8 +10,8 @@ Active Message ID Allocation for Network Protocols and Applications
 :Author: Omprakash Gnawali
 
 :Draft-Created: 07-May-2008
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.8 $
+:Draft-Modified: $Date: 2008-11-04 21:00:41 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

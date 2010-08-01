@@ -37,7 +37,7 @@
  * @date   Nov 22 2005
  */
 
-// $Id$
+// $Id: SimMote.nc,v 1.5 2010-06-29 22:07:51 scipio Exp $
 
 interface SimMote {
   async command long long int getEuid();

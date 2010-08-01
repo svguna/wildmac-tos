@@ -1,4 +1,4 @@
-// $Id$
+// $Id: Timer62500P.nc,v 1.2 2010-06-29 22:07:56 scipio Exp $
 /*									tab:4
  * Copyright (c) 2005 The Regents of the University  of California.  
  * All rights reserved.

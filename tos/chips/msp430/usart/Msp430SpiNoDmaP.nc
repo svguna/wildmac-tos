@@ -66,7 +66,7 @@
 /**
  * @author Jonathan Hui <jhui@archedrock.com>
  * @author Jan Hauer <hauer@tkn.tu-berlin.de> (bugfix in continueOp())
- * @version $Revision$ $Date$
+ * @version $Revision: 1.8 $ $Date: 2010-06-29 22:07:45 $
  */
 
 

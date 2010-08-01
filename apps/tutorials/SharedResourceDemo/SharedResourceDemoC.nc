@@ -58,8 +58,8 @@
  * <br>
  * 
  * @author Kevin Klues (klueska@cs.wustl.edu)
- * @version $Revision$
- * @date $Date$
+ * @version $Revision: 1.2 $
+ * @date $Date: 2010-06-29 22:07:40 $
  */
 
 module SharedResourceDemoC {

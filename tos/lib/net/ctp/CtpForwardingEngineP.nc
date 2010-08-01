@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: CtpForwardingEngineP.nc,v 1.24 2010-04-11 23:27:30 gnawali Exp $ */
 /*
  * Copyright (c) 2008-9 Stanford University.
  * All rights reserved.
@@ -98,7 +98,7 @@
  *
  *  @author Philip Levis
  *  @author Kyle Jamieson
- *  @date   $Date$
+ *  @date   $Date: 2010-04-11 23:27:30 $
  */
 
 #include <CtpForwardingEngine.h>

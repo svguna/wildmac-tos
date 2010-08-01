@@ -10,8 +10,8 @@ The TOSThreads Thread Library
 :Author: Kevin Klues, Chieh-Jan Liang, Jeongyeup Paek, Razvan Musaloiu-E, Ramesh Govindan, Andreas Terzis, Philip Levis
 
 :Draft-Created: 13-May-2008
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.1 $
+:Draft-Modified: $Date: 2008-06-12 13:02:08 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

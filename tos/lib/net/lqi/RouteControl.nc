@@ -1,4 +1,4 @@
-// $Id$
+// $Id: RouteControl.nc,v 1.5 2010-06-29 22:07:50 scipio Exp $
 
 /*
  * Copyright (c) 2007 Stanford University.
@@ -72,7 +72,7 @@
 
 /*
  * Authors:	Phil Buonadonna
- * Rev:		$Id$
+ * Rev:		$Id: RouteControl.nc,v 1.5 2010-06-29 22:07:50 scipio Exp $
  */
 
 /** 

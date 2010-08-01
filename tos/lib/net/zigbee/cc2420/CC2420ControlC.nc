@@ -33,7 +33,7 @@
  * Implementation for configuring a ChipCon CC2420 radio.
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2008-02-11 17:41:25 $
  */
 
 #include "CC2420.h"

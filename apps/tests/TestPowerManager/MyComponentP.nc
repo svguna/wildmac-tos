@@ -40,8 +40,8 @@
  * of the AsyncStdControl, StdControl, and SplitControl interfaces.
  *
  * @author Kevin Klues <klueska@cs.wustl.edu>
- * @version  $Revision$
- * @date $Date$ 
+ * @version  $Revision: 1.5 $
+ * @date $Date: 2010-06-29 22:07:25 $ 
  */
  
 module MyComponentP {

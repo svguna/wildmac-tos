@@ -41,7 +41,7 @@
  * @date   Sep 14 2007
  */
 
-// $Id$
+// $Id: MainC.nc,v 1.2 2010-06-29 22:07:51 scipio Exp $
 
 #include "hardware.h"
 

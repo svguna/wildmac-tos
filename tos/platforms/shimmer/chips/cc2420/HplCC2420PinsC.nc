@@ -34,7 +34,7 @@
  * radio connected to a TI MSP430 processor.
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2008-05-21 22:07:25 $
  */
 /**
  * Ported to the SHIMMER platform. 

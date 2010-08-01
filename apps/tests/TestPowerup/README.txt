@@ -1,4 +1,4 @@
-$Id$
+$Id: README.txt,v 1.1 2008-06-23 21:06:14 sallai Exp $
 
 README for TestPowerup
 Author/Contact: tinyos-help@millennium.berkeley.edu

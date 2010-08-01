@@ -32,8 +32,8 @@
 # @author Jonathan Hui <jhui@archedrock.com>
 # @author Kaisen Lin
 #
-# $Revision$
-# $Date$
+# $Revision: 1.7 $
+# $Date: 2009-10-28 04:19:20 $
 #
                                   
 from re import match

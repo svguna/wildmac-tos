@@ -1,4 +1,4 @@
-/* $Id$
+/* $Id: LocalTimeMilliC.nc,v 1.1 2007-05-23 21:58:08 idgay Exp $
  * Copyright (c) 2007 Intel Corporation
  * All rights reserved.
  *

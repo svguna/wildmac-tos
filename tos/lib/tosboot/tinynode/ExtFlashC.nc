@@ -1,4 +1,4 @@
-// $Id$
+// $Id: ExtFlashC.nc,v 1.2 2010-06-29 22:07:51 scipio Exp $
 
 /*
  *

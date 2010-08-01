@@ -1,4 +1,4 @@
-// $Id$
+// $Id: SpiByte.nc,v 1.6 2010-06-29 22:07:46 scipio Exp $
 
 /*                                                                      
  * Copyright (c) 2000-2005 The Regents of the University  of California.

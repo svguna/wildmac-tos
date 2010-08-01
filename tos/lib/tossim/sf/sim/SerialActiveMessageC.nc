@@ -1,4 +1,4 @@
-// $Id$
+// $Id: SerialActiveMessageC.nc,v 1.3 2010-06-22 20:50:43 scipio Exp $
 /*
  * Copyright (c) 2007 Toilers Research Group - Colorado School of Mines
  * All rights reserved.

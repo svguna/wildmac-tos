@@ -29,7 +29,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE
  *
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.7 $ $Date: 2007-07-04 00:37:14 $
  */
 
 #ifndef __IEEE802154_H__

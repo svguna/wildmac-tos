@@ -1,4 +1,4 @@
-/// $Id$
+/// $Id: HplAtm128GeneralIOSlowPinP.nc,v 1.8 2010-06-29 22:07:43 scipio Exp $
 
 /*
  * Copyright (c) 2004-2005 Crossbow Technology, Inc.  All rights reserved.

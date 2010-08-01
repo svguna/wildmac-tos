@@ -31,7 +31,7 @@
 
 /**
  * @author Jonathan Hui <jhui@archrock.com>
- * @version $Revision$ $Date$
+ * @version $Revision: 1.5 $ $Date: 2008-06-24 05:32:31 $
  */
 
 module HplMsp430I2C0P @safe() {

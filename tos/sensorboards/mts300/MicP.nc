@@ -31,7 +31,7 @@
  *
  *  @author Hu Siquan <husq@xbow.com> 
  *
- *  $Id$
+ *  $Id: MicP.nc,v 1.6 2010-06-29 22:07:56 scipio Exp $
  */
 
 #include "Timer.h"

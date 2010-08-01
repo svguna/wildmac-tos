@@ -1,5 +1,5 @@
 /*
- *	$Id$
+ *	$Id: log.c,v 1.3 2009-08-20 17:03:05 sdhsdh Exp $
  *
  *	Authors:
  *	 Lars Fenneberg		<lf@elemental.net>	 

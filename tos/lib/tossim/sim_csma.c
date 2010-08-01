@@ -37,7 +37,7 @@
  * @date   Dec 10 2005
  */
 
-// $Id$
+// $Id: sim_csma.c,v 1.5 2010-06-29 22:07:51 scipio Exp $
 
 #include <sim_csma.h>
 

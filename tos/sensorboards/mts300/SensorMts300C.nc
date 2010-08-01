@@ -32,7 +32,7 @@
  *  @author Martin Turon <mturon@xbow.com>
  *  @author Hu Siquan <husq@xbow.com>
  *
- *  $Id$
+ *  $Id: SensorMts300C.nc,v 1.9 2010-06-29 22:07:56 scipio Exp $
  */
 
 //configuration SensorMts300C

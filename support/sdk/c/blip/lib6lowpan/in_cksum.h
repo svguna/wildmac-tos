@@ -36,7 +36,7 @@
 /* in_cksum.h
  * Declaration of  Internet checksum routine.
  *
- * $Id$
+ * $Id: in_cksum.h,v 1.2 2010-06-29 22:07:41 scipio Exp $
  */
 
 #include <stdint.h>

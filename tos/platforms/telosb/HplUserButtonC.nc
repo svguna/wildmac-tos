@@ -33,7 +33,7 @@
  * Implementation of the user button for the telos platform
  *
  * @author Gilman Tolle <gtolle@archrock.com>
- * @version $Revision$
+ * @version $Revision: 1.1 $
  */
 
 configuration HplUserButtonC {

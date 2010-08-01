@@ -1,5 +1,5 @@
 #-*-Makefile-*- vim:syntax=make
-#$Id$
+#$Id: btnode3.target,v 1.5 2007-11-06 19:32:56 sallai Exp $
 
 PLATFORM ?= btnode3
 SENSORBOARD ?= micasb

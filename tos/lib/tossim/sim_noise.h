@@ -37,7 +37,7 @@
  * @date   Oct 13 2006
  */
 
-// $Id$
+// $Id: sim_noise.h,v 1.8 2010-06-29 22:07:51 scipio Exp $
 
 #ifndef _SIM_NOISE_HASH_H_
 #define _SIM_NOISE_HASH_H_

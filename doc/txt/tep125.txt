@@ -10,8 +10,8 @@ TinyOS 802.15.4 Frames
 :Author: Jonathan Hui, Philip Levis, and David Moss
 
 :Draft-Created: 2-Feb-2007
-:Draft-Version: $Revision$
-:Draft-Modified: $Date$
+:Draft-Version: $Revision: 1.6 $
+:Draft-Modified: $Date: 2008-06-20 05:41:23 $
 :Draft-Discuss: TinyOS Developer List <tinyos-devel at mail.millennium.berkeley.edu>
 
 .. Note::

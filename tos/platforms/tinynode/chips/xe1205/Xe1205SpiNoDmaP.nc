@@ -32,7 +32,7 @@
 /**
  * @author Jonathan Hui <jhui@archedrock.com>
  * @author Maxime Muller
- * @version $Revision$ $Date$
+ * @version $Revision: 1.1 $ $Date: 2007-07-13 15:54:09 $
  *
  * nss_data toggling for each rx byte
  */

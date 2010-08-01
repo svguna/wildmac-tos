@@ -1,4 +1,4 @@
-//$Id$
+//$Id: SerialPort.java,v 1.6 2010-06-29 22:07:41 scipio Exp $
 
 package net.tinyos.comm;
 
