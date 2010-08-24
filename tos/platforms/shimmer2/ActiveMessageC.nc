@@ -56,6 +56,7 @@ configuration ActiveMessageC {
     interface PacketTimeStamp<T32khz, uint32_t> as PacketTimeStamp32khz;
     interface PacketTimeStamp<TMilli, uint32_t> as PacketTimeStampMilli;
     interface LowPowerListening;
+    interface NeighborDetection;
   }
 }
 implementation {
@@ -70,6 +71,7 @@ implementation {
   AMPacket     = AM;
   PacketAcknowledgements = AM;
   LowPowerListening = AM;
+  NeighborDetection = AM;
 
   components CC2420PacketC;
   PacketTimeStamp32khz = CC2420PacketC;

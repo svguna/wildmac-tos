@@ -39,6 +39,7 @@
 module DummyLplP {
   provides {
     interface LowPowerListening;
+    interface NeighborDetection;
   }
 }
 
@@ -58,5 +59,15 @@ implementation {
     return 0;
   }
   
+
+  command void NeighborDetection.start(uint32_t period, uint16_t beacon,
+          uint16_t samples)
+  {
+  }
+
+
+  command void NeighborDetection.stop()
+  {
+  }
 }
 

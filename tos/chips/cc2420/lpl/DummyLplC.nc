@@ -43,6 +43,7 @@ configuration DummyLplC {
     interface Send;
     interface Receive;
     interface LowPowerListening;
+    interface NeighborDetection;
     interface SplitControl;
     interface State as SendState;
   }
@@ -62,6 +63,7 @@ implementation {
   Receive = SubReceive;
   SplitControl = SubControl;
   LowPowerListening = DummyLplP;
+  NeighborDetection = DummyLplP;
   SendState = StateC;
   
 }

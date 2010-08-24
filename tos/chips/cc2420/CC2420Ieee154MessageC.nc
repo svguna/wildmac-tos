@@ -72,6 +72,7 @@ configuration CC2420Ieee154MessageC {
     interface PacketAcknowledgements;
     interface LinkPacketMetadata;
     interface LowPowerListening;
+    interface NeighborDetection;
     interface CC2420Config;
     interface PacketLink;
   }
@@ -95,6 +96,7 @@ implementation {
   PacketAcknowledgements = Radio;
   LinkPacketMetadata = Radio;
   LowPowerListening = Radio;
+  NeighborDetection = Radio;
   CC2420Config = CC2420ControlC;
   PacketLink = Radio;
 

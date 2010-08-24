@@ -45,8 +45,25 @@ interface PowerCycle {
   /**
    * @return the sleep interval in [ms]
    */
-  command uint16_t getSleepInterval();
-  
+  command uint16_t getSleepInterval(); 
+
+  /**
+   * Set the number of CCA samples to take for the neighbor detection service.
+   * @param beacon the duration of beacon in [ms]
+   * @param neighborSamples the number of samples
+   */
+  command void setNeighborConfig(uint16_t beacon, uint16_t neighborSamples);
+
+  /**
+   * Trigger to take the samples required for neighbor detection.
+   */
+  command void startNeighborDetection();
+
+  /**
+   * Set in contact mode to run full LPL operation.
+   */
+  command void setInContact();
+
   /**
    * @deprecated Should be removed in the future when the PowerCycle
    *     component does packet-level detects and is in full control of radio

@@ -56,7 +56,7 @@ implementation {
       new TimerMilliC() as OnTimerC,
       new TimerMilliC() as CheckTimerC;
 
-#if defined(LOW_POWER_LISTENING) || defined(ACK_LOW_POWER_LISTENING)
+#if defined(NEIGHBOR_DETECTION) || defined(LOW_POWER_LISTENING) || defined(ACK_LOW_POWER_LISTENING)
   components DefaultLplC as LplC;
 #else
   components DummyLplC as LplC;

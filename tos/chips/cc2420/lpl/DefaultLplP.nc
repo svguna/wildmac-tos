@@ -48,6 +48,7 @@ module DefaultLplP {
   provides {
     interface Init;
     interface LowPowerListening;
+    interface NeighborDetection;
     interface Send;
     interface Receive;
   }
@@ -66,6 +67,10 @@ module DefaultLplP {
     interface State as SplitControlState;
     interface Timer<TMilli> as OffTimer;
     interface Timer<TMilli> as SendDoneTimer;
+#ifdef NEIGHBOR_DETECTION
+    interface Timer<TMilli> as NeighborTimer;
+    interface Timer<TMilli> as HeartbeatTimer;
+#endif
     interface Random;
     interface Leds;
     interface SystemLowPowerListening;
@@ -82,6 +87,11 @@ implementation {
   
   /** TRUE if the radio is duty cycling and not always on */
   bool dutyCycling;
+
+  message_t heartbeatMsg;
+  norace bool inContact = TRUE;
+  uint16_t beaconInterval = LPL_DEF_LOCAL_WAKEUP;
+  uint32_t beaconDomain;
 
   /**
    * Radio Power State
@@ -113,7 +123,20 @@ implementation {
   
   void initializeSend();
   void startOffTimer();
-  
+ 
+ 
+  void stop_neighbor_detection()
+  {
+#ifdef NEIGHBOR_DETECTION
+    inContact = TRUE;
+
+    call PowerCycle.setInContact();
+    call HeartbeatTimer.stop();
+    call NeighborTimer.stop();
+#endif
+  }
+
+
   /***************** Init Commands ***************/
   command error_t Init.init() {
     dutyCycling = FALSE;
@@ -171,6 +194,9 @@ implementation {
       // Everything is off right now, start SplitControl and try again
       return EOFF;
     }
+
+    if (inContact == FALSE)
+      return EBUSY;
     
     if(call SendState.requestState(S_LPL_SENDING) == SUCCESS) {
       currentSendMsg = msg;
@@ -217,6 +243,11 @@ implementation {
   
   /***************** RadioBackoff Events ****************/
   async event void RadioBackoff.requestInitialBackoff(message_t *msg) {
+    if (inContact == FALSE) {
+      call RadioBackoff.setInitialBackoff(0);
+      return;
+    }
+
     if((call CC2420PacketBody.getMetadata(msg))->rxInterval 
         > ONE_MESSAGE) {
       call RadioBackoff.setInitialBackoff( call Random.rand16() 
@@ -233,6 +264,10 @@ implementation {
   }
   
   async event void RadioBackoff.requestCca(message_t *msg) {
+    if (inContact == FALSE) {
+      call RadioBackoff.setCca(FALSE);
+      return;
+    }
   }
   
 
@@ -247,7 +282,9 @@ implementation {
     // Wait long enough to see if we actually receive a packet, which is
     // just a little longer in case there is more than one lpl transmitter on
     // the channel.
-    
+    stop_neighbor_detection();
+    signal NeighborDetection.detected();
+
     startOffTimer();
   }
   
@@ -306,7 +343,13 @@ implementation {
     call SendState.toIdle();
     call SendDoneTimer.stop();
     startOffTimer();
-    signal Send.sendDone(msg, error);
+    if (inContact == TRUE) 
+      signal Send.sendDone(msg, error);
+    else
+      call PowerCycle.startNeighborDetection();
+#ifdef WILDMAC_DEMO
+    call Leds.led1Off();
+#endif
   }
   
   /***************** SubReceive Events ***************/
@@ -364,7 +407,11 @@ implementation {
   task void send() {
     if(call SubSend.send(currentSendMsg, currentSendLen) != SUCCESS) {
       post send();
-    }
+    } 
+#ifdef WILDMAC_DEMO
+    else
+      call Leds.led1On();
+#endif
   }
   
   task void resend() {
@@ -389,20 +436,24 @@ implementation {
   
   /***************** Functions ***************/
   void initializeSend() {
-    if(call LowPowerListening.getRemoteWakeupInterval(currentSendMsg) 
-      > ONE_MESSAGE) {
+    uint16_t preamble = 
+        call LowPowerListening.getRemoteWakeupInterval(currentSendMsg);
     
-      if((call CC2420PacketBody.getHeader(currentSendMsg))->dest == IEEE154_BROADCAST_ADDR) {
+    if (inContact == FALSE)
+      preamble = beaconInterval;
+    
+    if (preamble > ONE_MESSAGE) {
+    
+      if(inContact == FALSE ||
+          (call CC2420PacketBody.getHeader(currentSendMsg))->dest == IEEE154_BROADCAST_ADDR) {
         call PacketAcknowledgements.noAck(currentSendMsg);
       } else {
         // Send it repetitively within our transmit window
         call PacketAcknowledgements.requestAck(currentSendMsg);
       }
 
-      call SendDoneTimer.startOneShot(
-          call LowPowerListening.getRemoteWakeupInterval(currentSendMsg) + 20);
+      call SendDoneTimer.startOneShot(preamble + 20);
     }
-        
     post send();
   }
   
@@ -410,6 +461,53 @@ implementation {
   void startOffTimer() {
     call OffTimer.startOneShot(call SystemLowPowerListening.getDelayAfterReceive());
   }
+
+
+  command void NeighborDetection.start(uint32_t period, uint16_t beacon,
+          uint16_t samples)
+  {
+#ifdef NEIGHBOR_DETECTION
+    inContact = FALSE;
+    beaconInterval = beacon;
+    beaconDomain = period - beacon * (samples + 1);
+    call PowerCycle.setNeighborConfig(beacon, samples);
+    call NeighborTimer.startPeriodic(period);
+#endif
+  }
+
+
+  command void NeighborDetection.stop()
+  {
+    stop_neighbor_detection();
+  }
+
   
+#ifdef NEIGHBOR_DETECTION
+  event void HeartbeatTimer.fired()
+  {
+    // TODO fill the heartbeat message
+    currentSendMsg = &heartbeatMsg;
+    currentSendLen = 0;
+      
+    call OffTimer.stop();
+    call SendDoneTimer.stop();
+
+    if (call RadioPowerState.getState() == S_ON) 
+      initializeSend();
+    else 
+      post startRadio();
+  }
+
+
+  event void NeighborTimer.fired()
+  {
+    if (call SendState.requestState(S_LPL_SENDING) != SUCCESS)
+      return;
+#ifdef WILDMAC_DEMO
+    call Leds.led0Toggle();
+#endif
+    call HeartbeatTimer.startOneShot(call Random.rand32() % beaconDomain);
+  }
+#endif
 }
 

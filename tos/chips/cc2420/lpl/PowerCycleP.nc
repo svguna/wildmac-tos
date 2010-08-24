@@ -89,7 +89,11 @@ implementation {
     S_ON,
     S_TURNING_OFF,
   };
-  
+
+  bool inContact = TRUE; 
+  uint16_t samplesToTake, samplesTaken = 0;
+  uint16_t lplSleepInterval = LPL_DEF_LOCAL_WAKEUP;
+  uint16_t beaconInterval = LPL_DEF_LOCAL_WAKEUP;
   
   /***************** Prototypes ****************/
   task void stopRadio();
@@ -109,8 +113,10 @@ implementation {
       // We were always on, now lets duty cycle
       post stopRadio();  // Might want to delay turning off the radio
     }
-    
-    sleepInterval = sleepIntervalMs;
+   
+    lplSleepInterval = sleepIntervalMs;
+    if (inContact)
+      sleepInterval = lplSleepInterval;
     
     if(sleepInterval == 0 && call SplitControlState.isState(S_ON)) {
       /*
@@ -127,7 +133,7 @@ implementation {
    * @return the sleep interval in [ms]
    */
   command uint16_t PowerCycle.getSleepInterval() {
-    return sleepInterval;
+    return lplSleepInterval;
   }
   
   
@@ -225,7 +231,8 @@ implementation {
     if(error != SUCCESS) {
       // Already stopped?
       finishSplitControlRequests();
-      call OnTimer.startOneShot(sleepInterval);
+      if (inContact || samplesTaken < samplesToTake)
+        call OnTimer.startOneShot(sleepInterval);
     }
   }
   
@@ -245,6 +252,12 @@ implementation {
         post startRadio();
         return;
       }
+      
+      samplesTaken++;
+
+#ifdef WILDMAC_DEMO
+      call Leds.led2Toggle();
+#endif
 
       atomic {
         for( ; ccaChecks < MAX_LPL_CCA_CHECKS && call SendState.isIdle(); ccaChecks++) {
@@ -274,6 +287,8 @@ implementation {
    * @return TRUE if the radio should be actively duty cycling
    */
   bool isDutyCycling() {
+    if (inContact == FALSE && samplesTaken >= samplesToTake)
+      return FALSE;
     return sleepInterval > 0 && call SplitControlState.isState(S_ON);
   }
   
@@ -306,6 +321,32 @@ implementation {
   }
   
   default event void SplitControl.stopDone(error_t error) {
+  }
+
+
+  command void PowerCycle.setNeighborConfig(uint16_t beacon,
+          uint16_t neighborSamples)
+  {
+    beaconInterval = beacon;
+    samplesToTake = neighborSamples;
+  }
+
+
+  command void PowerCycle.startNeighborDetection()
+  {
+    sleepInterval = beaconInterval;
+    inContact = FALSE;
+    samplesTaken = 0;
+    post stopRadio();
+  }
+
+
+  command void PowerCycle.setInContact()
+  {
+    inContact = TRUE;
+    sleepInterval = lplSleepInterval;
+    if (sleepInterval)
+      post stopRadio();
   }
 }
 

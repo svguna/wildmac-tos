@@ -51,6 +51,7 @@ configuration CC2420RadioC {
 
     interface CC2420Packet;
     interface PacketAcknowledgements;
+    interface NeighborDetection;
     interface LinkPacketMetadata;
     interface LowPowerListening;
     interface PacketLink;
@@ -66,7 +67,7 @@ implementation {
   components CC2420PacketC;
   components CC2420ControlC;
   
-#if defined(LOW_POWER_LISTENING) || defined(ACK_LOW_POWER_LISTENING)
+#if defined(NEIGHBOR_DETECTION) || defined(LOW_POWER_LISTENING) || defined(ACK_LOW_POWER_LISTENING)
   components DefaultLplC as LplC;
 #else
   components DummyLplC as LplC;
@@ -80,6 +81,7 @@ implementation {
   
   PacketLink = LinkC;
   LowPowerListening = LplC;
+  NeighborDetection = LplC; 
   CC2420Packet = CC2420PacketC;
   PacketAcknowledgements = CC2420PacketC;
   LinkPacketMetadata = CC2420PacketC;

@@ -36,11 +36,16 @@
 
 
 #include "DefaultLpl.h"
+#ifdef NEIGHBOR_DETECTION
+#warning "*** USING THE NEIGHBOR DETECTION SERVICE ***"
+#else
 #warning "*** USING DEFAULT LOW POWER COMMUNICATIONS ***"
+#endif
 
 configuration DefaultLplC {
   provides {
     interface LowPowerListening;
+    interface NeighborDetection;
     interface Send;
     interface Receive;
     interface SplitControl;
@@ -66,10 +71,15 @@ implementation {
       new StateC() as SendStateC,
       new TimerMilliC() as OffTimerC,
       new TimerMilliC() as SendDoneTimerC,
+#ifdef NEIGHBOR_DETECTION
+      new TimerMilliC() as HeartbeatTimerC,
+      new TimerMilliC() as NeighborTimerC,
+#endif
       SystemLowPowerListeningC,
       LedsC;
   
   LowPowerListening = DefaultLplP;
+  NeighborDetection = DefaultLplP;
   Send = DefaultLplP;
   Receive = DefaultLplP;
   SplitControl = PowerCycleC;
@@ -96,4 +106,8 @@ implementation {
   DefaultLplP.Random -> RandomC;
   DefaultLplP.Leds -> LedsC;
   DefaultLplP.SystemLowPowerListening -> SystemLowPowerListeningC;
+#ifdef NEIGHBOR_DETECTION
+  DefaultLplP.HeartbeatTimer -> HeartbeatTimerC;
+  DefaultLplP.NeighborTimer -> NeighborTimerC;
+#endif
 }

@@ -57,6 +57,7 @@ configuration CC2420ActiveMessageC {
     interface LinkPacketMetadata;
     interface RadioBackoff[am_id_t amId];
     interface LowPowerListening;
+    interface NeighborDetection;
     interface PacketLink;
     interface SendNotifier[am_id_t amId];
   }
@@ -85,6 +86,7 @@ implementation {
   AMPacket = AM;
   PacketLink = Radio;
   LowPowerListening = Radio;
+  NeighborDetection = Radio;
   CC2420Packet = Radio;
   PacketAcknowledgements = Radio;
   LinkPacketMetadata = Radio;
