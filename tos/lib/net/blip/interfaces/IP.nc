@@ -1,4 +1,6 @@
 
+#include <ip.h>
+
 interface IP {
 
   /*
@@ -12,16 +14,12 @@ interface IP {
    * once the call returns, the stack has no claim on the buffer
    * pointed to
    */ 
-  command error_t send(struct split_ip_msg *msg);
-
-  command error_t bareSend(struct split_ip_msg *msg, 
-                           struct ip6_route *route,
-                           int flags);
+  command error_t send(struct ip6_packet *msg);
 
   /*
    * indicate that the stack has finished writing data into the
    * receive buffer. 
    */
-  event void recv(struct ip6_hdr *iph, void *payload, struct ip_metadata *meta);
+  event void recv(void *headers, void *payload, size_t len, struct ip6_metadata *meta);
 
 }

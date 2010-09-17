@@ -1,33 +1,22 @@
 /*
- * Copyright (c) 2008, 2009 The Regents of the University  of California.
+ * "Copyright (c) 2008, 2009 The Regents of the University  of California.
  * All rights reserved."
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ * Permission to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, without fee, and without written agreement is
+ * hereby granted, provided that the above copyright notice, the following
+ * two paragraphs and the author appear in all copies of this software.
  *
- * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the
- *   distribution.
- * - Neither the name of the copyright holders nor the names of
- *   its contributors may be used to endorse or promote products derived
- *   from this software without specific prior written permission.
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
+ * ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
+ * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS."
  *
  */
 
@@ -36,6 +25,7 @@
  * There are some things like timers which need to be handled
  * externally with callbacks.
  *
+ * @author Stephen Dawson-Haggerty <stevedh@eecs.berkeley.edu>
  */
 
 #include <stdio.h>
@@ -190,30 +180,29 @@ static void tcplib_send_ack(struct tcplib_sock *sock, int fin_seqno, uint8_t fla
 
 static void tcplib_send_rst(struct ip6_hdr *iph, struct tcp_hdr *tcph) {
   struct split_ip_msg *msg = get_ipmsg(0);
-  struct tcp_hdr *tcp_rep;
       
-  if (msg == NULL) {
-    return;
+  if (msg != NULL) {
+    struct tcp_hdr *tcp_rep = (struct tcp_hdr *)(msg + 1);
+
+    memcpy(&msg->hdr.ip6_dst, &iph->ip6_src, 16);
+
+    tcp_rep->flags = TCP_FLAG_RST | TCP_FLAG_ACK;
+
+    tcp_rep->ackno = htonl(ntohl(tcph->seqno) + 1);
+    tcp_rep->seqno = tcph->ackno;;
+
+    tcp_rep->srcport = tcph->dstport;
+    tcp_rep->dstport = tcph->srcport;
+    tcp_rep->offset = sizeof(struct tcp_hdr) * 4;
+    tcp_rep->window = 0;
+    tcp_rep->chksum = 0;
+    tcp_rep->urgent = 0;
+
+    tcplib_send_out(msg, tcp_rep);
+
+    ip_free(msg);
+    
   }  
- 
-  tcp_rep = (struct tcp_hdr *)(msg + 1);
-
-  tcp_rep->flags = TCP_FLAG_RST | TCP_FLAG_ACK;
-
-  tcp_rep->ackno = htonl(ntohl(tcph->seqno) + 1);
-  tcp_rep->seqno = tcph->ackno;;
-
-  tcp_rep->srcport = tcph->dstport;
-  tcp_rep->dstport = tcph->srcport;
-  tcp_rep->offset = sizeof(struct tcp_hdr) * 4;
-  tcp_rep->window = 0;
-  tcp_rep->chksum = 0;
-  tcp_rep->urgent = 0;
-
-  memcpy(&msg->hdr.ip6_dst, &iph->ip6_src, 16);
-  
-  tcplib_send_out(msg, tcp_rep);
-  ip_free(msg);
 }
 
 /* send all the data in the tx buffer, starting at sseqno */

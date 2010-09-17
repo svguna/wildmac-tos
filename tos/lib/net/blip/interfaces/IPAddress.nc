@@ -1,48 +1,52 @@
 /*
- * Copyright (c) 2008 The Regents of the University  of California.
+ * "Copyright (c) 2008 The Regents of the University  of California.
  * All rights reserved."
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ * Permission to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, without fee, and without written agreement is
+ * hereby granted, provided that the above copyright notice, the following
+ * two paragraphs and the author appear in all copies of this software.
  *
- * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the
- *   distribution.
- * - Neither the name of the copyright holders nor the names of
- *   its contributors may be used to endorse or promote products derived
- *   from this software without specific prior written permission.
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
+ * ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
+ * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS."
  *
  */
 #include <6lowpan.h>
 
 interface IPAddress {
-  command ieee154_saddr_t getShortAddr();
-  command void setShortAddr(ieee154_saddr_t newaddr);
 
-  command struct in6_addr *getPublicAddr();
-  command void getLLAddr(struct in6_addr *addr);
-  command void getIPAddr(struct in6_addr *addr);
+  /**
+   * Get the preferred link-local interface for this node
+   */
+  command bool getLLAddr(struct in6_addr *addr);
 
-  command void setSource(struct ip6_hdr *hdr);
+  /** 
+   * Get the preferred global IPv6 address for this node
+   */
+  command bool getGlobalAddr(struct in6_addr *addr);
 
-  command void setPrefix(uint8_t *prefix);
+  /**
+   * Choose a source address for a packet originating at this node.
+   */
+  command bool setSource(struct ip6_hdr *hdr);
 
-  command bool haveAddress();
+  /**
+   * Map the IPv6 address to a link-layer address.
+   * @return FAIL if the address cannot be resolved, either becasue 
+   * it is not known or because the given IPv6 address is not on the link.
+   */
+  command error_t resolveAddress(struct in6_addr *addr, ieee154_addr_t *link_addr);
+
+  /**
+   * @return TRUE if the address is assigned to a local interface
+   */
+  command bool isLocalAddress(struct in6_addr *addr);
 }

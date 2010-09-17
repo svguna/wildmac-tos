@@ -1,14 +1,14 @@
 
-#include <Statistics.h>
+#include <BlipStatistics.h>
 
 configuration UdpC {
   provides interface UDP[uint8_t clnt];
-  provides interface Statistics<udp_statistics_t>;
+  provides interface BlipStatistics<udp_statistics_t>;
 } implementation {
 
   components MainC, IPDispatchC, UdpP, IPAddressC;
   UDP = UdpP;
-  Statistics = UdpP;
+  BlipStatistics = UdpP;
 
   MainC -> UdpP.Init;
   UdpP.IP -> IPDispatchC.IP[IANA_UDP];

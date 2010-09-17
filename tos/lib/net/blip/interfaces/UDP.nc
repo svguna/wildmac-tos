@@ -22,6 +22,6 @@ interface UDP {
    * contain valid data and the src pointer should not be used.
    */
   event void recvfrom(struct sockaddr_in6 *src, void *payload, 
-                      uint16_t len, struct ip_metadata *meta);
+                      uint16_t len, struct ip6_metadata *meta);
 
 }

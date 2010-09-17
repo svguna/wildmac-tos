@@ -1,33 +1,22 @@
 /*
- * Copyright (c) 2008 The Regents of the University  of California.
+ * "Copyright (c) 2008 The Regents of the University  of California.
  * All rights reserved."
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
+ * Permission to use, copy, modify, and distribute this software and its
+ * documentation for any purpose, without fee, and without written agreement is
+ * hereby granted, provided that the above copyright notice, the following
+ * two paragraphs and the author appear in all copies of this software.
  *
- * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the
- *   distribution.
- * - Neither the name of the copyright holders nor the names of
- *   its contributors may be used to endorse or promote products derived
- *   from this software without specific prior written permission.
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
+ * ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
+ * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS."
  *
  */
 
@@ -39,55 +28,33 @@ extern uint8_t globalPrefix;
 
 module IPAddressP {
   provides interface IPAddress;
-
-#ifndef SIM
-  uses interface ActiveMessageAddress;
-#else 
-  uses async command void setAmAddress(am_addr_t a);
-#endif
+  uses {
+    interface CC2420Config;
+    interface LocalIeeeEui64;
+  }
 } implementation {
 
+  command bool IPAddress.getLLAddr(struct in6_addr *addr) {
+    // ieee_eui64_t eui = call LocalIeeeEui64.getId();
+    // memcpy(&addr->s6_addr[8], eui.data, 8);
+    ieee154_panid_t panid = call CC2420Config.getPanAddr();
+    ieee154_saddr_t saddr = call CC2420Config.getShortAddr();
 
-  command ieee154_saddr_t IPAddress.getShortAddr() {
-    return TOS_NODE_ID;
+    memclr(addr->s6_addr, 16);
+    addr->s6_addr16[0] = htons(0xfe80);
+    addr->s6_addr16[4] = htons(panid);
+    addr->s6_addr16[5] = ntohs(0x00FF);
+    addr->s6_addr16[6] = ntohs(0xFE00);
+    addr->s6_addr16[7] = htons(saddr);
+
+    return TRUE;
   }
 
-  command void IPAddress.setShortAddr(ieee154_saddr_t newAddr) {
-    TOS_NODE_ID = newAddr;
-#ifndef SIM
-    call ActiveMessageAddress.setAddress(call ActiveMessageAddress.amGroup(), newAddr);
-#else
-    call setAmAddress(newAddr);
-#endif
+  command bool IPAddress.getGlobalAddr(struct in6_addr *addr) {
+    return FALSE;
   }
 
-  command void IPAddress.getLLAddr(struct in6_addr *addr) {
-    __my_address.s6_addr16[7] = htons(TOS_NODE_ID);
-    memcpy(addr->s6_addr, linklocal_prefix, 8);
-    memcpy(&addr->s6_addr[8], &__my_address.s6_addr[8], 8);
-  }
-
-  command void IPAddress.getIPAddr(struct in6_addr *addr) {
-    __my_address.s6_addr16[7] = htons(TOS_NODE_ID);
-    memcpy(addr, &__my_address, 16);
-  }
-
-  command struct in6_addr *IPAddress.getPublicAddr() {
-    __my_address.s6_addr16[7] = htons(TOS_NODE_ID);
-    return &__my_address;
-  }
-
-  command void IPAddress.setPrefix(uint8_t *pfx) {
-    ip_memclr(__my_address.s6_addr, sizeof(struct in6_addr));
-    ip_memcpy(__my_address.s6_addr, pfx, 8);
-    globalPrefix = 1;
-  }
-
-  command bool IPAddress.haveAddress() {
-    return globalPrefix;
-  }
-
-  command void IPAddress.setSource(struct ip6_hdr *hdr) {
+  command bool IPAddress.setSource(struct ip6_hdr *hdr) {
     enum { LOCAL, GLOBAL } type = GLOBAL;
       
     if (hdr->ip6_dst.s6_addr[0] == 0xff) {
@@ -102,19 +69,70 @@ module IPAddressP {
       }
     }
 
-    if (type == GLOBAL && call IPAddress.haveAddress()) {
-      call IPAddress.getIPAddr(&hdr->ip6_src);
-    } else {
-      call IPAddress.getLLAddr(&hdr->ip6_src);
+    return call IPAddress.getLLAddr(&hdr->ip6_src);
+  }
+
+  command error_t IPAddress.resolveAddress(struct in6_addr *addr, ieee154_addr_t *link_addr) {
+    ieee154_panid_t panid = call CC2420Config.getPanAddr();
+
+    if (addr->s6_addr16[0] == htons(0xfe80)) {
+      if (addr->s6_addr16[5] == htons(0x00FF) &&
+          addr->s6_addr16[6] == htons(0xFE00)) {
+        if (ntohs(addr->s6_addr16[4]) == panid) {
+          link_addr->ieee_mode = IEEE154_ADDR_SHORT;
+          link_addr->i_saddr = htole16(ntohs(addr->s6_addr16[7]));
+        } else {
+          return FAIL;
+        }
+      } else {
+        link_addr->ieee_mode = IEEE154_ADDR_EXT;
+        memcpy(link_addr->i_laddr.data, &addr->s6_addr[8], 8);
+      }
+      return SUCCESS;
+    } else if (addr->s6_addr[0] == 0xff) {
+      /* LL - multicast */
+      if ((addr->s6_addr[1] & 0x0f) == 0x02) {
+        link_addr->ieee_mode = IEEE154_ADDR_SHORT;
+        link_addr->i_saddr   = IEEE154_BROADCAST_ADDR;
+        return TRUE;
+      }
     }
-
+    /* only resolve Link-Local addresses */
+    return FAIL;
   }
 
+  command bool IPAddress.isLocalAddress(struct in6_addr *addr) {
+    ieee_eui64_t eui = call LocalIeeeEui64.getId();
+    ieee154_panid_t panid = call CC2420Config.getPanAddr();
+    ieee154_saddr_t saddr = call CC2420Config.getShortAddr();
 
-#ifndef SIM
-  async event void ActiveMessageAddress.changed() {
+    if (addr->s6_addr16[0] == htons(0xfe80)) {
+      // link-local
+      if (addr->s6_addr16[5] == ntohs(0x00FF) &&
+          addr->s6_addr16[6] == ntohs(0xFE00)) {
+        if (ntohs(addr->s6_addr16[4]) == panid && 
+            ntohs(addr->s6_addr16[7]) == saddr) {
+          return TRUE;
+        } else {
+          return FALSE;
+        }
+      } else {
+        if (memcmp(&addr->s6_addr[8], eui.data, 8) == 0) {
+          return TRUE;
+        }
+      }
+    } else if (addr->s6_addr[0] == 0xff) {
+      // multicast
+      if ((addr->s6_addr[1] & 0x0f) <= 2) {
+        // accept all LL multicast messages
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  event void CC2420Config.syncDone( error_t err ) {
 
   }
-#endif
 
 }
