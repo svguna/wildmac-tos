@@ -1,0 +1,5 @@
+COMPONENT=NeighborDetectionAppC
+CFLAGS += -DNEIGHBOR_DETECTION
+
+include $(MAKERULES)
+
