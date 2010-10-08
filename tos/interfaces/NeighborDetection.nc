@@ -31,6 +31,6 @@ interface NeighborDetection {
    * detected, the service is stopped. It is the duty of higher-level layers
    * to determine when no neighbors are in range and to restart the service.
    */
-  event void detected();
+  event void detected(am_addr_t addr);
 }
 

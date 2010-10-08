@@ -68,7 +68,7 @@ implementation {
 
   event void AMControl.startDone(error_t err) {
     if (err == SUCCESS) {
-      call NeighborDetection.start(3000, 200, 5);
+      call NeighborDetection.start(2000, 200, 5);
       call MilliTimer.startPeriodic(250);
     }
     else {
@@ -134,8 +134,10 @@ implementation {
     }
   }
 
-  event void NeighborDetection.detected()
+  event void NeighborDetection.detected(am_addr_t addr)
   {
+    if ((TOS_NODE_ID == 0 && addr == 1) || (TOS_NODE_ID == 1 && addr == 0))
+      call Leds.led1Toggle();
   }
 }
 

@@ -43,6 +43,7 @@
 #include "Lpl.h"
 #include "DefaultLpl.h"
 #include "AM.h"
+#include "NeighborDetection.h"
 
 module DefaultLplP {
   provides {
@@ -282,9 +283,6 @@ implementation {
     // Wait long enough to see if we actually receive a packet, which is
     // just a little longer in case there is more than one lpl transmitter on
     // the channel.
-    stop_neighbor_detection();
-    signal NeighborDetection.detected();
-
     startOffTimer();
   }
   
@@ -347,9 +345,6 @@ implementation {
       signal Send.sendDone(msg, error);
     else
       call PowerCycle.startNeighborDetection();
-#ifdef WILDMAC_DEMO
-    call Leds.led1Off();
-#endif
   }
   
   /***************** SubReceive Events ***************/
@@ -362,7 +357,17 @@ implementation {
    */
   event message_t *SubReceive.receive(message_t* msg, void* payload, 
       uint8_t len) {
+    cc2420_header_t *header = call CC2420PacketBody.getHeader(msg);
+
+#ifndef NEIGHBOR_NO_STOP
+    stop_neighbor_detection();
+#endif
+    signal NeighborDetection.detected(header->src);
+    
     startOffTimer();
+
+    if (header->destpan == TOS_NEIGHBOR_GROUP) 
+      return msg;
     return signal Receive.receive(msg, payload, len);
   }
   
@@ -408,10 +413,6 @@ implementation {
     if(call SubSend.send(currentSendMsg, currentSendLen) != SUCCESS) {
       post send();
     } 
-#ifdef WILDMAC_DEMO
-    else
-      call Leds.led1On();
-#endif
   }
   
   task void resend() {
@@ -483,15 +484,28 @@ implementation {
 
   
 #ifdef NEIGHBOR_DETECTION
+  void fill_heartbeatMsg()
+  {
+    cc2420_header_t *header = call CC2420PacketBody.getHeader(&heartbeatMsg);
+      
+    // don't care about the sequence number
+    header->dsn++;// = 0;
+    header->destpan = TOS_NEIGHBOR_GROUP;
+    header->dest = IEEE154_BROADCAST_ADDR;
+    header->src = TOS_NODE_ID;
+    header->network = TINYOS_6LOWPAN_NETWORK_ID;
+  }
+
+
   event void HeartbeatTimer.fired()
   {
-    // TODO fill the heartbeat message
+    fill_heartbeatMsg();
     currentSendMsg = &heartbeatMsg;
     currentSendLen = 0;
-      
+    
     call OffTimer.stop();
     call SendDoneTimer.stop();
-
+    
     if (call RadioPowerState.getState() == S_ON) 
       initializeSend();
     else 
@@ -503,9 +517,6 @@ implementation {
   {
     if (call SendState.requestState(S_LPL_SENDING) != SUCCESS)
       return;
-#ifdef WILDMAC_DEMO
-    call Leds.led0Toggle();
-#endif
     call HeartbeatTimer.startOneShot(call Random.rand32() % beaconDomain);
   }
 #endif
