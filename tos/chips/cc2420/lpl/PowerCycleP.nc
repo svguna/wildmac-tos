@@ -201,7 +201,10 @@ implementation {
   /***************** SubControl Events ****************/
   event void SubControl.startDone(error_t error) {
     call RadioPowerState.forceState(S_ON);
-    //call Leds.led2On();
+#ifdef WILDMAC_DEMO
+    if (error == SUCCESS) 
+        call Leds.led0On();
+#endif
     
     if(finishSplitControlRequests()) {
       return;
@@ -213,7 +216,10 @@ implementation {
   
   event void SubControl.stopDone(error_t error) {
     call RadioPowerState.forceState(S_OFF);
-    //call Leds.led2Off();
+#ifdef WILDMAC_DEMO
+    if (error == SUCCESS) 
+        call Leds.led0Off();
+#endif
     
     if(finishSplitControlRequests()) {
       return;
@@ -254,10 +260,6 @@ implementation {
       }
       
       samplesTaken++;
-
-#ifdef WILDMAC_DEMO
-      call Leds.led2Toggle();
-#endif
 
       atomic {
         for( ; ccaChecks < MAX_LPL_CCA_CHECKS && call SendState.isIdle(); ccaChecks++) {
