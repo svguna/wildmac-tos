@@ -245,6 +245,11 @@ implementation {
   
   /***************** RadioBackoff Events ****************/
   async event void RadioBackoff.requestInitialBackoff(message_t *msg) {
+    if (inContact == FALSE) {
+      call RadioBackoff.setInitialBackoff(0);
+      return;
+    }
+
     if((call CC2420PacketBody.getMetadata(msg))->rxInterval 
         > ONE_MESSAGE) {
       call RadioBackoff.setInitialBackoff( call Random.rand16() 
