@@ -91,6 +91,7 @@ implementation {
 
   message_t heartbeatMsg;
   norace bool inContact = TRUE;
+  norace bool deterministic = FALSE;
   uint16_t beaconInterval = LPL_DEF_LOCAL_WAKEUP;
   uint32_t beaconDomain;
 
@@ -244,11 +245,6 @@ implementation {
   
   /***************** RadioBackoff Events ****************/
   async event void RadioBackoff.requestInitialBackoff(message_t *msg) {
-    if (inContact == FALSE) {
-      call RadioBackoff.setInitialBackoff(0);
-      return;
-    }
-
     if((call CC2420PacketBody.getMetadata(msg))->rxInterval 
         > ONE_MESSAGE) {
       call RadioBackoff.setInitialBackoff( call Random.rand16() 
@@ -265,7 +261,7 @@ implementation {
   }
   
   async event void RadioBackoff.requestCca(message_t *msg) {
-    if (inContact == FALSE) {
+    if (inContact == FALSE && deterministic == FALSE) {
       call RadioBackoff.setCca(FALSE);
       return;
     }
@@ -468,9 +464,14 @@ implementation {
           uint16_t samples)
   {
 #ifdef NEIGHBOR_DETECTION
+    deterministic = FALSE;
+    if (beacon * (samples + 1) > period / 2)
+      deterministic = TRUE;
+
     inContact = FALSE;
     beaconInterval = beacon;
     beaconDomain = period - beacon * (samples + 1);
+    
     call PowerCycle.setNeighborConfig(beacon, samples);
     call NeighborTimer.startPeriodic(period);
 #endif
@@ -496,8 +497,7 @@ implementation {
     header->network = TINYOS_6LOWPAN_NETWORK_ID;
   }
 
-
-  event void HeartbeatTimer.fired()
+  void broadcast_hearbeat()
   {
     fill_heartbeatMsg();
     currentSendMsg = &heartbeatMsg;
@@ -510,6 +510,13 @@ implementation {
       initializeSend();
     else 
       post startRadio();
+
+  }
+
+
+  event void HeartbeatTimer.fired()
+  {
+    broadcast_hearbeat();
   }
 
 
@@ -517,6 +524,10 @@ implementation {
   {
     if (call SendState.requestState(S_LPL_SENDING) != SUCCESS)
       return;
+    if (deterministic) {
+      broadcast_hearbeat();
+      return;
+    }
     call HeartbeatTimer.startOneShot(call Random.rand32() % beaconDomain);
   }
 #endif
