@@ -122,13 +122,7 @@ public class ExperimentConfigPanel extends JPanel {
 					Integer value = beaconDuration.getValue();
 					beaconValue.setText(value + " ms");
 
-					int max_samples = protocolSlider.getValue() / value - 1;
-					if (max_samples > MAX_SAMPLES)
-						max_samples = MAX_SAMPLES;
-					samplesCount.setMaximum(max_samples);
-
-					if (samplesCount.getValue() > max_samples)
-						samplesCount.setValue(max_samples);
+					setSamples();
 					setBehavior();
 				}
 			});
@@ -218,13 +212,8 @@ public class ExperimentConfigPanel extends JPanel {
 					int value = protocolSlider.getValue();
 					periodValue.setText(value + " ms");
 
-					int maxBeacon = value / 2;
-					if (maxBeacon > MAX_BEACON)
-						maxBeacon = MAX_BEACON;
-					beaconDuration.setMaximum(maxBeacon);
-
-					if (beaconDuration.getValue() > maxBeacon)
-						beaconDuration.setValue(maxBeacon);
+					setBeacon();
+					setSamples();
 					setBehavior();
 				}
 			});
@@ -447,12 +436,39 @@ public class ExperimentConfigPanel extends JPanel {
 		this.add(behavior, gridBagConstraints13);
 	}
 
+	/**
+	 * 
+	 */
+	private void setBeacon() {
+		int maxBeacon = protocolSlider.getValue() / 2;
+		if (maxBeacon > MAX_BEACON)
+			maxBeacon = MAX_BEACON;
+		beaconDuration.setMaximum(maxBeacon);
+
+		if (beaconDuration.getValue() > maxBeacon)
+			beaconDuration.setValue(maxBeacon);
+	}
+
 	private void setBehavior() {
 		if (beaconDuration.getValue() * (samplesCount.getValue() + 1) > protocolSlider
 				.getValue() / 2)
 			behavior.setText("DETERMINISTIC DETECTION");
 		else
 			behavior.setText("PROBABILISTIC DETECTION");
+	}
+
+	/**
+	 * 
+	 */
+	private void setSamples() {
+		int max_samples = protocolSlider.getValue() / beaconDuration.getValue()
+				- 1;
+		if (max_samples > MAX_SAMPLES)
+			max_samples = MAX_SAMPLES;
+		samplesCount.setMaximum(max_samples);
+
+		if (samplesCount.getValue() > max_samples)
+			samplesCount.setValue(max_samples);
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"
