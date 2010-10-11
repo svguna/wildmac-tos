@@ -56,6 +56,7 @@ implementation {
   components new QueueC(am_addr_t, 20) as DetectedNeighborsC;
   components new QueueC(report_t, 20) as ReportBufferC;
   components SerialActiveMessageC;
+  components RandomC;
 
   App.Boot -> MainC.Boot;
   
@@ -78,5 +79,6 @@ implementation {
   App.SerialControl -> SerialActiveMessageC;
 
   App.UsbConnection -> HplMsp430GeneralIOC.Port12;
+  App.Random -> RandomC;
 }
 

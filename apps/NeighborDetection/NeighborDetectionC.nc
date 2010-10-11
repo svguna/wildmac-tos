@@ -65,6 +65,8 @@ module NeighborDetectionC @safe() {
     interface SplitControl as SerialControl;
     
     interface HplMsp430GeneralIO as UsbConnection;
+
+    interface Random;
   }
 }
 implementation {
@@ -72,6 +74,7 @@ implementation {
   uint32_t experiment_start;
   message_t serial_pkt, radio_pkt;
   bool serial_busy = FALSE, radio_busy = FALSE;
+  bool run_experiment = FALSE;
   experiment_ctrl_t experiment;
   
   task void send_report()
@@ -120,13 +123,11 @@ implementation {
 
   bool receive_message(message_t *msg, void *payload, uint8_t len)
   {
-    if (len != sizeof(experiment_ctrl_t)) {
-      call Leds.led0On();
+    if (len != sizeof(experiment_ctrl_t)) 
       return FAIL;
-    }
 
     memcpy(&experiment, payload, len);
-    call ExperimentDelay.startOneShot(experiment.delay);
+    call ExperimentDelay.startOneShot(call Random.rand16() % experiment.delay);
     
     while (!call DetectedNeighbors.empty())
       call DetectedNeighbors.dequeue();
@@ -144,8 +145,19 @@ implementation {
 
 
   event void AMControl.startDone(error_t err) {
-    if (err != SUCCESS) 
+    if (err != SUCCESS) {
       call AMControl.start();
+      return;
+    }
+
+    if (!run_experiment)
+      return;
+
+    call NeighborDetection.start(experiment.period, experiment.beacon,
+            experiment.samples);
+    call ExperimentTimeout.startOneShot(experiment.timeout);
+    experiment_start = call ExperimentTimeout.getNow(); 
+    call Leds.led1On();
   }
 
 
@@ -156,11 +168,8 @@ implementation {
   
   event void ExperimentDelay.fired()
   {
-    call NeighborDetection.start(experiment.period, experiment.beacon,
-            experiment.samples);
-    call ExperimentTimeout.startOneShot(experiment.timeout);
-    experiment_start = call ExperimentTimeout.getNow(); 
-    call Leds.led1On();
+    run_experiment = TRUE;
+    call AMControl.start();
   }
 
 
@@ -174,6 +183,7 @@ implementation {
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) 
   {
     receive_message(msg, payload, len);
+    call AMControl.stop();
     return msg;
   }
 
@@ -184,6 +194,8 @@ implementation {
 
     if (error != SUCCESS)
       post send_experiment();
+    else
+      call AMControl.stop();
   }
 
 
