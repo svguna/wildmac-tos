@@ -89,11 +89,15 @@ implementation {
   /** TRUE if the radio is duty cycling and not always on */
   bool dutyCycling;
 
-  message_t heartbeatMsg;
   norace bool inContact = TRUE;
   norace bool deterministic = FALSE;
   uint16_t beaconInterval = LPL_DEF_LOCAL_WAKEUP;
+
+#ifdef NEIGHBOR_DETECTION
+  message_t heartbeatMsg;
   uint32_t beaconDomain;
+  void neighbor_periodic();
+#endif
 
   /**
    * Radio Power State
@@ -479,6 +483,7 @@ implementation {
     
     call PowerCycle.setNeighborConfig(beacon, samples);
     call NeighborTimer.startPeriodic(period);
+    neighbor_periodic();
 #endif
   }
 
@@ -515,7 +520,18 @@ implementation {
       initializeSend();
     else 
       post startRadio();
+  }
 
+
+  void neighbor_periodic()
+  {
+    if (call SendState.requestState(S_LPL_SENDING) != SUCCESS)
+      return;
+    if (deterministic) {
+      broadcast_hearbeat();
+      return;
+    }
+    call HeartbeatTimer.startOneShot(call Random.rand16() % beaconDomain);
   }
 
 
@@ -527,13 +543,7 @@ implementation {
 
   event void NeighborTimer.fired()
   {
-    if (call SendState.requestState(S_LPL_SENDING) != SUCCESS)
-      return;
-    if (deterministic) {
-      broadcast_hearbeat();
-      return;
-    }
-    call HeartbeatTimer.startOneShot(call Random.rand32() % beaconDomain);
+    neighbor_periodic();
   }
 #endif
 }
