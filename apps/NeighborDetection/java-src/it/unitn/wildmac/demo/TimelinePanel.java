@@ -71,6 +71,10 @@ public class TimelinePanel extends JPanel implements ReportConsumer {
 	 */
 	private void initialize() {
 		this.setSize(400, 100);
+		this
+				.setToolTipText("Node IDs are shown here, displaced on the timeline according\n"
+						+ "to their detection time (measured in ms). Protocol periods are\n"
+						+ "marked with dashed lines.");
 		this.setPreferredSize(new Dimension(400, 100));
 		setBackground(Color.white);
 	}

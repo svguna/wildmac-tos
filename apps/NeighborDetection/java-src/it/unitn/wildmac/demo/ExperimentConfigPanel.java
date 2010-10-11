@@ -5,6 +5,7 @@ package it.unitn.wildmac.demo;
 
 import it.unitn.wildmac.WSNGateway;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -63,6 +64,7 @@ public class ExperimentConfigPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JSlider beaconDuration = null;
 	private JLabel beaconValue = null;
+	private JLabel behavior = null;
 	private DemoForm demoForm;
 	private JSlider experimentDuration = null;
 	private JProgressBar experimentProgress = null;
@@ -72,6 +74,7 @@ public class ExperimentConfigPanel extends JPanel {
 	private JLabel jLabel1 = null;
 	private JLabel jLabel2 = null;
 	private JLabel jLabel3 = null;
+
 	private JPanel jProgressPane = null;
 
 	private JLabel periodValue = null;
@@ -79,8 +82,8 @@ public class ExperimentConfigPanel extends JPanel {
 	private JSlider protocolSlider = null;
 
 	private JSlider samplesCount = null;
-
 	private JLabel samplesValue = null;
+
 	private JButton startButton = null;
 
 	/**
@@ -126,6 +129,7 @@ public class ExperimentConfigPanel extends JPanel {
 
 					if (samplesCount.getValue() > max_samples)
 						samplesCount.setValue(max_samples);
+					setBehavior();
 				}
 			});
 		}
@@ -142,8 +146,8 @@ public class ExperimentConfigPanel extends JPanel {
 			experimentDuration = new JSlider();
 
 			experimentDuration.setMinimum(1);
-			experimentDuration.setValue(10);
 			experimentDuration.setMaximum(300);
+			experimentDuration.setValue(2);
 
 			experimentDuration.setMinorTickSpacing(1);
 			experimentDuration.setSnapToTicks(true);
@@ -221,6 +225,7 @@ public class ExperimentConfigPanel extends JPanel {
 
 					if (beaconDuration.getValue() > maxBeacon)
 						beaconDuration.setValue(maxBeacon);
+					setBehavior();
 				}
 			});
 		}
@@ -251,6 +256,7 @@ public class ExperimentConfigPanel extends JPanel {
 
 					samplesValue.setText((new Integer(samplesCount.getValue()))
 							.toString());
+					setBehavior();
 				}
 			});
 		}
@@ -306,6 +312,15 @@ public class ExperimentConfigPanel extends JPanel {
 	 * @return void
 	 */
 	private void initialize() {
+		GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
+		gridBagConstraints13.gridx = 0;
+		gridBagConstraints13.gridwidth = 3;
+		gridBagConstraints13.gridy = 6;
+		behavior = new JLabel();
+		Font curFont = behavior.getFont();
+		behavior.setFont(new Font(curFont.getFontName(), Font.BOLD,
+				(int) (curFont.getSize() * 1.25)));
+		behavior.setText("DETERMINISTIC DETECTION");
 		GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
 		gridBagConstraints21.gridx = 0;
 		gridBagConstraints21.gridwidth = 3;
@@ -320,7 +335,7 @@ public class ExperimentConfigPanel extends JPanel {
 		gridBagConstraints12.gridwidth = 3;
 		gridBagConstraints12.weightx = 0.0;
 		gridBagConstraints12.weighty = 200.0;
-		gridBagConstraints12.gridy = 6;
+		gridBagConstraints12.gridy = 7;
 		GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
 		gridBagConstraints10.gridx = 2;
 		gridBagConstraints10.anchor = GridBagConstraints.WEST;
@@ -329,7 +344,7 @@ public class ExperimentConfigPanel extends JPanel {
 		gridBagConstraints10.fill = GridBagConstraints.NONE;
 		gridBagConstraints10.gridy = 2;
 		experimentValue = new JLabel();
-		experimentValue.setText("10 s");
+		experimentValue.setText("2 s");
 		GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
 		gridBagConstraints9.fill = GridBagConstraints.NONE;
 		gridBagConstraints9.gridy = 2;
@@ -429,7 +444,15 @@ public class ExperimentConfigPanel extends JPanel {
 		this.add(getExperimentDuration(), gridBagConstraints9);
 		this.add(experimentValue, gridBagConstraints10);
 		this.add(getStartButton(), gridBagConstraints12);
+		this.add(behavior, gridBagConstraints13);
+	}
 
+	private void setBehavior() {
+		if (beaconDuration.getValue() * (samplesCount.getValue() + 1) > protocolSlider
+				.getValue() / 2)
+			behavior.setText("DETERMINISTIC DETECTION");
+		else
+			behavior.setText("PROBABILISTIC DETECTION");
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

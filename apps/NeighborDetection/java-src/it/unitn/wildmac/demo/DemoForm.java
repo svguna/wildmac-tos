@@ -5,7 +5,6 @@ package it.unitn.wildmac.demo;
 
 import it.unitn.wildmac.WSNGateway;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
