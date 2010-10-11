@@ -45,20 +45,38 @@
 configuration NeighborDetectionAppC {}
 implementation {
   components MainC, NeighborDetectionC as App, LedsC;
-  components new AMSenderC(AM_RADIO_COUNT_MSG);
-  components new AMReceiverC(AM_RADIO_COUNT_MSG);
-  components new TimerMilliC();
+  components new AMSenderC(AM_CONFIG);
+  components new AMReceiverC(AM_CONFIG);
+  components new SerialAMSenderC(AM_REPORT);
+  components new SerialAMReceiverC(AM_EXPERIMENT_CTRL);
+  components new TimerMilliC() as ExperimentTimeoutC;
+  components new TimerMilliC() as ExperimentDelayC;
   components ActiveMessageC;
-  
+  components HplMsp430GeneralIOC;
+  components new QueueC(am_addr_t, 20) as DetectedNeighborsC;
+  components new QueueC(report_t, 20) as ReportBufferC;
+  components SerialActiveMessageC;
+
   App.Boot -> MainC.Boot;
   
   App.Receive -> AMReceiverC;
   App.AMSend -> AMSenderC;
   App.AMControl -> ActiveMessageC;
   App.Leds -> LedsC;
-  App.MilliTimer -> TimerMilliC;
+  App.ExperimentTimeout -> ExperimentTimeoutC;
+  App.ExperimentDelay -> ExperimentDelayC;
   App.Packet -> AMSenderC;
+  
+  App.LowPowerListening -> ActiveMessageC;
   App.NeighborDetection -> ActiveMessageC;
-}
+  
+  App.ReportBuffer -> ReportBufferC;
+  App.DetectedNeighbors -> DetectedNeighborsC;
 
+  App.SerialReceive -> SerialAMReceiverC;
+  App.SerialSend -> SerialAMSenderC;
+  App.SerialControl -> SerialActiveMessageC;
+
+  App.UsbConnection -> HplMsp430GeneralIOC.Port12;
+}
 

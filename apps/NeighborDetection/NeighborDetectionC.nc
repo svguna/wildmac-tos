@@ -31,7 +31,7 @@
  
 #include "Timer.h"
 #include "NeighborDetection.h"
- 
+
 /**
  * Implementation of the RadioCountToLeds application. RadioCountToLeds 
  * maintains a 4Hz counter, broadcasting its value in an AM packet 
@@ -49,98 +49,198 @@ module NeighborDetectionC @safe() {
     interface Boot;
     interface Receive;
     interface AMSend;
-    interface Timer<TMilli> as MilliTimer;
+    interface Timer<TMilli> as ExperimentTimeout;
+    interface Timer<TMilli> as ExperimentDelay;
     interface SplitControl as AMControl;
     interface Packet;
+    
     interface NeighborDetection;
+    interface LowPowerListening;
+
+    interface Queue<am_addr_t> as DetectedNeighbors;
+    interface Queue<report_t> as ReportBuffer;
+
+    interface Receive as SerialReceive;
+    interface AMSend as SerialSend;
+    interface SplitControl as SerialControl;
+    
+    interface HplMsp430GeneralIO as UsbConnection;
   }
 }
 implementation {
 
-  message_t packet;
-
-  bool locked;
-  uint16_t counter = 0;
+  uint32_t experiment_start;
+  message_t serial_pkt, radio_pkt;
+  bool serial_busy = FALSE, radio_busy = FALSE;
+  experiment_ctrl_t experiment;
   
-  event void Boot.booted() {
+  task void send_report()
+  {
+    report_t *report;
+    error_t status;
+
+    if (serial_busy || call ReportBuffer.empty())
+      return;
+
+    report = (report_t *) call Packet.getPayload(&serial_pkt, 0);
+    *report = call ReportBuffer.head();
+
+    status = call SerialSend.send(AM_BROADCAST_ADDR, &serial_pkt, 
+            sizeof(report_t));
+
+    if (status != SUCCESS) {
+      post send_report();
+      return;
+    }
+    serial_busy = TRUE;
+  }
+
+
+  task void send_experiment()
+  {
+    error_t status;
+    void *payload;
+
+    if (radio_busy)
+      return;
+
+    payload = call Packet.getPayload(&radio_pkt, 0);
+    memcpy(payload, &experiment, sizeof(experiment_ctrl_t));
+
+    status = call AMSend.send(AM_BROADCAST_ADDR, &radio_pkt,
+            sizeof(experiment_ctrl_t));
+
+    if (status != SUCCESS) {
+      post send_experiment();
+      return;
+    }
+    radio_busy = TRUE;
+  }
+
+
+  bool receive_message(message_t *msg, void *payload, uint8_t len)
+  {
+    if (len != sizeof(experiment_ctrl_t)) {
+      call Leds.led0On();
+      return FAIL;
+    }
+
+    memcpy(&experiment, payload, len);
+    call ExperimentDelay.startOneShot(experiment.delay);
+    
+    while (!call DetectedNeighbors.empty())
+      call DetectedNeighbors.dequeue();
+    return SUCCESS;
+  }
+
+
+  event void Boot.booted() 
+  {
+    call UsbConnection.selectIOFunc();
+    call UsbConnection.makeInput();
+    call SerialControl.start();
     call AMControl.start();
   }
 
+
   event void AMControl.startDone(error_t err) {
-    if (err == SUCCESS) {
-      call NeighborDetection.start(2000, 200, 5);
-      call MilliTimer.startPeriodic(250);
-    }
-    else {
+    if (err != SUCCESS) 
       call AMControl.start();
-    }
   }
 
-  event void AMControl.stopDone(error_t err) {
-    // do nothing
+
+  event void AMControl.stopDone(error_t err) 
+  {
   }
+
   
-  event void MilliTimer.fired() {
-    counter++;
-    dbg("NeighborDetectionC", "NeighborDetectionC: timer fired, counter is %hu.\n", counter);
-    if (locked) {
-      return;
-    }
-    else {
-      radio_count_msg_t* rcm = (radio_count_msg_t*)call Packet.getPayload(&packet, sizeof(radio_count_msg_t));
-      if (rcm == NULL) {
-	return;
-      }
-
-      rcm->counter = counter;
-/*      if (call AMSend.send(AM_BROADCAST_ADDR, &packet, sizeof(radio_count_msg_t)) == SUCCESS) {
-	dbg("NeighborDetectionC", "NeighborDetectionC: packet sent.\n", counter);	
-	locked = TRUE;
-      }*/
-    }
+  event void ExperimentDelay.fired()
+  {
+    call NeighborDetection.start(experiment.period, experiment.beacon,
+            experiment.samples);
+    call ExperimentTimeout.startOneShot(experiment.timeout);
+    experiment_start = call ExperimentTimeout.getNow(); 
+    call Leds.led1On();
   }
 
-  event message_t* Receive.receive(message_t* bufPtr, 
-				   void* payload, uint8_t len) {
-    dbg("NeighborDetectionC", "Received packet of length %hhu.\n", len);
-    if (len != sizeof(radio_count_msg_t)) {return bufPtr;}
-    else {
-      radio_count_msg_t* rcm = (radio_count_msg_t*)payload;
-      if (rcm->counter & 0x1) {
-	call Leds.led0On();
-      }
-      else {
-	call Leds.led0Off();
-      }
-      if (rcm->counter & 0x2) {
-	call Leds.led1On();
-      }
-      else {
-	call Leds.led1Off();
-      }
-      if (rcm->counter & 0x4) {
-	call Leds.led2On();
-      }
-      else {
-	call Leds.led2Off();
-      }
-      return bufPtr;
-    }
+
+  event void ExperimentTimeout.fired()
+  {
+    call Leds.set(0xff);
+    WDTCTL = 0;
   }
 
-  event void AMSend.sendDone(message_t* bufPtr, error_t error) {
-    if (&packet == bufPtr) {
-      locked = FALSE;
-    }
+  
+  event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) 
+  {
+    receive_message(msg, payload, len);
+    return msg;
   }
+
+
+  event void AMSend.sendDone(message_t *msg, error_t error) 
+  {
+    radio_busy = FALSE;
+
+    if (error != SUCCESS)
+      post send_experiment();
+  }
+
 
   event void NeighborDetection.detected(am_addr_t addr)
   {
-    if ((TOS_NODE_ID == 0 && addr == 1) || (TOS_NODE_ID == 1 && addr == 0))
-      call Leds.led1Toggle();
+    uint16_t i;
+    report_t report;
+
+    if (!call ExperimentTimeout.isRunning())
+      return;
+
+    call Leds.led2Toggle();
+    for (i = 0; i < call DetectedNeighbors.size(); i++)
+      if (call DetectedNeighbors.element(i) == addr)
+        return;
+
+    if (!call UsbConnection.get())
+      return;
+
+    report.addr = addr;
+    report.timestamp = call ExperimentTimeout.getNow() - experiment_start;
+    call ReportBuffer.enqueue(report);
+    call DetectedNeighbors.enqueue(addr);
+    post send_report(); 
+  }
+
+
+  event message_t *SerialReceive.receive(message_t *msg, void *payload,
+          uint8_t len)
+  {
+    if (receive_message(msg, payload, len) == SUCCESS)
+      post send_experiment();
+    return msg;
+  }
+
+  
+  event void SerialSend.sendDone(message_t *msg, error_t error) 
+  {
+    serial_busy = FALSE;
+
+    if (error == SUCCESS)
+      call ReportBuffer.dequeue();
+
+    if (!call ReportBuffer.empty())
+      post send_report(); 
+  }
+
+
+  event void SerialControl.startDone(error_t err)
+  {
+    if (err != SUCCESS)
+      call SerialControl.start();
+  }
+
+
+  event void SerialControl.stopDone(error_t err)
+  {
   }
 }
-
-
-
 
