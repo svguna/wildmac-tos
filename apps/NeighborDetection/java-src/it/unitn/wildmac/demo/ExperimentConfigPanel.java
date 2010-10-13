@@ -58,8 +58,7 @@ public class ExperimentConfigPanel extends JPanel {
 
 	}
 
-	public static final int MAX_BEACON = 200;
-
+	public static final int MAX_BEACON = 500;
 	public static final int MAX_SAMPLES = 99;
 	private static final long serialVersionUID = 1L;
 	private JSlider beaconDuration = null;
@@ -105,9 +104,9 @@ public class ExperimentConfigPanel extends JPanel {
 		if (beaconDuration == null) {
 			beaconDuration = new JSlider();
 
-			beaconDuration.setMinimum(10);
+			beaconDuration.setMinimum(20);
 			beaconDuration.setValue(100);
-			beaconDuration.setMaximum(MAX_BEACON);
+			beaconDuration.setMaximum(500);
 
 			beaconDuration.setPaintTicks(true);
 			beaconDuration.setMajorTickSpacing(50);
