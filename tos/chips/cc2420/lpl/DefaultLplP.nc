@@ -421,7 +421,11 @@ implementation {
   }
   
   task void resend() {
-    if(call Resend.resend(TRUE) != SUCCESS) {
+    bool cca = TRUE;
+    if (inContact == FALSE)
+      cca = FALSE;
+
+    if(call Resend.resend(cca) != SUCCESS) {
       post resend();
     }
   }
@@ -465,7 +469,12 @@ implementation {
   
   
   void startOffTimer() {
-    call OffTimer.startOneShot(call SystemLowPowerListening.getDelayAfterReceive());
+    uint32_t off_timeout = call SystemLowPowerListening.getDelayAfterReceive();
+
+    if (inContact == FALSE)
+      off_timeout = 20;
+
+    call OffTimer.startOneShot(off_timeout);
   }
 
 
@@ -499,8 +508,7 @@ implementation {
   {
     cc2420_header_t *header = call CC2420PacketBody.getHeader(&heartbeatMsg);
       
-    // don't care about the sequence number
-    header->dsn++;// = 0;
+    header->dsn++;
     header->destpan = TOS_NEIGHBOR_GROUP;
     header->dest = IEEE154_BROADCAST_ADDR;
     header->src = TOS_NODE_ID;

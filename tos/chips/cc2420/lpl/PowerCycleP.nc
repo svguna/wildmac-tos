@@ -250,6 +250,14 @@ implementation {
   
   task void getCca() {
     uint8_t detects = 0;
+    uint16_t maxCcaChecks = MAX_LPL_CCA_CHECKS;
+    uint16_t minSamples = MIN_SAMPLES_BEFORE_DETECT;
+
+    if (inContact == FALSE) {
+      maxCcaChecks = MAX_NEIGHBOR_CCA_CHECKS;
+      minSamples = MIN_NEIGHBOR_SAMPLES;
+    }
+    
     if(isDutyCycling()) {
       
       ccaChecks++;
@@ -262,7 +270,7 @@ implementation {
       samplesTaken++;
 
       atomic {
-        for( ; ccaChecks < MAX_LPL_CCA_CHECKS && call SendState.isIdle(); ccaChecks++) {
+        for( ; ccaChecks < maxCcaChecks && call SendState.isIdle(); ccaChecks++) {
           if(call PacketIndicator.isReceiving()) {
             signal PowerCycle.detected();
             return;
@@ -270,7 +278,7 @@ implementation {
           
           if(call EnergyIndicator.isReceiving()) {
             detects++;
-            if(detects > MIN_SAMPLES_BEFORE_DETECT) {
+            if(detects > minSamples) {
               signal PowerCycle.detected(); 
               return;
             }
@@ -329,7 +337,7 @@ implementation {
   command void PowerCycle.setNeighborConfig(uint16_t beacon,
           uint16_t neighborSamples)
   {
-    beaconInterval = beacon;
+    beaconInterval = beacon - NEIGHBOR_ON_TIME;
     samplesToTake = neighborSamples;
   }
 
