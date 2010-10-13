@@ -18,7 +18,7 @@
 #endif
 
 #ifndef NEIGHBOR_ON_TIME
-#define NEIGHBOR_ON_TIME 11
+#define NEIGHBOR_ON_TIME 14
 #endif
 
 enum {
