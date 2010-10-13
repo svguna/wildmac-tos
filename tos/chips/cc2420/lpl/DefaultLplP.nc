@@ -447,7 +447,7 @@ implementation {
   /***************** Functions ***************/
   void initializeSend() {
     uint16_t preamble = 
-        call LowPowerListening.getRemoteWakeupInterval(currentSendMsg);
+        call LowPowerListening.getRemoteWakeupInterval(currentSendMsg) + 20;
     
     if (inContact == FALSE)
       preamble = beaconInterval;
@@ -462,7 +462,7 @@ implementation {
         call PacketAcknowledgements.requestAck(currentSendMsg);
       }
 
-      call SendDoneTimer.startOneShot(preamble + 20);
+      call SendDoneTimer.startOneShot(preamble);
     }
     post send();
   }
