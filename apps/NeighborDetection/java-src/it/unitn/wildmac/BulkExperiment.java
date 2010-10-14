@@ -5,6 +5,7 @@ package it.unitn.wildmac;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,10 +30,12 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		else
 			PropertyConfigurator.configure(logProperties.getPath());
 
-		long period, duration, delay;
+		long period, duration;
 		int beacon, samples;
-		boolean countFromMsg = false, randomDelay = false;
+		boolean countFromMsg = false;
 		int nodes;
+
+		Random rand = new Random();
 
 		try {
 			nodes = new Integer(args[0]);
@@ -71,25 +74,10 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		}
 
 		try {
-			delay = new Integer(args[5]);
-		} catch (Exception e) {
-			System.err.println("Invalid delay specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			if (args[6].equals("on"))
+			if (args[5].equals("on"))
 				countFromMsg = true;
 		} catch (Exception e) {
-			System.err.println("Invalid delay specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			if (args[7].equals("on"))
-				randomDelay = true;
-		} catch (Exception e) {
-			System.err.println("Invalid randomicity specified.");
+			System.err.println("Invalid counter started specified.");
 			printSyntax();
 			return;
 		}
@@ -104,8 +92,9 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		}
 
 		try {
-			gateways[0].startExperiment(period, beacon, samples, duration,
-					delay, countFromMsg, randomDelay);
+			for (int i = 0; i < nodes; i++)
+				gateways[i].startExperiment(period, beacon, samples, duration,
+						rand.nextInt((int) period), countFromMsg, false, true);
 		} catch (IOException e) {
 			System.err.println("Unable to communicate with the mote");
 			System.err.println(e.getMessage());
@@ -113,15 +102,13 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		}
 
 		Timer timeoutTimer = new Timer();
-		timeoutTimer.schedule(experiment, duration + delay);
+		timeoutTimer.schedule(experiment, duration + period);
 	}
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");
-		System.out
-				.println("\t java "
-						+ BulkExperiment.class.getName()
-						+ " NODES PERIOD BEACON SAMPLES DURATION DELAY CNT_MSG RND_DELAY");
+		System.out.println("\t java " + BulkExperiment.class.getName()
+				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_MSG");
 	}
 
 	/*

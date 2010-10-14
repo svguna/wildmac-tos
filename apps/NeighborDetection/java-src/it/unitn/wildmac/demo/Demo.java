@@ -16,7 +16,7 @@ import it.unitn.wildmac.WSNGateway;
  */
 public class Demo {
 
-	protected static final long EXPERIMENT_DELAY = 2000;
+	protected static final int EXPERIMENT_DELAY = 2000;
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");

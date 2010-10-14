@@ -82,5 +82,8 @@ implementation {
   App.UsbConnection -> HplMsp430GeneralIOC.Port12;
   App.Random -> RandC;
   App.SeedInit -> RandC;
+
+  components RandomC;
+  App.SystemSeedInit -> RandomC;
 }
 

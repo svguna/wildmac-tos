@@ -69,6 +69,7 @@ module NeighborDetectionC @safe() {
 
     interface Random;
     interface ParameterInit<uint32_t> as SeedInit;
+    interface ParameterInit<uint16_t> as SystemSeedInit;
   }
 }
 implementation {
@@ -136,17 +137,24 @@ implementation {
     memcpy(&experiment, payload, len);
 
     call SeedInit.init(experiment.seed);
+    call SystemSeedInit.init(experiment.seed);
     
     if (experiment.randomDelay)
       experiment_delay = call Random.rand16() % experiment.delay;
     else
       experiment_delay = experiment.delay;
     
-    call ExperimentDelay.startOneShot(experiment_delay);
+    call ExperimentDelay.startOneShot(experiment.period + experiment_delay);
 
     if (experiment.countFromMsgRcv)
       experiment_start = call ExperimentTimeout.getNow(); 
-    
+   
+    // hack to prevent rebroadcast
+    if (experiment.noRebroadcast) {
+      call AMControl.stop();
+      return FAIL;
+    }
+
     return SUCCESS;
   }
 

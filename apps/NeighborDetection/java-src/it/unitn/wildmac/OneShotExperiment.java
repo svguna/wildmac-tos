@@ -30,8 +30,8 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 			PropertyConfigurator.configure(logProperties.getPath());
 
 		String source;
-		long period, duration, delay;
-		int beacon, samples;
+		long period, duration;
+		int beacon, samples, delay;
 		boolean countFromMsg = false, randomDelay = false;
 
 		try {
@@ -100,7 +100,7 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 
 		try {
 			gateway.startExperiment(period, beacon, samples, duration, delay,
-					countFromMsg, randomDelay);
+					countFromMsg, randomDelay, false);
 		} catch (IOException e) {
 			System.err.println("Unable to communicate with the sink.");
 			System.err.println(e.getMessage());

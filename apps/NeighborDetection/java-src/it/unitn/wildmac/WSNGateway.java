@@ -133,15 +133,17 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 *@param randomDelay
 	 *            Nodes should wait a random delay (in the range 0 to delay)
 	 *            before the experiment starts. Otherwise, the delay is fixed.
+	 * @param noRebroadcast
+	 *            The sink should not rebroadcast the message.
 	 * @throws IOException
 	 *             In case of communication error.
 	 */
 	public void startExperiment(long period, int beacon, int samples,
-			long duration, long delay, boolean countFromMsg, boolean randomDelay)
-			throws IOException {
+			long duration, int delay, boolean countFromMsg,
+			boolean randomDelay, boolean noRebroadcast) throws IOException {
 		long rnd = random.nextLong();
 		log.info("Using seed " + rnd);
-		
+
 		ExperimentControl experiment = new ExperimentControl();
 		experiment.set_period(period);
 		experiment.set_beacon(beacon);
@@ -158,12 +160,16 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 			experiment.set_randomDelay((short) 1);
 		else
 			experiment.set_randomDelay((short) 0);
+		if (noRebroadcast)
+			experiment.set_noRebroadcast((short) 1);
+		else
+			experiment.set_noRebroadcast((short) 0);
 
 		mote.send(MoteIF.TOS_BCAST_ADDR, experiment);
 		log.info("Experiment started: period=" + period + " beacon=" + beacon
 				+ " samples=" + samples + " duration=" + duration + " delay="
 				+ delay + " countFromMsg=" + countFromMsg + " randomDelay="
-				+ randomDelay);
+				+ randomDelay + " noRebroadcast=" + noRebroadcast);
 	}
 
 	/**

@@ -279,7 +279,7 @@ public class ExperimentConfigPanel extends JPanel {
 								beaconDuration.getValue(), samplesCount
 										.getValue(), experimentDuration
 										.getValue() * 1000,
-								Demo.EXPERIMENT_DELAY, false, true);
+								Demo.EXPERIMENT_DELAY, false, true, false);
 
 						Timer timer = new Timer();
 						TimerTask experimentTimer = new ExperimentTimer(timer);
