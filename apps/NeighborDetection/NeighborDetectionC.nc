@@ -167,12 +167,23 @@ implementation {
     call AMControl.start();
   }
 
+  task void start_detection()
+  {
+    call NeighborDetection.start(experiment.period, experiment.beacon,
+            experiment.samples);
+    call ExperimentTimeout.startOneShot(experiment.timeout);
+    if (!experiment.countFromMsgRcv)
+      experiment_start = call ExperimentTimeout.getNow(); 
+    call Leds.led1On();
+  }
 
   event void AMControl.startDone(error_t err) {
-    if (err == SUCCESS) 
+    if (err != SUCCESS) {
+      call AMControl.start();
       return;
-
-    call AMControl.start();
+    }
+    if (run_experiment)
+      post start_detection();
   }
 
 
@@ -183,12 +194,8 @@ implementation {
   
   event void ExperimentDelay.fired()
   {
-    call NeighborDetection.start(experiment.period, experiment.beacon,
-            experiment.samples);
-    call ExperimentTimeout.startOneShot(experiment.timeout);
-    if (!experiment.countFromMsgRcv)
-      experiment_start = call ExperimentTimeout.getNow(); 
-    call Leds.led1On();
+    call AMControl.start();
+    run_experiment = TRUE;
   }
 
 
