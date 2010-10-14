@@ -123,14 +123,26 @@ implementation {
 
   bool receive_message(message_t *msg, void *payload, uint8_t len)
   {
+    uint16_t experiment_delay;
+
     if (len != sizeof(experiment_ctrl_t)) 
       return FAIL;
-
-    memcpy(&experiment, payload, len);
-    call ExperimentDelay.startOneShot(call Random.rand16() % experiment.delay);
     
     while (!call DetectedNeighbors.empty())
       call DetectedNeighbors.dequeue();
+
+    memcpy(&experiment, payload, len);
+    
+    if (experiment.randomDelay)
+      experiment_delay = call Random.rand16() % experiment.delay;
+    else
+      experiment_delay = experiment.delay;
+    
+    call ExperimentDelay.startOneShot(experiment_delay);
+
+    if (experiment.countFromMsgRcv)
+      experiment_start = call ExperimentTimeout.getNow(); 
+    
     return SUCCESS;
   }
 
@@ -156,7 +168,8 @@ implementation {
     call NeighborDetection.start(experiment.period, experiment.beacon,
             experiment.samples);
     call ExperimentTimeout.startOneShot(experiment.timeout);
-    experiment_start = call ExperimentTimeout.getNow(); 
+    if (!experiment.countFromMsgRcv)
+      experiment_start = call ExperimentTimeout.getNow(); 
     call Leds.led1On();
   }
 

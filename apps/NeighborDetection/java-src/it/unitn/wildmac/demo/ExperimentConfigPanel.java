@@ -279,7 +279,7 @@ public class ExperimentConfigPanel extends JPanel {
 								beaconDuration.getValue(), samplesCount
 										.getValue(), experimentDuration
 										.getValue() * 1000,
-								Demo.EXPERIMENT_DELAY);
+								Demo.EXPERIMENT_DELAY, false, true);
 
 						Timer timer = new Timer();
 						TimerTask experimentTimer = new ExperimentTimer(timer);
@@ -481,9 +481,9 @@ public class ExperimentConfigPanel extends JPanel {
 	}
 
 	/**
-	 * This method initializes periodSample	
-	 * 	
-	 * @return it.unitn.wildmac.demo.PeriodSample	
+	 * This method initializes periodSample
+	 * 
+	 * @return it.unitn.wildmac.demo.PeriodSample
 	 */
 	private PeriodSample getPeriodSample() {
 		if (periodSample == null) {

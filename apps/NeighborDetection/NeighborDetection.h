@@ -14,6 +14,8 @@ typedef nx_struct experiment_ctrl {
   nx_uint16_t samples;
   nx_uint32_t timeout;
   nx_uint32_t delay;
+  nx_uint8_t randomDelay;
+  nx_uint8_t countFromMsgRcv;
 } experiment_ctrl_t;
 
 

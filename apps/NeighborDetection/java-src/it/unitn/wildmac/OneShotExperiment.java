@@ -19,8 +19,6 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class OneShotExperiment extends TimerTask implements ReportConsumer {
 
-	private static final long DEFAULT_DELAY = 3000;
-
 	/**
 	 * @param args
 	 */
@@ -32,8 +30,9 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 			PropertyConfigurator.configure(logProperties.getPath());
 
 		String source;
-		long period, duration;
+		long period, duration, delay;
 		int beacon, samples;
+		boolean countFromMsg = false, randomDelay = false;
 
 		try {
 			source = args[0];
@@ -71,26 +70,52 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 			return;
 		}
 
+		try {
+			delay = new Integer(args[5]);
+		} catch (Exception e) {
+			System.err.println("Invalid delay specified.");
+			printSyntax();
+			return;
+		}
+		try {
+			if (args[6].equals("on"))
+				countFromMsg = true;
+		} catch (Exception e) {
+			System.err.println("Invalid delay specified.");
+			printSyntax();
+			return;
+		}
+		try {
+			if (args[7].equals("on"))
+				randomDelay = true;
+		} catch (Exception e) {
+			System.err.println("Invalid randomicity specified.");
+			printSyntax();
+			return;
+		}
+
 		WSNGateway gateway = WSNGateway.getGateway(source);
 		OneShotExperiment experiment = new OneShotExperiment();
 		gateway.registerConsumer(experiment);
 
 		try {
-			gateway.startExperiment(period, beacon, samples, duration,
-					DEFAULT_DELAY);
+			gateway.startExperiment(period, beacon, samples, duration, delay,
+					countFromMsg, randomDelay);
 		} catch (IOException e) {
 			System.err.println("Unable to communicate with the sink.");
 			System.err.println(e.getMessage());
 		}
 
 		Timer timeoutTimer = new Timer();
-		timeoutTimer.schedule(experiment, duration + DEFAULT_DELAY);
+		timeoutTimer.schedule(experiment, duration + delay);
 	}
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");
-		System.out.println("\t java " + OneShotExperiment.class.getName()
-				+ " SOURCE PERIOD BEACON SAMPLES DURATION");
+		System.out
+				.println("\t java "
+						+ OneShotExperiment.class.getName()
+						+ " SOURCE PERIOD BEACON SAMPLES DURATION DELAY CNT_MSG RND_DELAY");
 	}
 
 	/*

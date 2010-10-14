@@ -123,22 +123,39 @@ public class WSNGateway implements MessageListener, Messenger {
 	 *            The duration (ms) of the experiment.
 	 * @param delay
 	 *            The delay (ms) after which the experiment should be started.
+	 * @param countFromMsg
+	 *            Values should be counted from when the experiment starts, and
+	 *            not from when the motes receive the experiment configuration
+	 *            message.
+	 *@param randomDelay
+	 *           Nodes should wait a random delay (in the range 0 to delay)
+	 *            before the experiment starts. Otherwise, the delay is fixed.
 	 * @throws IOException
 	 *             In case of communication error.
 	 */
 	public void startExperiment(long period, int beacon, int samples,
-			long duration, long delay) throws IOException {
+			long duration, long delay, boolean countFromMsg, boolean randomDelay)
+			throws IOException {
 		ExperimentControl experiment = new ExperimentControl();
 		experiment.set_period(period);
 		experiment.set_beacon(beacon);
 		experiment.set_samples(samples);
 		experiment.set_timeout(duration);
 		experiment.set_delay(delay);
+		if (countFromMsg)
+			experiment.set_countFromMsgRcv((short) 1);
+		else
+			experiment.set_countFromMsgRcv((short) 0);
+		if (randomDelay)
+			experiment.set_randomDelay((short) 1);
+		else
+			experiment.set_randomDelay((short) 0);
 
 		mote.send(MoteIF.TOS_BCAST_ADDR, experiment);
 		log.info("Experiment started: period=" + period + " beacon=" + beacon
 				+ " samples=" + samples + " duration=" + duration + " delay="
-				+ delay);
+				+ delay + " countFromMsg=" + countFromMsg + " randomDelay="
+				+ randomDelay);
 	}
 
 	/**
