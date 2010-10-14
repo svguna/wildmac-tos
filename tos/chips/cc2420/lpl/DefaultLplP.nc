@@ -383,6 +383,7 @@ implementation {
      * or if the duty cycle is on and our sleep interval is not 0
      */
     if(call SplitControlState.getState() == S_OFF
+        || inContact == FALSE
         || (call PowerCycle.getSleepInterval() > 0
             && call SplitControlState.getState() != S_OFF
                 && call SendState.getState() == S_LPL_NOT_SENDING)) { 
@@ -472,7 +473,7 @@ implementation {
     uint32_t off_timeout = call SystemLowPowerListening.getDelayAfterReceive();
 
     if (inContact == FALSE)
-      off_timeout = 20;
+      off_timeout = NEIGHBOR_DELAY_AFTER_RCV;
 
     call OffTimer.startOneShot(off_timeout);
   }
