@@ -18,7 +18,52 @@ import org.apache.log4j.PropertyConfigurator;
  * @author Stefan Guna
  * 
  */
-public class BulkExperiment extends TimerTask implements ReportConsumer {
+public class BulkExperiment implements ReportConsumer {
+	private static class ExperimentStop extends TimerTask {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.util.TimerTask#run()
+		 */
+		@Override
+		public void run() {
+			experimentCnt++;
+			System.out.println("Experiment " + experimentCnt + " done.");
+			if (experimentCnt == experimentMax)
+				System.exit(0);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				for (int i = 0; i < nodes; i++)
+					gateways[i].startExperiment(period, beacon, samples,
+							duration, rand.nextInt((int) period), countFromMsg,
+							false, true);
+			} catch (IOException e) {
+				System.err.println("Unable to communicate with the mote");
+				System.err.println(e.getMessage());
+			}
+
+			Timer timeoutTimer = new Timer();
+			timeoutTimer.schedule(new ExperimentStop(), duration + period * 2);
+		}
+	}
+
+	static int beacon;
+	static boolean countFromMsg = false;
+	static long duration;
+	static int experimentCnt = 0;
+	static int experimentMax;
+	static WSNGateway gateways[];
+	static int nodes;
+	static long period;
+	static Random rand;
+
+	static int samples;
 
 	/**
 	 * @param args
@@ -30,12 +75,7 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		else
 			PropertyConfigurator.configure(logProperties.getPath());
 
-		long period, duration;
-		int beacon, samples;
-		boolean countFromMsg = false;
-		int nodes;
-
-		Random rand = new Random();
+		rand = new Random();
 
 		try {
 			nodes = new Integer(args[0]);
@@ -82,7 +122,17 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 			return;
 		}
 
-		WSNGateway gateways[] = new WSNGateway[nodes];
+		try {
+			System.out.println(args[6]);
+			experimentMax = new Integer(args[6]);
+
+		} catch (Exception e) {
+			System.err.println("Invalid number of experiments specified.");
+			printSyntax();
+			return;
+		}
+
+		gateways = new WSNGateway[nodes];
 		BulkExperiment experiment = new BulkExperiment();
 
 		for (int i = 0; i < nodes; i++) {
@@ -98,17 +148,16 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 		} catch (IOException e) {
 			System.err.println("Unable to communicate with the mote");
 			System.err.println(e.getMessage());
-			System.exit(-1);
 		}
 
 		Timer timeoutTimer = new Timer();
-		timeoutTimer.schedule(experiment, duration + period);
+		timeoutTimer.schedule(new ExperimentStop(), duration + period * 2);
 	}
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");
 		System.out.println("\t java " + BulkExperiment.class.getName()
-				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_MSG");
+				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_MSG EXPERIMENTS");
 	}
 
 	/*
@@ -117,18 +166,7 @@ public class BulkExperiment extends TimerTask implements ReportConsumer {
 	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long)
 	 */
 	public void neighborDiscovered(int nodeId, int neighbor, long timestamp) {
-		System.out.println(nodeId + " discovered " + neighbor + " in "
-				+ timestamp + " ms.");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.util.TimerTask#run()
-	 */
-	@Override
-	public void run() {
-		System.out.println("Experiment done.");
-		System.exit(0);
+		System.out.println("EXPERIMENT " + experimentCnt + ": " + nodeId
+				+ " discovered " + neighbor + " in " + timestamp + " ms.");
 	}
 }
