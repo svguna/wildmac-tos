@@ -84,6 +84,7 @@ public class ExperimentConfigPanel extends JPanel {
 	private JLabel samplesValue = null;
 
 	private JButton startButton = null;
+	private PeriodSample periodSample = null;
 
 	/**
 	 * This is the default constructor
@@ -300,10 +301,15 @@ public class ExperimentConfigPanel extends JPanel {
 	 * @return void
 	 */
 	private void initialize() {
+		GridBagConstraints gridBagConstraints14 = new GridBagConstraints();
+		gridBagConstraints14.gridx = 0;
+		gridBagConstraints14.gridheight = 1;
+		gridBagConstraints14.gridwidth = 3;
+		gridBagConstraints14.gridy = 6;
 		GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
 		gridBagConstraints13.gridx = 0;
 		gridBagConstraints13.gridwidth = 3;
-		gridBagConstraints13.gridy = 6;
+		gridBagConstraints13.gridy = 7;
 		behavior = new JLabel();
 		Font curFont = behavior.getFont();
 		behavior.setFont(new Font(curFont.getFontName(), Font.BOLD,
@@ -323,7 +329,7 @@ public class ExperimentConfigPanel extends JPanel {
 		gridBagConstraints12.gridwidth = 3;
 		gridBagConstraints12.weightx = 0.0;
 		gridBagConstraints12.weighty = 200.0;
-		gridBagConstraints12.gridy = 7;
+		gridBagConstraints12.gridy = 8;
 		GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
 		gridBagConstraints10.gridx = 2;
 		gridBagConstraints10.anchor = GridBagConstraints.WEST;
@@ -433,6 +439,7 @@ public class ExperimentConfigPanel extends JPanel {
 		this.add(experimentValue, gridBagConstraints10);
 		this.add(getStartButton(), gridBagConstraints12);
 		this.add(behavior, gridBagConstraints13);
+		this.add(getPeriodSample(), gridBagConstraints14);
 	}
 
 	/**
@@ -454,6 +461,9 @@ public class ExperimentConfigPanel extends JPanel {
 			behavior.setText("DETERMINISTIC DETECTION");
 		else
 			behavior.setText("PROBABILISTIC DETECTION");
+		periodSample.setPeriod(protocolSlider.getValue());
+		periodSample.setBeacon(beaconDuration.getValue());
+		periodSample.setSamples(samplesCount.getValue());
 	}
 
 	/**
@@ -468,6 +478,18 @@ public class ExperimentConfigPanel extends JPanel {
 
 		if (samplesCount.getValue() > max_samples)
 			samplesCount.setValue(max_samples);
+	}
+
+	/**
+	 * This method initializes periodSample	
+	 * 	
+	 * @return it.unitn.wildmac.demo.PeriodSample	
+	 */
+	private PeriodSample getPeriodSample() {
+		if (periodSample == null) {
+			periodSample = new PeriodSample(1000, 100, 5);
+		}
+		return periodSample;
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

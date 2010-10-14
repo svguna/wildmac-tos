@@ -109,7 +109,7 @@ public class DemoForm extends JFrame {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setSize(400, 350);
+		this.setSize(400, 400);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setContentPane(getJContentPane());
