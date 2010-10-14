@@ -14,7 +14,7 @@
 #endif
 
 #ifndef MIN_NEIGHBOR_SAMPLES
-#define MIN_NEIGHBOR_SAMPLES 1
+#define MIN_NEIGHBOR_SAMPLES 0
 #endif
 
 #ifndef NEIGHBOR_ON_TIME
