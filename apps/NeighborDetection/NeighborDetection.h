@@ -16,6 +16,7 @@ typedef nx_struct experiment_ctrl {
   nx_uint32_t delay;
   nx_uint8_t randomDelay;
   nx_uint8_t countFromMsgRcv;
+  nx_uint32_t seed;
 } experiment_ctrl_t;
 
 

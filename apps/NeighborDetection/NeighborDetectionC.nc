@@ -68,6 +68,7 @@ module NeighborDetectionC @safe() {
     interface HplMsp430GeneralIO as UsbConnection;
 
     interface Random;
+    interface ParameterInit<uint32_t> as SeedInit;
   }
 }
 implementation {
@@ -133,6 +134,8 @@ implementation {
       call DetectedNeighbors.dequeue();
 
     memcpy(&experiment, payload, len);
+
+    call SeedInit.init(experiment.seed);
     
     if (experiment.randomDelay)
       experiment_delay = call Random.rand16() % experiment.delay;

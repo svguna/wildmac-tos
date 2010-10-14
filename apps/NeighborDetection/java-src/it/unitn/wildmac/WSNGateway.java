@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 import net.tinyos.message.Message;
 import net.tinyos.message.MessageListener;
@@ -67,6 +68,7 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		mote = new MoteIF(phoenix);
 		mote.registerListener(new Report(), this);
 		consumers = new ArrayList<ReportConsumer>();
+		random = new Random();
 	}
 
 	/*
@@ -109,6 +111,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		consumers.add(consumer);
 	}
 
+	private Random random;
+
 	/**
 	 * Starts a new experiment with the following parameters.
 	 * 
@@ -135,12 +139,17 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	public void startExperiment(long period, int beacon, int samples,
 			long duration, long delay, boolean countFromMsg, boolean randomDelay)
 			throws IOException {
+		long rnd = random.nextLong();
+		log.info("Using seed " + rnd);
+		
 		ExperimentControl experiment = new ExperimentControl();
 		experiment.set_period(period);
 		experiment.set_beacon(beacon);
 		experiment.set_samples(samples);
 		experiment.set_timeout(duration);
 		experiment.set_delay(delay);
+		experiment.set_seed(rnd);
+
 		if (countFromMsg)
 			experiment.set_countFromMsgRcv((short) 1);
 		else
