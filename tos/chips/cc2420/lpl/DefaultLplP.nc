@@ -294,6 +294,10 @@ implementation {
   
   /***************** SubControl Events ***************/
   event void SubControl.startDone(error_t error) {
+#ifdef WILDMAC_DEMO
+    if (error == SUCCESS) 
+      call Leds.led0On();
+#endif
     if(!error) {
       call RadioPowerState.forceState(S_ON);
       
@@ -305,6 +309,11 @@ implementation {
   }
     
   event void SubControl.stopDone(error_t error) {
+#ifdef WILDMAC_DEMO
+    if (error == SUCCESS) 
+      call Leds.led0Off();
+#endif
+
     if(!error) {
 
       if(call SendState.getState() == S_LPL_FIRST_MESSAGE
