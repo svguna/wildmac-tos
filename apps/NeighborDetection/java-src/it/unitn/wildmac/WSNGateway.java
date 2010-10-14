@@ -15,6 +15,7 @@ import net.tinyos.message.Message;
 import net.tinyos.message.MessageListener;
 import net.tinyos.message.MoteIF;
 import net.tinyos.packet.BuildSource;
+import net.tinyos.packet.PhoenixError;
 import net.tinyos.packet.PhoenixSource;
 import net.tinyos.util.Messenger;
 
@@ -37,7 +38,7 @@ import org.apache.log4j.Logger;
  * @author Stefan Guna
  * 
  */
-public class WSNGateway implements MessageListener, Messenger {
+public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	private static Hashtable<String, WSNGateway> gatewayInstances = new Hashtable<String, WSNGateway>();
 	public static Logger log = Logger.getLogger(WSNGateway.class.getName());
 
@@ -62,6 +63,7 @@ public class WSNGateway implements MessageListener, Messenger {
 	private WSNGateway(String source) {
 		log.debug("Building phoenix on " + source);
 		PhoenixSource phoenix = BuildSource.makePhoenix(source, this);
+		phoenix.setPacketErrorHandler(this);
 		mote = new MoteIF(phoenix);
 		mote.registerListener(new Report(), this);
 		consumers = new ArrayList<ReportConsumer>();
@@ -86,15 +88,12 @@ public class WSNGateway implements MessageListener, Messenger {
 		if (!(msg instanceof Report))
 			log.error("Invalid message received.");
 
-		if (nodeId == 65535)
-			nodeId = 0;
-
 		Report report = (Report) msg;
-		log.info("Discovery " + nodeId + "-" + report.get_addr() + " in "
-				+ report.get_timestamp() + "ms.");
+		log.info("Discovery " + report.get_src() + "-" + report.get_addr()
+				+ " in " + report.get_timestamp() + "ms.");
 		for (ReportConsumer consumer : consumers)
-			consumer.neighborDiscovered(nodeId, report.get_addr(), report
-					.get_timestamp());
+			consumer.neighborDiscovered(report.get_src(), report.get_addr(),
+					report.get_timestamp());
 	}
 
 	/**
@@ -128,7 +127,7 @@ public class WSNGateway implements MessageListener, Messenger {
 	 *            not from when the motes receive the experiment configuration
 	 *            message.
 	 *@param randomDelay
-	 *           Nodes should wait a random delay (in the range 0 to delay)
+	 *            Nodes should wait a random delay (in the range 0 to delay)
 	 *            before the experiment starts. Otherwise, the delay is fixed.
 	 * @throws IOException
 	 *             In case of communication error.
@@ -167,6 +166,9 @@ public class WSNGateway implements MessageListener, Messenger {
 	 */
 	public void unregisterConsumer(ReportConsumer consumer) {
 		consumers.remove(consumer);
-		log.trace("Removed consumer " + consumer);
+	}
+
+	public void error(IOException e) {
+		log.warn("Serial exception: " + e.getMessage());
 	}
 }

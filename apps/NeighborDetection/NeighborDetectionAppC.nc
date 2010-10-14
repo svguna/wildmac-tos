@@ -66,7 +66,7 @@ implementation {
   App.Leds -> LedsC;
   App.ExperimentTimeout -> ExperimentTimeoutC;
   App.ExperimentDelay -> ExperimentDelayC;
-  App.Packet -> AMSenderC;
+  App.RadioPacket -> AMSenderC;
   
   App.LowPowerListening -> ActiveMessageC;
   App.NeighborDetection -> ActiveMessageC;
@@ -77,6 +77,7 @@ implementation {
   App.SerialReceive -> SerialAMReceiverC;
   App.SerialSend -> SerialAMSenderC;
   App.SerialControl -> SerialActiveMessageC;
+  App.SerialPacket -> SerialAMSenderC;
 
   App.UsbConnection -> HplMsp430GeneralIOC.Port12;
   App.Random -> RandomC;

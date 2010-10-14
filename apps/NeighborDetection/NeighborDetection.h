@@ -20,6 +20,7 @@ typedef nx_struct experiment_ctrl {
 
 
 typedef nx_struct report {
+  nx_uint16_t src;
   nx_uint16_t addr;
   nx_uint32_t timestamp;
 } report_t;

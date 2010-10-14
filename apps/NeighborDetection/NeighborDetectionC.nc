@@ -52,7 +52,7 @@ module NeighborDetectionC @safe() {
     interface Timer<TMilli> as ExperimentTimeout;
     interface Timer<TMilli> as ExperimentDelay;
     interface SplitControl as AMControl;
-    interface Packet;
+    interface Packet as RadioPacket;
     
     interface NeighborDetection;
     interface LowPowerListening;
@@ -63,6 +63,7 @@ module NeighborDetectionC @safe() {
     interface Receive as SerialReceive;
     interface AMSend as SerialSend;
     interface SplitControl as SerialControl;
+    interface Packet as SerialPacket;
     
     interface HplMsp430GeneralIO as UsbConnection;
 
@@ -85,7 +86,7 @@ implementation {
     if (serial_busy || call ReportBuffer.empty())
       return;
 
-    report = (report_t *) call Packet.getPayload(&serial_pkt, 0);
+    report = (report_t *) call SerialPacket.getPayload(&serial_pkt, 0);
     *report = call ReportBuffer.head();
 
     status = call SerialSend.send(AM_BROADCAST_ADDR, &serial_pkt, 
@@ -107,7 +108,7 @@ implementation {
     if (radio_busy)
       return;
 
-    payload = call Packet.getPayload(&radio_pkt, 0);
+    payload = call RadioPacket.getPayload(&radio_pkt, 0);
     memcpy(payload, &experiment, sizeof(experiment_ctrl_t));
 
     status = call AMSend.send(AM_BROADCAST_ADDR, &radio_pkt,
@@ -228,6 +229,7 @@ implementation {
     if (!call UsbConnection.get())
       return;
 
+    report.src = TOS_NODE_ID;
     report.addr = addr;
     report.timestamp = call ExperimentTimeout.getNow() - experiment_start;
     call ReportBuffer.enqueue(report);
