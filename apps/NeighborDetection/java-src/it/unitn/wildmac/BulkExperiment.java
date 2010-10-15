@@ -5,9 +5,11 @@ package it.unitn.wildmac;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
@@ -27,8 +29,11 @@ public class BulkExperiment implements ReportConsumer {
 		 */
 		@Override
 		public void run() {
-			experimentCnt++;
+			experiment.reset();
+
 			System.out.println("Experiment " + experimentCnt + " done.");
+
+			experimentCnt++;
 			if (experimentCnt == experimentMax)
 				System.exit(0);
 			try {
@@ -53,17 +58,19 @@ public class BulkExperiment implements ReportConsumer {
 		}
 	}
 
-	static int beacon;
-	static boolean countFromMsg = false;
-	static long duration;
-	static int experimentCnt = 0;
-	static int experimentMax;
-	static WSNGateway gateways[];
-	static int nodes;
-	static long period;
-	static Random rand;
+	private static int beacon;
 
-	static int samples;
+	private static boolean countFromMsg = false;
+
+	private static long duration;
+	private static BulkExperiment experiment;
+	private static int experimentCnt = 0;
+	private static int experimentMax;
+	private static WSNGateway gateways[];
+	private static int nodes;
+	private static long period;
+	private static Random rand;
+	private static int samples;
 
 	/**
 	 * @param args
@@ -133,7 +140,7 @@ public class BulkExperiment implements ReportConsumer {
 		}
 
 		gateways = new WSNGateway[nodes];
-		BulkExperiment experiment = new BulkExperiment();
+		experiment = new BulkExperiment();
 
 		for (int i = 0; i < nodes; i++) {
 			String source = "serial@/dev/ttyUSB" + i + ":tmote";
@@ -160,13 +167,44 @@ public class BulkExperiment implements ReportConsumer {
 				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_MSG EXPERIMENTS");
 	}
 
+	private HashMap<Integer, HashMap<Integer, Long>> detections = new HashMap<Integer, HashMap<Integer, Long>>();
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long)
 	 */
 	public void neighborDiscovered(int nodeId, int neighbor, long timestamp) {
+		HashMap<Integer, Long> detected = detections.get(nodeId);
+		if (detected == null) {
+			detected = new HashMap<Integer, Long>();
+			detections.put(nodeId, detected);
+		}
+		if (detected.get(neighbor) == null)
+			detected.put(neighbor, timestamp);
+
+		detected = detections.get(neighbor);
+		if (detected == null) {
+			detected = new HashMap<Integer, Long>();
+			detections.put(neighbor, detected);
+		}
+		if (detected.get(nodeId) == null)
+			detected.put(nodeId, timestamp);
+
 		System.out.println("EXPERIMENT " + experimentCnt + ": " + nodeId
 				+ " discovered " + neighbor + " in " + timestamp + " ms.");
+	}
+
+	public void reset() {
+		for (Integer nodeId : new TreeSet<Integer>(detections.keySet())) {
+			HashMap<Integer, Long> detected = detections.get(nodeId);
+			for (Integer neighbor : new TreeSet<Integer>(detected.keySet()))
+				System.out.println("EXPERIMENT " + experimentCnt + " pair: "
+						+ nodeId + " " + neighbor + " in "
+						+ detected.get(neighbor));
+			System.out.println();
+		}
+
+		detections = new HashMap<Integer, HashMap<Integer, Long>>();
 	}
 }
