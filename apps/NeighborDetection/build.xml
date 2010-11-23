@@ -6,6 +6,7 @@
 		<pathelement location="java-classes" />
 		<pathelement location="${tinyos-jar}" />
 		<pathelement location="java-lib/log4j-1.2.15.jar" />
+		<pathelement location="java-lib/mail.jar" />
 	</path>
 
 	<target name="init">
