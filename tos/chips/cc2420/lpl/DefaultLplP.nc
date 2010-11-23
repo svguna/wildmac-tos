@@ -376,7 +376,10 @@ implementation {
 #ifndef NEIGHBOR_NO_STOP
     stop_neighbor_detection();
 #endif
-    signal NeighborDetection.detected(header->src);
+    if (header->destpan != TOS_NEIGHBOR_GROUP) 
+      signal NeighborDetection.detected(header->src, NULL, 0);
+    else
+      signal NeighborDetection.detected(header->src, payload, len);
     
     startOffTimer();
 
@@ -514,7 +517,7 @@ implementation {
 
   
 #ifdef NEIGHBOR_DETECTION
-  void fill_heartbeatMsg()
+  uint8_t fill_heartbeatMsg(uint8_t len, void *payload)
   {
     cc2420_header_t *header = call CC2420PacketBody.getHeader(&heartbeatMsg);
       
@@ -523,13 +526,24 @@ implementation {
     header->dest = IEEE154_BROADCAST_ADDR;
     header->src = TOS_NODE_ID;
     header->network = TINYOS_6LOWPAN_NETWORK_ID;
+
+    if (len > 0 && len < call SubSend.maxPayloadLength() && payload != NULL) 
+      memcpy(call SubSend.getPayload(&heartbeatMsg, 0), payload, len);
+    else
+      len = 0;
+    return len;
   }
 
   void broadcast_hearbeat()
   {
-    fill_heartbeatMsg();
+    uint8_t len;
+    void *payload;
+
+    payload = signal NeighborDetection.getPayload(&len);
+    len = fill_heartbeatMsg(len, payload);
+
     currentSendMsg = &heartbeatMsg;
-    currentSendLen = 0;
+    currentSendLen = len;
     
     call OffTimer.stop();
     call SendDoneTimer.stop();

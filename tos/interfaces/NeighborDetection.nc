@@ -31,6 +31,13 @@ interface NeighborDetection {
    * detected, the service is stopped. It is the duty of higher-level layers
    * to determine when no neighbors are in range and to restart the service.
    */
-  event void detected(am_addr_t addr);
+  event void detected(am_addr_t addr, void *payload, uint8_t len);
+
+
+  /** 
+   * Signals the application to request a payload to pe appended to the beacon
+   * messages. This is triggered for every outbound beacon.
+   */
+  event void * getPayload(uint8_t *len);
 }
 
