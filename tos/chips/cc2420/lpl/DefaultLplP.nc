@@ -376,11 +376,13 @@ implementation {
 #ifndef NEIGHBOR_NO_STOP
     stop_neighbor_detection();
 #endif
+#ifdef NEIGHBOR_DETECTION
     if (header->destpan != TOS_NEIGHBOR_GROUP) 
       signal NeighborDetection.detected(header->src, NULL, 0);
     else
       signal NeighborDetection.detected(header->src, payload, len);
-    
+#endif
+
     startOffTimer();
 
     if (header->destpan == TOS_NEIGHBOR_GROUP) 
