@@ -1,0 +1,8 @@
+COMPONENT=SensitivityAppC
+CFLAGS += -DWILDMAC_DEMO
+CFLAGS += -DLOW_POWER_LISTENING
+
+CFLAGS += -I$(TOSDIR)/lib/printf
+
+include $(MAKERULES)
+
