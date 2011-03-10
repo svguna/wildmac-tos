@@ -52,6 +52,7 @@
  */
 
 #include "DefaultLpl.h"
+#include "printf.h"
 
 module PowerCycleP {
   provides {
@@ -73,7 +74,8 @@ module PowerCycleP {
 }
 
 implementation {
-  
+  unsigned int samples_taken = 0, positive_samples = 0;
+
   /** The current period of the duty cycle, equivalent of wakeup interval */
   uint16_t sleepInterval = LPL_DEF_LOCAL_WAKEUP;
   
@@ -253,10 +255,16 @@ implementation {
     uint16_t maxCcaChecks = MAX_LPL_CCA_CHECKS;
     uint16_t minSamples = MIN_SAMPLES_BEFORE_DETECT;
 
-    if (inContact == FALSE) {
+    samples_taken++;
+    if (samples_taken % 10 == 0) {
+      printf("%u %u\n", positive_samples, samples_taken);
+      printfflush();
+    }
+
+//    if (inContact == FALSE) {
       maxCcaChecks = MAX_NEIGHBOR_CCA_CHECKS;
       minSamples = MIN_NEIGHBOR_SAMPLES;
-    }
+//    }
     
     if(isDutyCycling()) {
       
@@ -272,6 +280,8 @@ implementation {
       atomic {
         for( ; ccaChecks < maxCcaChecks && call SendState.isIdle(); ccaChecks++) {
           if(call PacketIndicator.isReceiving()) {
+            positive_samples++;
+            call Leds.led2Toggle();
             signal PowerCycle.detected();
             return;
           }
@@ -279,6 +289,8 @@ implementation {
           if(call EnergyIndicator.isReceiving()) {
             detects++;
             if(detects > minSamples) {
+              positive_samples++;
+              call Leds.led2Toggle();
               signal PowerCycle.detected(); 
               return;
             }
@@ -344,10 +356,10 @@ implementation {
 
   command void PowerCycle.startNeighborDetection()
   {
-    sleepInterval = beaconInterval;
+/*    sleepInterval = beaconInterval;
     inContact = FALSE;
     samplesTaken = 0;
-    post stopRadio();
+    post stopRadio();*/
   }
 
 

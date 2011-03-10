@@ -486,7 +486,7 @@ implementation {
   void startOffTimer() {
     uint32_t off_timeout = call SystemLowPowerListening.getDelayAfterReceive();
 
-    if (inContact == FALSE)
+//    if (inContact == FALSE)
       off_timeout = NEIGHBOR_DELAY_AFTER_RCV;
 
     call OffTimer.startOneShot(off_timeout);
