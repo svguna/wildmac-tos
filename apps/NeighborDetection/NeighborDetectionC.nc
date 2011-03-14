@@ -79,7 +79,6 @@ implementation {
   bool serial_busy = FALSE, radio_busy = FALSE;
   bool run_experiment = FALSE;
   experiment_ctrl_t experiment;
-  uint8_t beacon_payload[10];
   
   task void send_report()
   {
@@ -162,11 +161,6 @@ implementation {
 
   event void Boot.booted() 
   {
-    uint8_t i;
-    
-    for (i = 0; i < sizeof(beacon_payload); i++)
-      beacon_payload[i] = i;
-        
     call UsbConnection.selectIOFunc();
     call UsbConnection.makeInput();
     call SerialControl.start();
@@ -233,8 +227,8 @@ implementation {
 
   event void * NeighborDetection.getPayload(uint8_t *len)
   {
-    *len = sizeof(beacon_payload);
-    return beacon_payload;
+    *len = 0; 
+    return NULL;
   }
 
 
@@ -243,17 +237,10 @@ implementation {
   {
     uint16_t i;
     report_t report;
-    uint8_t *data = (uint8_t *) payload;
 
     if (!call ExperimentTimeout.isRunning())
       return;
 
-    if (len != sizeof(beacon_payload))
-      return;
-    for (i = 0; i < sizeof(beacon_payload); i++)
-      if (data[i] != i)
-        return;
-    
     call Leds.led2Toggle();
     for (i = 0; i < call DetectedNeighbors.size(); i++)
       if (call DetectedNeighbors.element(i) == addr)
