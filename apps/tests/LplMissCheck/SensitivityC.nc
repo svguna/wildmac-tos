@@ -50,8 +50,10 @@ implementation {
   {
     if (call SendTimer.isRunning())
       printf("sent %u packets\n", sent_counter);
-    else
+    else {
+      call Leds.led2On();
       printf("send completed!\n");
+    }
     printfflush();
   }
   
