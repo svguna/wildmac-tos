@@ -47,8 +47,9 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 * Obtains a reference to the object handling the given source.
 	 * 
 	 * @param source
-	 *            A valid packet source to be passed to {@code
-	 *            net.tinyos.packet.BuildSource#makePhoenix(String, Messenger)}.
+	 *            A valid packet source to be passed to
+	 *            {@code net.tinyos.packet.BuildSource#makePhoenix(String, Messenger)}
+	 *            .
 	 * @return An unique reference to the handling object.
 	 */
 	public static synchronized WSNGateway getGateway(String source) {
@@ -130,7 +131,7 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 *            Values should be counted from when the experiment starts, and
 	 *            not from when the motes receive the experiment configuration
 	 *            message.
-	 *@param randomDelay
+	 * @param randomDelay
 	 *            Nodes should wait a random delay (in the range 0 to delay)
 	 *            before the experiment starts. Otherwise, the delay is fixed.
 	 * @param noRebroadcast
@@ -141,6 +142,7 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	public void startExperiment(long period, int beacon, int samples,
 			long duration, int delay, boolean countFromMsg,
 			boolean randomDelay, boolean noRebroadcast) throws IOException {
+		long experimentBegin = System.currentTimeMillis();
 		long rnd = random.nextLong();
 		log.info("Using seed " + rnd);
 
@@ -166,6 +168,10 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 			experiment.set_noRebroadcast((short) 0);
 
 		mote.send(MoteIF.TOS_BCAST_ADDR, experiment);
+		if (System.currentTimeMillis() - experimentBegin > BulkExperiment.FIXED_DURATION)
+			log.warn("The mote on "
+					+ mote.getSource().getPacketSource().getName()
+					+ " desynchronized the experiment.");
 		log.info("Experiment started: period=" + period + " beacon=" + beacon
 				+ " samples=" + samples + " duration=" + duration + " delay="
 				+ delay + " countFromMsg=" + countFromMsg + " randomDelay="

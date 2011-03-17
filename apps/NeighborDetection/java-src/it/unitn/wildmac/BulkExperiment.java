@@ -81,9 +81,9 @@ public class BulkExperiment implements ReportConsumer {
 		}
 
 		public PasswordAuthentication getPasswordAuthentication() {
-			return new PasswordAuthentication(props
-					.getProperty("mail.smtp.user"), props
-					.getProperty("mail.smtp.password"));
+			return new PasswordAuthentication(
+					props.getProperty("mail.smtp.user"),
+					props.getProperty("mail.smtp.password"));
 
 		}
 	}
@@ -98,7 +98,7 @@ public class BulkExperiment implements ReportConsumer {
 	private static BulkExperiment experiment;
 	private static int experimentCnt = 0;
 	private static int experimentMax;
-	private static final int FIXED_DURATION = 2000;
+	protected static final int FIXED_DURATION = 2000;
 
 	private static WSNGateway gateways[];
 	private static int nodes;
@@ -212,6 +212,15 @@ public class BulkExperiment implements ReportConsumer {
 			gateways[i].registerConsumer(experiment);
 		}
 
+		System.out
+				.println("Sleeping to allow the start of the USB connection...");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			System.out.println("Unable to sleep: " + e.getMessage());
+		}
+		System.out.println("Starting first experiment.");
+
 		runNextExperiment();
 	}
 
@@ -311,8 +320,11 @@ public class BulkExperiment implements ReportConsumer {
 		from[0] = new InternetAddress("WildMAC experiment <"
 				+ props.getProperty("experiment.from") + ">");
 		email.addFrom(from);
-		email.addRecipient(Message.RecipientType.TO, new InternetAddress(props
-				.getProperty("experiment.to")));
+		email.addRecipient(Message.RecipientType.TO,
+				new InternetAddress(props.getProperty("experiment.to")));
+		if (props.getProperty("experiment.cc") != null)
+			email.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					props.getProperty("experiment.cc")));
 		email.setSubject("Experiment alert");
 		email.setText(buf.toString());
 		Transport.send(email);
