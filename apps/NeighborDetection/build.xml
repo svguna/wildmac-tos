@@ -1,12 +1,9 @@
 <project basedir="." default="build" name="neighbor">
-	<property environment="env" />
-	<property name="tinyos-jar" value="${env.TOSROOT}/support/sdk/java/tinyos.jar" />
-
 	<path id="neighbor.classpath">
 		<pathelement location="java-classes" />
-		<pathelement location="${tinyos-jar}" />
 		<pathelement location="java-lib/log4j-1.2.15.jar" />
 		<pathelement location="java-lib/mail.jar" />
+		<pathelement location="java-lib/tinyos.jar" />
 	</path>
 
 	<target name="init">
