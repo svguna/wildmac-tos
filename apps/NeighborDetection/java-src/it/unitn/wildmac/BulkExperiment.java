@@ -190,7 +190,7 @@ public class BulkExperiment implements ReportConsumer {
 		}
 		try {
 			nodesOffset = new Integer(args[8]);
-			System.out.println("nodes counting from " + experimentCnt);
+			System.out.println("nodes counting from " + nodesOffset);
 		} catch (Exception e) {
 			System.out.println("nodes counting from 0");
 			nodesOffset = 0;
@@ -278,7 +278,7 @@ public class BulkExperiment implements ReportConsumer {
 	private static void printSyntax() {
 		System.out.println("Syntax:");
 		System.out.println("\t java " + BulkExperiment.class.getName()
-				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_MSG EXPERIMENTS");
+				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_FROM_MSG EXPERIMENTS [EXPERIMENT_START [NODE_OFFSET]]");
 	}
 
 	private static void sendAlert(String message, int moteId)
