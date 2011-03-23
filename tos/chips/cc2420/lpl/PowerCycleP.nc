@@ -255,15 +255,14 @@ implementation {
     uint16_t maxCcaChecks = MAX_LPL_CCA_CHECKS;
     uint16_t minSamples = MIN_SAMPLES_BEFORE_DETECT;
 
-    samples_taken++;
     if (samples_taken % 10 == 0) {
       printf("%u %u\n", positive_samples, samples_taken);
       printfflush();
     }
 
 //    if (inContact == FALSE) {
-      maxCcaChecks = MAX_NEIGHBOR_CCA_CHECKS;
-      minSamples = MIN_NEIGHBOR_SAMPLES;
+      maxCcaChecks = 300;//MAX_NEIGHBOR_CCA_CHECKS;
+      minSamples = 2;//MIN_NEIGHBOR_SAMPLES;
 //    }
     
     if(isDutyCycling()) {
@@ -275,6 +274,7 @@ implementation {
         return;
       }
       
+      samples_taken++;
       samplesTaken++;
 
       atomic {

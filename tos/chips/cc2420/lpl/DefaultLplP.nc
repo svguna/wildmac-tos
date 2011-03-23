@@ -333,6 +333,9 @@ implementation {
    
     switch(call SendState.getState()) {
     case S_LPL_SENDING:
+#warning infinite transmission
+      post resend();
+      return;
       if(call SendDoneTimer.isRunning()) {
         if(!call PacketAcknowledgements.wasAcked(msg)) {
           post resend();
@@ -476,8 +479,8 @@ implementation {
         // Send it repetitively within our transmit window
         call PacketAcknowledgements.requestAck(currentSendMsg);
       }
-
-      call SendDoneTimer.startOneShot(preamble);
+#warning infinite transmission
+      //call SendDoneTimer.startOneShot(preamble);
     }
     post send();
   }

@@ -10,13 +10,10 @@ module SensitivityC {
     interface AMSend;
     interface LowPowerListening;
     interface Timer<TMilli> as SendTimer;
-    interface Timer<TMilli> as ReportTimer;
   }
 }
 implementation {
   message_t pkt;
-  bool busy = FALSE;
-  unsigned int sent_counter = 0;
   unsigned int receive_counter = 0;
 
   event void Boot.booted() 
@@ -26,42 +23,33 @@ implementation {
   }
 
 
+  task void attemptSend()
+  {
+    unsigned int *seq;
+
+    seq = (unsigned int *) call Packet.getPayload(&pkt, 0);
+    *seq = 0;
+
+    call LowPowerListening.setRemoteWakeupInterval(&pkt, 100); 
+    if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, 10) != SUCCESS) {
+      post attemptSend();
+      return;
+    }
+
+    call Leds.led2On();
+    call SendTimer.startOneShot(3600000);
+  }
+
+
   event void AMControl.startDone(error_t err) {
     if (err != SUCCESS) {
       call AMControl.start();
       return;
     }
 
-    if (TOS_NODE_ID == 2)
-      call SendTimer.startPeriodic(500);
-
-    call ReportTimer.startPeriodic(2000);
-  }
-
-  
-  void report_receive()
-  {
-    printf("received %u packets\n", receive_counter);
-    printfflush();
-  }
-
-
-  void report_send()
-  {
-    if (call SendTimer.isRunning())
-      printf("sent %u packets\n", sent_counter);
-    else
-      printf("send completed!\n");
-    printfflush();
-  }
-  
-
-
-  event void ReportTimer.fired()
-  {
-    switch (TOS_NODE_ID) {
-      case 1: return report_receive();
-      case 2: return report_send();
+    if (TOS_NODE_ID == 2) {
+      post attemptSend();
+      return;
     }
   }
 
@@ -73,33 +61,22 @@ implementation {
 
   event void SendTimer.fired()
   {
-    unsigned int *seq;
-    if (busy)
-      return;
-
-    seq = (unsigned int *) call Packet.getPayload(&pkt, 0);
-    *seq = sent_counter;
-
-    call LowPowerListening.setRemoteWakeupInterval(&pkt, 100); 
-    if (call AMSend.send(AM_BROADCAST_ADDR, &pkt, 10) == SUCCESS)
-      busy = TRUE;
+    call Leds.led2Off();
   }
 
 
   event void AMSend.sendDone(message_t *msg, error_t error)
   {
-    busy = FALSE;
     if (error == SUCCESS)
-      sent_counter++;
-
-    if (sent_counter == 10000)
-      call SendTimer.stop();
+      return;
+    call Leds.led2Off();
+    post attemptSend();
   }
 
 
   event message_t * Receive.receive(message_t *msg, void *payload, uint8_t len)
   {
-    receive_counter++;
+    call Leds.led1Toggle();
     return msg;
   }
 }
