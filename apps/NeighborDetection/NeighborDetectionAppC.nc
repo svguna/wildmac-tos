@@ -53,7 +53,9 @@ implementation {
   components new TimerMilliC() as ExperimentDelayC;
   components ActiveMessageC;
   components HplMsp430GeneralIOC;
+#ifndef DUPLICATE_REPORTS
   components new QueueC(am_addr_t, 20) as DetectedNeighborsC;
+#endif
   components new QueueC(report_t, 20) as ReportBufferC;
   components SerialActiveMessageC;
   components RandC;
@@ -72,7 +74,9 @@ implementation {
   App.NeighborDetection -> ActiveMessageC;
   
   App.ReportBuffer -> ReportBufferC;
+#ifndef DUPLICATE_REPORTS
   App.DetectedNeighbors -> DetectedNeighborsC;
+#endif
 
   App.SerialReceive -> SerialAMReceiverC;
   App.SerialSend -> SerialAMSenderC;

@@ -57,7 +57,9 @@ module NeighborDetectionC @safe() {
     interface NeighborDetection;
     interface LowPowerListening;
 
+#ifndef DUPLICATE_REPORTS
     interface Queue<am_addr_t> as DetectedNeighbors;
+#endif
     interface Queue<report_t> as ReportBuffer;
 
     interface Receive as SerialReceive;
@@ -131,8 +133,10 @@ implementation {
     if (len != sizeof(experiment_ctrl_t)) 
       return FAIL;
     
+#ifndef DUPLICATE_REPORTS
     while (!call DetectedNeighbors.empty())
       call DetectedNeighbors.dequeue();
+#endif
 
     memcpy(&experiment, payload, len);
 
@@ -242,9 +246,11 @@ implementation {
       return;
 
     call Leds.led2Toggle();
+#ifndef DUPLICATE_REPORTS
     for (i = 0; i < call DetectedNeighbors.size(); i++)
       if (call DetectedNeighbors.element(i) == addr)
         return;
+#endif
 
     if (!call UsbConnection.get())
       return;
@@ -253,7 +259,9 @@ implementation {
     report.addr = addr;
     report.timestamp = call ExperimentTimeout.getNow() - experiment_start;
     call ReportBuffer.enqueue(report);
+#ifndef DUPLICATE_REPORTS
     call DetectedNeighbors.enqueue(addr);
+#endif
     post send_report(); 
   }
 
