@@ -498,7 +498,7 @@ implementation {
   {
 #ifdef NEIGHBOR_DETECTION
     deterministic = FALSE;
-    if (beacon * (samples + 1) > period / 2)
+    if (beacon * (samples + 1) >= period / 2)
       deterministic = TRUE;
 
     inContact = FALSE;
