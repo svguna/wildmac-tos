@@ -72,35 +72,98 @@ module NeighborDetectionC @safe() {
     interface Random;
     interface ParameterInit<uint32_t> as SeedInit;
     interface ParameterInit<uint16_t> as SystemSeedInit;
+
+    interface LocalTime<TMilli>;
+#ifdef FLASH_LOG
+    interface LogWrite;
+#endif
   }
 }
 implementation {
 
   uint32_t experiment_start;
   message_t serial_pkt, radio_pkt;
-  bool serial_busy = FALSE, radio_busy = FALSE;
+  bool report_busy = FALSE, radio_busy = FALSE;
   bool run_experiment = FALSE;
   experiment_ctrl_t experiment;
-  
-  task void send_report()
+  uint32_t report_seq = 0;
+  report_t report_buf;
+
+
+  void consume_report();
+
+
+  void next_report()
   {
-    report_t *report;
+    call ReportBuffer.dequeue();
+    report_seq++;
+
+    if (!call ReportBuffer.empty())
+      consume_report(); 
+  }
+
+
+  void serial_report()
+  {
     error_t status;
-
-    if (serial_busy || call ReportBuffer.empty())
-      return;
-
-    report = (report_t *) call SerialPacket.getPayload(&serial_pkt, 0);
-    *report = call ReportBuffer.head();
-
+    report_t *report = 
+        (report_t *) call SerialPacket.getPayload(&serial_pkt, 0);
+    memcpy(report, &report_buf, sizeof(report_t));
+    report->absolute_time = call LocalTime.get();
+    
     status = call SerialSend.send(AM_BROADCAST_ADDR, &serial_pkt, 
             sizeof(report_t));
 
     if (status != SUCCESS) {
-      post send_report();
+      consume_report();
       return;
     }
-    serial_busy = TRUE;
+  }
+
+
+#ifdef FLASH_LOG
+  void log_report()
+  {
+    report_buf.absolute_time = call LocalTime.get();
+    if (call LogWrite.append(&report_buf, sizeof(report_t)) != SUCCESS)
+      // TODO if both LogWrite.append and SerialSend.send fail, we might get an
+      // ugly recursion here.
+      serial_report();
+  }
+
+
+  event void LogWrite.appendDone(void *buf, storage_len_t len, bool recordsLost,
+          error_t err)
+  {
+    serial_report();
+  }
+
+
+  event void LogWrite.syncDone(error_t error)
+  {
+  }
+
+
+  event void LogWrite.eraseDone(error_t error)
+  {
+  }
+#endif
+
+  
+  void consume_report()
+  {
+    if (report_busy || call ReportBuffer.empty())
+      return;
+
+    report_buf = call ReportBuffer.head();
+    report_buf.seq = report_seq;
+    report_busy = TRUE;
+
+#ifdef FLASH_LOG
+    log_report();
+#else
+    serial_report();
+#endif
   }
 
 
@@ -258,11 +321,12 @@ implementation {
     report.src = TOS_NODE_ID;
     report.addr = addr;
     report.timestamp = call ExperimentTimeout.getNow() - experiment_start;
+    report.absolute_timestamp = call LocalTime.get();
     call ReportBuffer.enqueue(report);
 #ifndef DUPLICATE_REPORTS
     call DetectedNeighbors.enqueue(addr);
 #endif
-    post send_report(); 
+    consume_report(); 
   }
 
 
@@ -277,13 +341,8 @@ implementation {
   
   event void SerialSend.sendDone(message_t *msg, error_t error) 
   {
-    serial_busy = FALSE;
-
-    if (error == SUCCESS)
-      call ReportBuffer.dequeue();
-
-    if (!call ReportBuffer.empty())
-      post send_report(); 
+    report_busy = FALSE;
+    next_report();
   }
 
 

@@ -16,6 +16,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.Line2D;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -71,10 +72,9 @@ public class TimelinePanel extends JPanel implements ReportConsumer {
 	 */
 	private void initialize() {
 		this.setSize(400, 100);
-		this
-				.setToolTipText("Node IDs are shown here, displaced on the timeline according\n"
-						+ "to their detection time (measured in ms). Protocol periods are\n"
-						+ "marked with dashed lines.");
+		this.setToolTipText("Node IDs are shown here, displaced on the timeline according\n"
+				+ "to their detection time (measured in ms). Protocol periods are\n"
+				+ "marked with dashed lines.");
 		this.setPreferredSize(new Dimension(400, 100));
 		setBackground(Color.white);
 	}
@@ -82,9 +82,11 @@ public class TimelinePanel extends JPanel implements ReportConsumer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long)
+	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long,
+	 * java.util.Date)
 	 */
-	public void neighborDiscovered(int nodeId, int neighbor, long timestamp) {
+	public void neighborDiscovered(int nodeId, int neighbor, long timestamp,
+			Date contactTime) {
 		contacts.put(new Integer(neighbor), new Long(timestamp));
 		repaint();
 	}
@@ -129,8 +131,9 @@ public class TimelinePanel extends JPanel implements ReportConsumer {
 
 		g2.setFont(fontTicks);
 		g2.drawString("0", 10 - ftm.stringWidth("0") / 2, 80 + ftSize + 2);
-		g2.drawString(new Long(max).toString(), 380 - ftm.stringWidth(new Long(
-				max).toString()) / 2, 80 + ftSize + 2);
+		g2.drawString(new Long(max).toString(),
+				380 - ftm.stringWidth(new Long(max).toString()) / 2,
+				80 + ftSize + 2);
 
 		g2.setFont(fontContacts);
 		BasicStroke contactStroke = new BasicStroke((float) 0.5,

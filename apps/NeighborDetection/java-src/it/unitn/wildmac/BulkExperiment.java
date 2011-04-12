@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
@@ -277,8 +278,10 @@ public class BulkExperiment implements ReportConsumer {
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");
-		System.out.println("\t java " + BulkExperiment.class.getName()
-				+ " NODES PERIOD BEACON SAMPLES DURATION CNT_FROM_MSG EXPERIMENTS [EXPERIMENT_START [NODE_OFFSET]]");
+		System.out
+				.println("\t java "
+						+ BulkExperiment.class.getName()
+						+ " NODES PERIOD BEACON SAMPLES DURATION CNT_FROM_MSG EXPERIMENTS [EXPERIMENT_START [NODE_OFFSET]]");
 	}
 
 	private static void sendAlert(String message, int moteId)
@@ -335,9 +338,11 @@ public class BulkExperiment implements ReportConsumer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long)
+	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long,
+	 * java.util.Date)
 	 */
-	public void neighborDiscovered(int nodeId, int neighbor, long timestamp) {
+	public void neighborDiscovered(int nodeId, int neighbor, long timestamp,
+			Date contactTime) {
 		HashMap<Integer, Long> detected = detections.get(nodeId);
 		if (detected == null) {
 			detected = new HashMap<Integer, Long>();
@@ -354,8 +359,8 @@ public class BulkExperiment implements ReportConsumer {
 		if (detected.get(nodeId) == null)
 			detected.put(nodeId, timestamp);
 
-		System.out.println("EXPERIMENT " + experimentCnt + ": " + nodeId
-				+ " discovered " + neighbor + " in " + timestamp + " ms.");
+		System.out.format("EXPERIMENT %d: %d discovered %d in %d ms (%tc).\n",
+				experimentCnt, nodeId, neighbor, timestamp, contactTime);
 	}
 
 	public void reset() {

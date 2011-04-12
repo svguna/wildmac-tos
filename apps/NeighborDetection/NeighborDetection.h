@@ -25,6 +25,9 @@ typedef nx_struct report {
   nx_uint16_t src;
   nx_uint16_t addr;
   nx_uint32_t timestamp;
+  nx_uint32_t absolute_timestamp;
+  nx_uint32_t absolute_time;
+  nx_uint32_t seq;
 } report_t;
 
 #endif

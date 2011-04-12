@@ -5,6 +5,7 @@ package it.unitn.wildmac;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -121,11 +122,13 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long)
+	 * @see it.unitn.wildmac.ReportConsumer#neighborDiscovered(int, int, long,
+	 * java.util.Date)
 	 */
-	public void neighborDiscovered(int nodeId, int neighbor, long timestamp) {
-		System.out.println(nodeId + " discovered " + neighbor + " in "
-				+ timestamp + " ms.");
+	public void neighborDiscovered(int nodeId, int neighbor, long timestamp,
+			Date contactTime) {
+		System.out.format("%d discovered %d in %d ms ( ts=%d, %d is %tc).\n",
+				nodeId, neighbor, timestamp, contactTime);
 	}
 
 	/*

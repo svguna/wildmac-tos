@@ -3,6 +3,8 @@
  */
 package it.unitn.wildmac;
 
+import java.util.Date;
+
 /**
  * Consumer of events originating from the WSN.
  * 
@@ -20,6 +22,9 @@ public interface ReportConsumer {
 	 * @param timestamp
 	 *            The time (counting in ms since the start of the experiment)
 	 *            when the neighbor was discovered.
+	 * @param contactTime
+	 *            The absolute time of the contact.
 	 */
-	void neighborDiscovered(int nodeId, int neighbor, long timestamp);
+	void neighborDiscovered(int nodeId, int neighbor, long timestamp,
+			Date contactTime);
 }

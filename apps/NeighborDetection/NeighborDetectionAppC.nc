@@ -29,6 +29,7 @@
  * 94704.  Attention:  Intel License Inquiry.
  */
  
+#include "StorageVolumes.h"
 #include "NeighborDetection.h"
 
 /**
@@ -59,6 +60,12 @@ implementation {
   components new QueueC(report_t, 20) as ReportBufferC;
   components SerialActiveMessageC;
   components RandC;
+  components HilTimerMilliC as Time;
+
+#ifdef FLASH_LOG
+  components new LogStorageC(VOLUME_CONTACTLOG, TRUE);
+  App.LogWrite -> LogStorageC;
+#endif
 
   App.Boot -> MainC.Boot;
   
@@ -86,6 +93,8 @@ implementation {
   App.UsbConnection -> HplMsp430GeneralIOC.Port12;
   App.Random -> RandC;
   App.SeedInit -> RandC;
+
+  App.LocalTime -> Time;
 
   components RandomC;
   App.SystemSeedInit -> RandomC;

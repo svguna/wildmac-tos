@@ -8,6 +8,9 @@ import it.unitn.wildmac.messages.Report;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
@@ -81,6 +84,14 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		log.debug(msg);
 	}
 
+	private static final Date convertTimestamp(Date now, long moteNow,
+			long other) {
+		Calendar result = Calendar.getInstance();
+		result.setTime(now);
+		result.add(Calendar.MILLISECOND, (int) (other - moteNow));
+		return result.getTime();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -92,11 +103,18 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 			log.error("Invalid message received.");
 
 		Report report = (Report) msg;
-		log.info("Discovery " + report.get_src() + "-" + report.get_addr()
-				+ " in " + report.get_timestamp() + "ms.");
+		Formatter f = new Formatter();
+		Date now = new Date();
+		Date contactTime = convertTimestamp(now, report.get_absolute_time(),
+				report.get_absolute_timestamp());
+		f.format("Discovery %d-%d in %d ms [%d](%tc)(ts=%d, %d is %tc).",
+				report.get_src(), report.get_addr(), report.get_timestamp(),
+				report.get_seq(), contactTime, report.get_absolute_timestamp(),
+				report.get_absolute_time(), now);
+		log.info(f);
 		for (ReportConsumer consumer : consumers)
 			consumer.neighborDiscovered(report.get_src(), report.get_addr(),
-					report.get_timestamp());
+					report.get_timestamp(), contactTime);
 	}
 
 	/**
