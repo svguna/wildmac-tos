@@ -4,8 +4,15 @@
 enum {
   AM_CONFIG = 0x10,
   AM_EXPERIMENT_CTRL,
-  AM_REPORT
+  AM_REPORT,
+  AM_REPORT_CTRL
 };
+
+
+typedef nx_struct report_ctrl {
+  nx_uint32_t delay;
+  nx_uint16_t flush;
+} report_ctrl_t;
 
 
 typedef nx_struct experiment_ctrl {

@@ -1,0 +1,4 @@
+COMPONENT=FlashPlayerAppC
+
+include $(MAKERULES)
+

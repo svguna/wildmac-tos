@@ -13,12 +13,14 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
- * A one shot experiment.
+ * Downloads all contact information stored on flash.
  * 
  * @author Stefan Guna
  * 
  */
-public class OneShotExperiment extends TimerTask implements ReportConsumer {
+public class FlashDownload extends TimerTask implements ReportConsumer {
+	/** Delay after which the mote starts sending the data stored on flash */
+	public static final int DOWNLOAD_DELAY = 2000;
 
 	/**
 	 * @param args
@@ -31,9 +33,8 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 			PropertyConfigurator.configure(logProperties.getPath());
 
 		String source;
-		long period, duration;
-		int beacon, samples, delay;
-		boolean countFromMsg = false, randomDelay = false;
+		long duration;
+		boolean flush = false;
 
 		try {
 			source = args[0];
@@ -43,80 +44,36 @@ public class OneShotExperiment extends TimerTask implements ReportConsumer {
 			return;
 		}
 		try {
-			period = new Integer(args[1]);
-		} catch (Exception e) {
-			System.err.println("Invalid protocol period specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			beacon = new Integer(args[2]);
-		} catch (Exception e) {
-			System.err.println("Invalid beacon duration specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			samples = new Integer(args[3]);
-		} catch (Exception e) {
-			System.err.println("Invalid number of samples specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			duration = new Integer(args[4]);
+			duration = new Integer(args[1]);
 		} catch (Exception e) {
 			System.err.println("Invalid experiment duration specified.");
 			printSyntax();
 			return;
 		}
-
 		try {
-			delay = new Integer(args[5]);
+			flush = args[2].equals("ERASE");
 		} catch (Exception e) {
-			System.err.println("Invalid delay specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			if (args[6].equals("on"))
-				countFromMsg = true;
-		} catch (Exception e) {
-			System.err.println("Invalid delay specified.");
-			printSyntax();
-			return;
-		}
-		try {
-			if (args[7].equals("on"))
-				randomDelay = true;
-		} catch (Exception e) {
-			System.err.println("Invalid randomicity specified.");
-			printSyntax();
-			return;
 		}
 
 		WSNGateway gateway = WSNGateway.getGateway(source);
-		OneShotExperiment experiment = new OneShotExperiment();
+		FlashDownload experiment = new FlashDownload();
 		gateway.registerConsumer(experiment);
 
 		try {
-			gateway.startExperiment(period, beacon, samples, duration, delay,
-					countFromMsg, randomDelay, false);
+			gateway.downloadFlash(DOWNLOAD_DELAY, flush);
 		} catch (IOException e) {
 			System.err.println("Unable to communicate with the sink.");
 			System.err.println(e.getMessage());
 		}
 
 		Timer timeoutTimer = new Timer();
-		timeoutTimer.schedule(experiment, duration + delay);
+		timeoutTimer.schedule(experiment, duration);
 	}
 
 	private static void printSyntax() {
 		System.out.println("Syntax:");
-		System.out
-				.println("\t java "
-						+ OneShotExperiment.class.getName()
-						+ " SOURCE PERIOD BEACON SAMPLES DURATION DELAY CNT_MSG RND_DELAY");
+		System.out.println("\t java " + FlashDownload.class.getName()
+				+ " SOURCE DOWNLOAD_TIMEOUT [ERASE]");
 	}
 
 	/*

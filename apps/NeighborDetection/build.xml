@@ -17,6 +17,7 @@
 		<delete dir="java-classes" />
 		<delete file="java-src/it/unitn/wildmac/messages/ExperimentControlMsg.java" />
 		<delete file="java-src/it/unitn/wildmac/messages/ReportMsg.java" />
+		<delete file="java-src/it/unitn/wildmac/messages/ReportControl.java" />
 	</target>
 
 	<target depends="init" name="mig-tool">
@@ -36,6 +37,15 @@
 			<arg value="report" />
 			<arg value="-o java-src/it/unitn/wildmac/messages/Report.java" />
 		</exec>
+		<exec executable="mig" spawn="no">
+			<arg value="-target=null" />
+			<arg value="java" />
+			<arg value="-java-classname=it.unitn.wildmac.messages.ReportControl" />
+			<arg value="NeighborDetection.h" />
+			<arg value="report_ctrl" />
+			<arg value="-o java-src/it/unitn/wildmac/messages/ReportControl.java" />
+		</exec>
+
 	</target>
 
 	<target depends="mig-tool" name="build">

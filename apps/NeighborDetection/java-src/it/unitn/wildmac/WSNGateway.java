@@ -5,6 +5,7 @@ package it.unitn.wildmac;
 
 import it.unitn.wildmac.messages.ExperimentControl;
 import it.unitn.wildmac.messages.Report;
+import it.unitn.wildmac.messages.ReportControl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,14 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	private static Hashtable<String, WSNGateway> gatewayInstances = new Hashtable<String, WSNGateway>();
 	public static Logger log = Logger.getLogger(WSNGateway.class.getName());
 
+	private static final Date convertTimestamp(Date now, long moteNow,
+			long other) {
+		Calendar result = Calendar.getInstance();
+		result.setTime(now);
+		result.add(Calendar.MILLISECOND, (int) (other - moteNow));
+		return result.getTime();
+	}
+
 	/**
 	 * Obtains a reference to the object handling the given source.
 	 * 
@@ -65,6 +74,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 
 	private MoteIF mote;
 
+	private Random random;
+
 	private WSNGateway(String source) {
 		log.debug("Building phoenix on " + source);
 		PhoenixSource phoenix = BuildSource.makePhoenix(source, this);
@@ -75,6 +86,33 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		random = new Random();
 	}
 
+	/**
+	 * Starts to download the contact log stored on flash.
+	 * 
+	 * @param downloadDelay
+	 *            Delay after which the mote starts to report log contents.
+	 * @param flush
+	 *            Ask the mote to flush the log.
+	 * @throws IOException
+	 *             In case of communication error.
+	 */
+	public void downloadFlash(int downloadDelay, boolean flush)
+			throws IOException {
+		ReportControl reportControl = new ReportControl();
+		reportControl.set_delay(downloadDelay);
+		if (flush)
+			reportControl.set_flush(1);
+		else
+			reportControl.set_flush(0);
+
+		mote.send(MoteIF.TOS_BCAST_ADDR, reportControl);
+		log.info("Downloading flash log...");
+	}
+
+	public void error(IOException e) {
+		log.warn("Serial exception: " + e.getMessage());
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -82,14 +120,6 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 */
 	public void message(String msg) {
 		log.debug(msg);
-	}
-
-	private static final Date convertTimestamp(Date now, long moteNow,
-			long other) {
-		Calendar result = Calendar.getInstance();
-		result.setTime(now);
-		result.add(Calendar.MILLISECOND, (int) (other - moteNow));
-		return result.getTime();
 	}
 
 	/*
@@ -129,8 +159,6 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		log.trace("Registered consumer " + consumer);
 		consumers.add(consumer);
 	}
-
-	private Random random;
 
 	/**
 	 * Starts a new experiment with the following parameters.
@@ -205,9 +233,5 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 */
 	public void unregisterConsumer(ReportConsumer consumer) {
 		consumers.remove(consumer);
-	}
-
-	public void error(IOException e) {
-		log.warn("Serial exception: " + e.getMessage());
 	}
 }
