@@ -226,6 +226,23 @@ implementation {
   }
 
 
+  void dummy_start()
+  {
+    experiment_ctrl_t config;
+    config.period = 2000;
+    config.beacon = 200;
+    config.samples = 5;
+    config.timeout = 3600000ULL;
+    config.delay = 2000;
+    config.randomDelay = 1;
+    config.countFromMsgRcv = 1;
+    config.noRebroadcast = 1;
+    config.seed = TOS_NODE_ID;
+
+    receive_message(NULL, (void *) &config, sizeof(experiment_ctrl_t));
+  }
+
+
   event void Boot.booted() 
   {
     call UsbConnection.selectIOFunc();
@@ -249,8 +266,14 @@ implementation {
       call AMControl.start();
       return;
     }
+
     if (run_experiment)
       post start_detection();
+#ifdef AUTOSTART
+#warning Autostarting the neighbor discovery
+    else
+      dummy_start();
+#endif
   }
 
 
@@ -261,6 +284,7 @@ implementation {
   
   event void ExperimentDelay.fired()
   {
+    call Leds.led1On();
     call AMControl.start();
     run_experiment = TRUE;
   }
@@ -275,8 +299,10 @@ implementation {
   
   event message_t *Receive.receive(message_t *msg, void *payload, uint8_t len) 
   {
+#ifndef AUTOSTART
     receive_message(msg, payload, len);
     call AMControl.stop();
+#endif
     return msg;
   }
 
@@ -333,8 +359,10 @@ implementation {
   event message_t *SerialReceive.receive(message_t *msg, void *payload,
           uint8_t len)
   {
+#ifndef AUTOSTART
     if (receive_message(msg, payload, len) == SUCCESS)
       post send_experiment();
+#endif
     return msg;
   }
 
@@ -348,8 +376,10 @@ implementation {
 
   event void SerialControl.startDone(error_t err)
   {
-    if (err != SUCCESS)
+    if (err != SUCCESS) {
       call SerialControl.start();
+      return;
+    }
   }
 
 
