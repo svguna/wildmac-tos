@@ -341,8 +341,10 @@ implementation {
         return;
 #endif
 
+#ifdef TEST_USB
     if (!call UsbConnection.get())
       return;
+#endif
 
     report.src = TOS_NODE_ID;
     report.addr = addr;
