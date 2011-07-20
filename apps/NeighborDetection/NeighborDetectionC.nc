@@ -135,6 +135,8 @@ implementation {
   event void LogWrite.appendDone(void *buf, storage_len_t len, bool recordsLost,
           error_t err)
   {
+    if (err == SUCCESS)
+      call Leds.led1Toggle();
     serial_report();
   }
 
@@ -230,9 +232,9 @@ implementation {
   {
     experiment_ctrl_t config;
     config.period = 2000;
-    config.beacon = 200;
+    config.beacon = 167;
     config.samples = 5;
-    config.timeout = 3600000ULL;
+    config.timeout = 7200000ULL;
     config.delay = 2000;
     config.randomDelay = 1;
     config.countFromMsgRcv = 1;

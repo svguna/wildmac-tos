@@ -57,7 +57,7 @@ implementation {
 #ifndef DUPLICATE_REPORTS
   components new QueueC(am_addr_t, 20) as DetectedNeighborsC;
 #endif
-  components new QueueC(report_t, 20) as ReportBufferC;
+  components new QueueC(report_t, 50) as ReportBufferC;
   components SerialActiveMessageC;
   components RandC;
   components HilTimerMilliC as Time;
