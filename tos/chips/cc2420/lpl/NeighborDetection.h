@@ -10,7 +10,18 @@
 #endif
 
 #ifndef MAX_NEIGHBOR_CCA_CHECKS
+
+#if defined(PLATFORM_TELOSB) || defined(PLATFORM_TMOTE)
 #define MAX_NEIGHBOR_CCA_CHECKS 400
+#else
+#ifdef PLATFORM_TREMATEB
+#warning "The value of MAX_NEIGHBOR_CCA_CHECKS must be validated."
+#define MAX_NEIGHBOR_CCA_CHECKS 800
+#else
+#define MAX_NEIGHBOR_CCA_CHECKS 400
+#endif
+#endif
+
 #endif
 
 #ifndef MIN_NEIGHBOR_SAMPLES
