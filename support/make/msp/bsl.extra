@@ -17,7 +17,14 @@ PROGRAM = bsl
 MSP_BSL ?= msp430-bsl
 # BSL is the comm port, can be specified as "bsl,2" when making
 BSL ?= auto
+
+BSL_MODE ?= 0
 MSP_BSL_FLAGS ?= --telos
+BSL3 ?= -1
+ifneq ($(BSL3),-1)
+MSP_BSL_FLAGS = --invert-test
+BSL = $(BSL3)
+endif
 
 ifeq ($(BSL),auto)
 BSLTEST = $(shell motelist -c | perl -e '<> =~ /^[^,]+,(\S+?(\d+)[^,]*)/; print $$1;' )

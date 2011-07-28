@@ -15,7 +15,7 @@
 #define MAX_NEIGHBOR_CCA_CHECKS 400
 #else
 #ifdef PLATFORM_TREMATEB
-#warning "The value of MAX_NEIGHBOR_CCA_CHECKS must be validated."
+#warning "The value of MAX_NEIGHBOR_CCA_CHECKS 800 must be validated."
 #define MAX_NEIGHBOR_CCA_CHECKS 800
 #else
 #define MAX_NEIGHBOR_CCA_CHECKS 400
