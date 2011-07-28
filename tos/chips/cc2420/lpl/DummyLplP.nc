@@ -59,6 +59,9 @@ implementation {
     return 0;
   }
   
+  command void NeighborDetection.setBeaconPower(uint16_t power)
+  {
+  }
 
   command void NeighborDetection.start(uint32_t period, uint16_t beacon,
           uint16_t samples)

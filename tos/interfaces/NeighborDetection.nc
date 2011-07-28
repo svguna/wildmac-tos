@@ -19,6 +19,12 @@ interface NeighborDetection {
    *                beacon's duration.
    */
   command void start(uint32_t period, uint16_t beacon, uint16_t samples);
+
+
+  /** Sets the power for the transmission of neighbor discovery beacons.
+   * @param beaconPower The power level.
+   */
+  command void setBeaconPower(uint16_t beaconPower);
   
   /**
    * Stops the neighbor discovery service.

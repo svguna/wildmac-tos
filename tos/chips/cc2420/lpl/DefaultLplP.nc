@@ -62,6 +62,7 @@ module DefaultLplP {
     interface SplitControl as SubControl;
     interface PowerCycle;
     interface CC2420PacketBody;
+    interface CC2420Packet;
     interface PacketAcknowledgements;
     interface State as SendState;
     interface State as RadioPowerState;
@@ -96,6 +97,7 @@ implementation {
 #ifdef NEIGHBOR_DETECTION
   message_t heartbeatMsg;
   uint32_t beaconDomain;
+  uint16_t beaconPower;
   void neighbor_periodic();
 #endif
 
@@ -493,6 +495,14 @@ implementation {
   }
 
 
+  command void NeighborDetection.setBeaconPower(uint16_t power)
+  {
+#ifdef NEIGHBOR_DETECTION
+    beaconPower = power;
+#endif
+  }
+
+
   command void NeighborDetection.start(uint32_t period, uint16_t beacon,
           uint16_t samples)
   {
@@ -528,6 +538,8 @@ implementation {
     header->dest = IEEE154_BROADCAST_ADDR;
     header->src = TOS_NODE_ID;
     header->network = TINYOS_6LOWPAN_NETWORK_ID;
+
+    call CC2420Packet.setPower(&heartbeatMsg, beaconPower); 
 
     if (len > 0 && len < call SubSend.maxPayloadLength() && payload != NULL) 
       memcpy(call SubSend.getPayload(&heartbeatMsg, 0), payload, len);
