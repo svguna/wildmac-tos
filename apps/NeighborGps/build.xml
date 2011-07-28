@@ -1,0 +1,66 @@
+<project basedir="." default="build" name="neighbor">
+	<path id="neighbor.classpath">
+		<pathelement location="java-classes" />
+		<pathelement location="java-lib/log4j-1.2.15.jar" />
+		<pathelement location="java-lib/mail.jar" />
+		<pathelement location="java-lib/tinyos.jar" />
+	</path>
+
+	<target name="init">
+		<mkdir dir="java-classes" />
+		<copy includeemptydirs="false" todir="java-classes">
+			<fileset dir="java-src" excludes="**/*.launch, **/*.java" />
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="java-classes" />
+        <delete file="java-src/it/unitn/wildmac/messages/ExperimentControlMsg.java" />
+		<delete file="java-src/it/unitn/wildmac/messages/ReportMsg.java" />
+		<delete file="java-src/it/unitn/wildmac/messages/ReportControl.java" />
+        
+	</target>
+
+	<target depends="init" name="mig-tool">
+		<exec executable="mig" spawn="no">
+			<arg value="-target=null" />
+			<arg value="java" />
+			<arg value="-java-classname=it.unitn.wildmac.messages.ExperimentControl" />
+			<arg value="NeighborDetection.h" />
+			<arg value="experiment_ctrl" />
+			<arg value="-o java-src/it/unitn/wildmac/messages/ExperimentControl.java" />
+        </exec>
+		<exec executable="mig" spawn="no">
+			<arg value="-target=null" />
+			<arg value="java" />
+			<arg value="-java-classname=it.unitn.wildmac.messages.LogStats" />
+			<arg value="NeighborDetection.h" />
+			<arg value="log_stats" />
+			<arg value="-o java-src/it/unitn/wildmac/messages/LogStats.java" />
+		</exec>
+		<exec executable="mig" spawn="no">
+			<arg value="-target=null" />
+			<arg value="java" />
+			<arg value="-java-classname=it.unitn.wildmac.messages.Report" />
+			<arg value="NeighborDetection.h" />
+			<arg value="report" />
+			<arg value="-o java-src/it/unitn/wildmac/messages/Report.java" />
+		</exec>
+		<exec executable="mig" spawn="no">
+			<arg value="-target=null" />
+			<arg value="java" />
+			<arg value="-java-classname=it.unitn.wildmac.messages.ReportControl" />
+			<arg value="NeighborDetection.h" />
+			<arg value="report_ctrl" />
+			<arg value="-o java-src/it/unitn/wildmac/messages/ReportControl.java" />
+		</exec>
+	</target>
+
+	<target depends="mig-tool" name="build">
+		<echo message="TinyOS jar: ${tinyos-jar}" />
+		<javac destdir="java-classes" fork="yes">
+			<src path="java-src" />
+			<classpath refid="neighbor.classpath" />
+		</javac>
+	</target>
+</project>
