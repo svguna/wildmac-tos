@@ -72,8 +72,10 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 
 	private List<ReportConsumer> consumers;
 
-	private MoteIF mote;
+	private List<Messenger> messengers;
 
+	private MoteIF mote;
+	private List<PhoenixError> phoenixErrors;
 	private Random random;
 
 	private WSNGateway(String source) {
@@ -83,6 +85,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 		mote = new MoteIF(phoenix);
 		mote.registerListener(new Report(), this);
 		consumers = new ArrayList<ReportConsumer>();
+		messengers = new ArrayList<Messenger>();
+		phoenixErrors = new ArrayList<PhoenixError>();
 		random = new Random();
 	}
 
@@ -111,6 +115,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 
 	public void error(IOException e) {
 		log.warn("Serial exception: " + e.getMessage());
+		for (PhoenixError phoenixError : phoenixErrors)
+			phoenixError.error(e);
 	}
 
 	/*
@@ -120,6 +126,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 */
 	public void message(String msg) {
 		log.debug(msg);
+		for (Messenger messenger : messengers)
+			messenger.message(msg);
 	}
 
 	/*
@@ -158,6 +166,16 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	public void registerConsumer(ReportConsumer consumer) {
 		log.trace("Registered consumer " + consumer);
 		consumers.add(consumer);
+	}
+
+	public void registerMessenger(Messenger messenger) {
+		log.trace("Registered messenger " + messenger);
+		messengers.add(messenger);
+	}
+
+	public void registerPhoenixError(PhoenixError phoenixError) {
+		log.trace("Registered phoenix error " + phoenixError);
+		phoenixErrors.add(phoenixError);
 	}
 
 	/**
