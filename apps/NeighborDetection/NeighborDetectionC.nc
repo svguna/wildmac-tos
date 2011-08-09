@@ -1,47 +1,6 @@
-// $Id$
-
-/*									tab:4
- * "Copyright (c) 2000-2005 The Regents of the University  of California.  
- * All rights reserved.
- *
- * Permission to use, copy, modify, and distribute this software and its
- * documentation for any purpose, without fee, and without written agreement is
- * hereby granted, provided that the above copyright notice, the following
- * two paragraphs and the author appear in all copies of this software.
- * 
- * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
- * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
- * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
- * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
- * ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
- * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS."
- *
- * Copyright (c) 2002-2003 Intel Corporation
- * All rights reserved.
- *
- * This file is distributed under the terms in the attached INTEL-LICENSE     
- * file. If you do not find these files, copies can be found by writing to
- * Intel Research Berkeley, 2150 Shattuck Avenue, Suite 1300, Berkeley, CA, 
- * 94704.  Attention:  Intel License Inquiry.
- */
- 
 #include "Timer.h"
 #include "NeighborDetection.h"
-
-/**
- * Implementation of the RadioCountToLeds application. RadioCountToLeds 
- * maintains a 4Hz counter, broadcasting its value in an AM packet 
- * every time it gets updated. A RadioCountToLeds node that hears a counter 
- * displays the bottom three bits on its LEDs. This application is a useful 
- * test to show that basic AM communication and timers work.
- *
- * @author Philip Levis
- * @date   June 6 2005
- */
+#include "UserButton.h"
 
 module NeighborDetectionC @safe() {
   uses {
@@ -56,6 +15,10 @@ module NeighborDetectionC @safe() {
     
     interface NeighborDetection;
     interface LowPowerListening;
+
+#ifdef TIMESTAMP_BUTTON
+    interface Notify<button_state_t> as Button;
+#endif
 
 #ifndef DUPLICATE_REPORTS
     interface Queue<am_addr_t> as DetectedNeighbors;
@@ -135,8 +98,6 @@ implementation {
   event void LogWrite.appendDone(void *buf, storage_len_t len, bool recordsLost,
           error_t err)
   {
-    if (err == SUCCESS)
-      call Leds.led1Toggle();
     serial_report();
   }
 
@@ -251,6 +212,10 @@ implementation {
     call UsbConnection.makeInput();
     call SerialControl.start();
     call AMControl.start();
+   
+#ifdef TIMESTAMP_BUTTON
+    call Button.enable();
+#endif
   }
 
   task void start_detection()
@@ -260,7 +225,6 @@ implementation {
     call ExperimentTimeout.startOneShot(experiment.timeout);
     if (!experiment.countFromMsgRcv)
       experiment_start = call ExperimentTimeout.getNow(); 
-    call Leds.led1On();
   }
 
   event void AMControl.startDone(error_t err) {
@@ -286,7 +250,6 @@ implementation {
   
   event void ExperimentDelay.fired()
   {
-    call Leds.led1On();
     call AMControl.start();
     run_experiment = TRUE;
   }
@@ -330,7 +293,9 @@ implementation {
   event void NeighborDetection.detected(am_addr_t addr, void *payload, 
           uint8_t len)
   {
+#ifndef DUPLICATE_REPORTS
     uint16_t i;
+#endif
     report_t report;
 
     if (!call ExperimentTimeout.isRunning())
@@ -390,5 +355,22 @@ implementation {
   event void SerialControl.stopDone(error_t err)
   {
   }
+
+
+#ifdef TIMESTAMP_BUTTON
+  event void Button.notify(button_state_t state)
+  {
+    report_t report;
+    if (state != BUTTON_RELEASED)
+      return;
+    report.src = TOS_NODE_ID;
+    report.addr = TOS_NODE_ID;
+    report.timestamp = call ExperimentTimeout.getNow() - experiment_start;
+    report.absolute_timestamp = call LocalTime.get();
+    call ReportBuffer.enqueue(report);
+    call Leds.led1Toggle();
+    consume_report();
+  }
+#endif
 }
 
