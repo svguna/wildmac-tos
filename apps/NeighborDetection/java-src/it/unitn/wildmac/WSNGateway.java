@@ -126,6 +126,8 @@ public class WSNGateway implements MessageListener, Messenger, PhoenixError {
 	 */
 	public void message(String msg) {
 		log.debug(msg);
+        if (messengers == null || messengers.size() == 0)
+            return;
 		for (Messenger messenger : messengers)
 			messenger.message(msg);
 	}
