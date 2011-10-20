@@ -133,6 +133,9 @@ implementation {
    * @return the sleep interval in [ms]
    */
   command uint16_t PowerCycle.getSleepInterval() {
+#ifdef NO_DUTY_CYCLE
+    return 0;
+#endif
     return lplSleepInterval;
   }
   
@@ -152,15 +155,19 @@ implementation {
     // Radio was off, now has been told to turn on or duty cycle.
     call SplitControlState.forceState(S_TURNING_ON);
     
+#ifndef NO_DUTY_CYCLE
     if(sleepInterval > 0) {
       // Begin duty cycling
       post stopRadio();
       return SUCCESS;
       
     } else {
+#endif
       post startRadio();
       return SUCCESS;
+#ifndef NO_DUTY_CYCLE
     }
+#endif
   }
   
   command error_t SplitControl.stop() {
@@ -297,6 +304,9 @@ implementation {
    * @return TRUE if the radio should be actively duty cycling
    */
   bool isDutyCycling() {
+#ifdef NO_DUTY_CYCLE
+    return FALSE;
+#endif
     if (inContact == FALSE && samplesTaken >= samplesToTake)
       return FALSE;
     return sleepInterval > 0 && call SplitControlState.isState(S_ON);
@@ -347,7 +357,12 @@ implementation {
     sleepInterval = beaconInterval;
     inContact = FALSE;
     samplesTaken = 0;
+#ifndef NO_DUTY_CYCLE
     post stopRadio();
+#else
+    #warning NO DUTY CYCLE
+    sleepInterval = 0;
+#endif
   }
 
 
@@ -355,8 +370,10 @@ implementation {
   {
     inContact = TRUE;
     sleepInterval = lplSleepInterval;
+#ifndef NO_DUTY_CYCLE
     if (sleepInterval)
       post stopRadio();
+#endif
   }
 }
 
