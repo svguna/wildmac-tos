@@ -191,10 +191,12 @@ implementation {
 
   void dummy_start()
   {
+    // In this configuration, T/2 is with 17% longer than the default
+    // optimization (beacon=167, samples=5).
     experiment_ctrl_t config;
     config.period = 2000;
-    config.beacon = 167;
-    config.samples = 5;
+    config.beacon = 130;
+    config.samples = 8;
     config.timeout = 7200000ULL;
     config.delay = 2000;
     config.randomDelay = 1;
